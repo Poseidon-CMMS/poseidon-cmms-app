@@ -1,17 +1,40 @@
 <template>
   
-  <Menubar :model="items" />
+  <Menubar :model="items"> 
+    <template #end>
+        <!-- <div v-if="isLoggedIn()"> -->
+          <Button class="p-button-danger" label="Logout" @click='onLogout' icon="pi pi-fw pi-power-off"/>
+        <!-- </div> -->
+    </template>
+  </Menubar>
+
   <router-view/>
 </template>
 
 <script>
   import Menubar from 'primevue/menubar';
 
-
 export default {
   name: 'App',
   components: {
     Menubar
+  },
+  beforeMount() {
+    if (!sessionStorage.getItem('token')) {
+      this.$router.replace('/login')
+    } 
+  }, 
+  beforeUpdate() {
+    if (!sessionStorage.getItem('token')) {
+      this.$router.replace('/login');
+    }
+  },
+  methods: {
+    onLogout() {
+      sessionStorage.removeItem('name');
+      sessionStorage.removeItem('token');
+      this.$router.push('/login')
+    }
   },
   data() {
         return {
@@ -30,15 +53,10 @@ export default {
                    label:'Dashboard',
                    icon:'pi pi-fw pi-th-large',
                    command: () => this.$router.push('/dashboard')
-                },
-                 {
-                   label:'Logout',
-                   icon:'pi pi-fw pi-power-off',
-                   command: () => this.$router.push('/login')
                 }
              ]
         }
-    }
+    },
 }
 </script>
 

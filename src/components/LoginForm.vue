@@ -33,7 +33,21 @@
 
 <script>
 import Password from 'primevue/password';
-import InputText from 'primevue/inputtext'
+import InputText from 'primevue/inputtext';
+
+import {
+  ApolloClient,
+  InMemoryCache,
+  // ApolloProvider,
+  // useQuery,
+  gql
+} from "@apollo/client/core";
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/api/graphql',
+  cache: new InMemoryCache()
+});
+
 
 export default {
   name: 'LoginForm',
@@ -54,11 +68,26 @@ export default {
   methods: {
     onSubmit(){
       this.loading = true;
-      console.log(this.password);
-      setTimeout(() => { //simula login
-        this.loading = false;
-        this.$router.push('dashboard');
-      }, 2000);
+      client.mutate({
+        mutation: gql`
+          mutation ($identity: String!, $secret: String!) {
+            authenticate: authenticateUserWithPassword(email: $identity, password: $secret) 
+            {
+              ... on UserAuthenticationWithPasswordSuccess { item { id name __typename } sessionToken __typename }
+              ... on UserAuthenticationWithPasswordFailure {      message      __typename    }    __typename  }
+            }`,
+        variables:{
+          identity: this.email,
+          secret: this.password
+        }
+      }).then(result => {
+          sessionStorage.setItem('token', result.data.authenticate.sessionToken);
+          sessionStorage.setItem('name',  result.data.authenticate.item.name);
+          this.loading = false;
+          this.$router.push('dashboard');
+        }).catch(() => {
+          this.loading = false;
+        });
     }
   }
 }
