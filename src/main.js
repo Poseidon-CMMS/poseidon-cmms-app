@@ -1,13 +1,18 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// import Login from './components/Login'
-// import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
+import PrimeVue from 'primevue/config';
+import Button from 'primevue/button';
+import Card from 'primevue/card';
+import "primevue/resources/themes/saga-blue/theme.css";       //theme
+import "primevue/resources/primevue.min.css";                 //core css
+import "primeicons/primeicons.css";
+import router from './router'
 
-// import { Input } from "ant-design-vue";
+const app = createApp(App).use(router);
 
+app.use(PrimeVue);
 
-const app = createApp(App);
+app.component('Button', Button);
+app.component('Card', Card);
 
-// app.use(Input);
 app.mount('#app');
