@@ -4,19 +4,37 @@
         Login
     </template>
     <template #content>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
-        quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
+    <div class="p-fluid">
+      <div class="p-field">    
+        <span class="p-float-label">
+          <InputText id="email" type="text" v-model="email" />
+          <label for="email">Email</label>
+        </span>
+      </div>
+      <div class="p-field p-m-4 p-p-6">    
+        <span class="p-float-label">
+          <password id="password" toggleMask :feedback="false" v-model="password"/>
+          <label for="password">Password</label>
+        </span>
+      </div>
+    </div>
     </template>
     <template #footer>
       <Button icon="pi pi-check" label="Login" @click="onSubmit" :loading="loading"/>
-        <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" :loading="loading"/>
     </template>
 </Card>
 </template>
 
 <script>
+import Password from 'primevue/password';
+import InputText from 'primevue/inputtext'
+
 export default {
   name: 'LoginForm',
+  components: {
+    InputText,
+    Password
+  },
   props: {
     msg: String
   },
@@ -30,8 +48,7 @@ export default {
   methods: {
     onSubmit(){
       this.loading = true;
-      console.log(this.email);
-      console.log('aaaaa');
+      console.log(this.password);
       setTimeout(() => { //simula login
         this.loading = false;
         this.$router.push('dashboard');
@@ -57,4 +74,5 @@ li {
 a {
   color: #42b983;
 }
+
 </style>

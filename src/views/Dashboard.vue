@@ -1,5 +1,4 @@
 <template>
-  Dashboard
   <data-table :value="products" responsiveLayout="scroll">
     <column field="integrationID" header="Id Equipo" :sortable="true"></column>
     <column field="name" header="Name" :sortable="true"></column>
@@ -15,7 +14,7 @@
     <column field="field" header="Field" :sortable="true"></column>
     <column field="actions" header="Actions" :sortable="false" :exportable="false" style="min-width:8rem">
       <template #body="slotProps">
-        <Button icon="pi-chart-bar" class="p-button-rounded p-button-success p-mr-2" @click="openGrafana(slotProps.data)" />
+        <Button icon="pi pi-chart-line" class="p-button-sm p-button-rounded p-button-outlined p-button-success p-mr-2" @click="openGrafana(slotProps.data)" />
       </template>
     </column>
   </data-table>
@@ -24,13 +23,12 @@
 <script>
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-// import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
 
 export default {
   name: 'Dashboard',
   components: {
     DataTable,
-    Column
+    Column,
   },
   data() {
     return {
