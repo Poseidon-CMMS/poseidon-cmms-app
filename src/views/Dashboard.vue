@@ -1,10 +1,94 @@
 <template>
   Dashboard
+  <data-table :value="products" responsiveLayout="scroll">
+    <column field="integrationID" header="Id Equipo" :sortable="true"></column>
+    <column field="name" header="Name" :sortable="true"></column>
+    <column field="client" header="Client" :sortable="true"></column>
+    <column field="sla" header="SLA" :sortable="true"></column>
+    <column field="gtwID" header="GTW ID" :sortable="true"></column>
+    <column field="nodeID" header="Node ID" :sortable="true"></column>
+    <column field="modemID" header="Modem ID" :sortable="true"></column>
+    <column field="isMapped" header="Mapped" :sortable="true"></column>
+    <column field="zone" header="Zone" :sortable="true"></column>
+    <column field="province" header="Province" :sortable="true"></column>
+    <column field="city" header="City" :sortable="true"></column>
+    <column field="field" header="Field" :sortable="true"></column>
+    <column field="actions" header="Actions" :sortable="false" :exportable="false" style="min-width:8rem">
+      <template #body="slotProps">
+        <Button icon="pi-chart-bar" class="p-button-rounded p-button-success p-mr-2" @click="openGrafana(slotProps.data)" />
+      </template>
+    </column>
+  </data-table>
 </template>
 
 <script>
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+// import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
+
 export default {
   name: 'Dashboard',
+  components: {
+    DataTable,
+    Column
+  },
+  data() {
+    return {
+      products: [
+        {
+            integrationID:'EQ123', 
+            name: 'El aleman',
+            client: 'Humus SRL',
+            sla: '2',
+            gtwID: 'GTW 231',
+            nodeID: 'Node 124',
+            modemID: 'Modem 1230',
+            isMapped: true,
+            zone: 'Norte semiarido',
+            province: 'San juan',
+            city: 'City Bell',
+            field: 'El campo 1',
+            urlGrafana: 'http://google.com'
+        }, 
+        {
+            integrationID:'EQ456',
+            name: 'El zapallo',
+            client: 'Miguel SA',
+            sla: '2',
+            gtwID: 'GTW 531',
+            nodeID: 'Node 124',
+            modemID: 'Modem asdasdoqw',
+            isMapped: true,
+            zone: 'Norte semiarido',
+            province: 'Salta',
+            city: 'City Bell',
+            field: 'El campo 2',
+            urlGrafana: 'http://youtube.com'
+        },
+        {
+            integrationID:'EQ789',
+            name: 'Tia Norma',
+            client: 'Lucas SRL',
+            sla: '1 (48hs)',
+            gtwID: 'GTW 332',
+            nodeID: 'Node 225',
+            modemID: 'SKY238742378432642',
+            isMapped: true,
+            zone: 'Patagonia',
+            province: 'Chubut',
+            city: 'City Bell',
+            field: 'El campo 1',
+            urlGrafana: 'http://fi.mdp.edu.ar'
+        }
+    ]
+    }
+  },
+  methods: {
+    openGrafana(data){
+      console.log(data);
+      window.open(data.urlGrafana, '_blank').focus();
+    }
+  }
 }
 </script>
 
