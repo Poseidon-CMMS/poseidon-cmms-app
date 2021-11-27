@@ -1,37 +1,55 @@
 <template>
-  <data-table :value="products" responsiveLayout="scroll">
-    <column field="integrationID" header="Id Equipo" :sortable="true"></column>
-    <column field="name" header="Name" :sortable="true"></column>
-    <column field="client" header="Client" :sortable="true"></column>
-    <column field="sla" header="SLA" :sortable="true"></column>
-    <column field="gtwID" header="GTW ID" :sortable="true"></column>
-    <column field="nodeID" header="Node ID" :sortable="true"></column>
-    <column field="modemID" header="Modem ID" :sortable="true"></column>
-    <column field="isMapped" header="Mapped" :sortable="true"></column>
-    <column field="zone" header="Zone" :sortable="true"></column>
-    <column field="province" header="Province" :sortable="true"></column>
-    <column field="city" header="City" :sortable="true"></column>
-    <column field="field" header="Field" :sortable="true"></column>
-    <column field="actions" header="Actions" :sortable="false" :exportable="false" style="min-width:8rem">
-      <template #body="slotProps">
-        <Button icon="pi pi-chart-line" class="p-button-sm p-button-rounded p-button-outlined p-button-success p-mr-2" @click="openGrafana(slotProps.data)" />
-      </template>
-    </column>
-  </data-table>
+  <div class="grid mt-3 mb-5">
+    <div class="col">
+      <metric-card 
+        titleCard="Issues no asignados"
+        color="bg-yellow-400"
+        contentCard="23"
+        comments="hoy"
+        colorComments="2 nuevos"
+        icon="pi pi-exclamation-circle"
+      />
+    </div>
+    <div class="col">
+      <metric-card 
+        titleCard="Sin diagnóstico"
+        color="bg-green-400"
+        contentCard="11"
+        comments="de hoy"
+        colorComments="1 equipo"
+        icon="pi pi-question-circle"
+      />
+    </div>
+    <div class="col">
+      <metric-card 
+        titleCard="Autopsia"
+        color="bg-purple-400"
+        contentCard="2"
+        comments="de la última autopsia"
+        colorComments="2 meses"
+        icon="pi pi-hashtag"
+      />
+    </div>  
+  </div>
+  <table-irrigators />
 </template>
 
 <script>
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+import MetricCard from '../components/MetricCard.vue';
+import { FilterMatchMode } from 'primevue/api';
 
+import TableIrrigators from '../components/TableIrrigators.vue'; 
 export default {
   name: 'Dashboard',
   components: {
-    DataTable,
-    Column,
+    MetricCard,
+    TableIrrigators
   },
   data() {
     return {
+      filters: {
+         'global': {value: null, matchMode: FilterMatchMode.CONTAINS}
+         },
       products: [
         {
             integrationID:'EQ123', 
