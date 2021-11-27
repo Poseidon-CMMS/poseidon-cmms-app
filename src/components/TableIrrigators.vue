@@ -1,11 +1,11 @@
 <template>
   <!-- Dialog -->
-  <irrigator-details-dialog :isOpen="displayDialog" :irrigator="selectedIrrigator" @aaaa="handleIsOpenChange"></irrigator-details-dialog>
+  <irrigator-details-dialog :isOpen="displayDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 
   <!-- Tabla -->
   <data-table
     :rowHover="true"
-    :value="products"
+    :value="irrigators"
     v-model:selection="selectedIrrigator"
     selectionMode="single"
     responsiveLayout="scroll"
@@ -28,6 +28,12 @@
     <column field="province" header="Province" :sortable="true"></column>
     <column field="city" header="City" :sortable="true"></column>
     <column field="field" header="Field" :sortable="true"></column>
+    <column field="transmissionStatus" header="Transmission Status" :sortable="true">
+      <template #body="{data}">
+        <span :class="'status-badge status-' + data.transmissionStatus">{{data.transmissionStatus}}</span>
+      </template>
+    </column>
+    <column field="lastTransmissionDate" header="Last Tx" :sortable="true"></column>
     <column
       field="actions"
       header="Actions"
@@ -72,7 +78,7 @@ export default {
       filters: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
-      products: [
+      irrigators: [
         {
           integrationID: "EQ123",
           name: "El aleman",
@@ -87,6 +93,8 @@ export default {
           city: "City Bell",
           field: "El campo 1",
           urlGrafana: "http://google.com",
+          transmissionStatus: 'transmitting',
+          lastTransmissionDate: '2021-07-10'
         },
         {
           integrationID: "EQ456",
@@ -102,6 +110,8 @@ export default {
           city: "City Bell",
           field: "El campo 2",
           urlGrafana: "http://youtube.com",
+          transmissionStatus: 'error',
+          lastTransmissionDate: '2021-10-10'
         },
         {
           integrationID: "EQ789",
@@ -117,6 +127,8 @@ export default {
           city: "City Bell",
           field: "El campo 1",
           urlGrafana: "http://fi.mdp.edu.ar",
+          transmissionStatus: 'noTelemetry',
+          lastTransmissionDate: '2021-10-10'
         },
       ],
     };
@@ -139,4 +151,26 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .status-badge {
+          border-radius: 2px;
+          padding: .25em .5rem;
+          text-transform: uppercase;
+          font-weight: 700;
+          font-size: 12px;
+          letter-spacing: .3px;
+  }
+  .status-badge.status-transmitting {
+        background-color: #C8E6C9;
+        color: #256029;
+    }
+
+  .status-badge.status-error{
+      background-color: #FFCDD2;
+      color: #C63737;
+  }
+
+  .status-badge.status-noTelemetry {
+      background-color: #B3E5FC;
+      color: #23547B;
+  }
 </style>

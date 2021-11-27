@@ -5,15 +5,50 @@
     :style="{ width: '50vw' }"
   >
     <p class="text-2xl font-semibold">{{ irrigator?.name }}</p>
-    <template #footer>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        @click="closeBasic"
-        class="p-button-text"
-      />
-      <Button label="Yes" icon="pi pi-check" @click="closeBasic" autofocus />
-    </template>
+     <div class="surface-section">
+      <ul class="list-none p-0 m-0">
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">ID Equipo</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.integrationID }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">Cliente</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.client }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">GTW ID</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.gtwID }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">NODO ID</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.nodeID }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">Modem ID</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.modemID }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">Mapeo</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.isMapped }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">Campo</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.field }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">Zona</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.zone }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">Provincia</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.province }}</div>
+        </li>
+        <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+          <div class="text-500 w-6 md:w-2 font-medium">Ciudad</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator.city }}</div>
+        </li>
+      </ul>
+    </div> 
   </Dialog>
 </template>
 
@@ -24,7 +59,7 @@ export default {
   computed: {
       computedIsOpen: {
           get() {return this.isOpen},
-          set(value) {this.$emit('aaaa', value)}
+          set(value) {this.$emit('updateIsOpen', value)}
 
       }
   }
