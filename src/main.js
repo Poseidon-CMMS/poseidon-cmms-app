@@ -6,7 +6,9 @@ import Card from 'primevue/card';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import Avatar from 'primevue/avatar';
-import Chip from 'primevue/chip';
+import Splitter from 'primevue/splitter';
+import Panel from 'primevue/panel';
+import ScrollPanel from 'primevue/scrollpanel'; 
 import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
@@ -21,6 +23,8 @@ app.component('Card', Card);
 app.component('InputText', InputText);
 app.component('Avatar', Avatar);
 app.component('Dialog', Dialog);
-app.component('Chip', Chip);
+app.component('Splitter', Splitter);
+app.component('ScrollPanel', ScrollPanel);
+app.component('Panel', Panel);
 
 app.mount('#app');

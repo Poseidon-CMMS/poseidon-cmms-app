@@ -68,6 +68,7 @@ export default {
   methods: {
     onSubmit(){
       this.loading = true;
+
       client.mutate({
         mutation: gql`
           mutation ($identity: String!, $secret: String!) {
