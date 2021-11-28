@@ -1,5 +1,7 @@
 <template>
+    
     <div class="grid text-sm mt-3">
+      <div class="col-12 flex flex-row"><Button label="Create" icon="pi pi-plus" class="p-button-success align-self-start" @click="toggleIsCreationModalOpen" /></div>
       <div class="col-3">
         <dragable-list title="In field" :list='inFieldList' :log='inFieldLog'/>
       </div>
@@ -26,16 +28,20 @@
         </Card>
       </div>
     </div>
-    
+    <HdwIssueCreationDialog :isOpen="isCreationModalOpen" @updateIsOpen="toggleIsCreationModalOpen"/>
 </template>
 
 <script>
 import DragableList from '../components/DragableList';
+import Button from 'primevue/button';
+import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 
 export default {
-  name: 'Dashboard',
+  name: 'Issues',
   components: {
-    DragableList
+    DragableList,
+    Button,
+    HdwIssueCreationDialog
   },
   methods: {
     inFieldLog: function(evt) {
@@ -50,9 +56,13 @@ export default {
     outOfFieldLog: function(evt) {
       console.log('Out of field: ' + evt);
     },
+    toggleIsCreationModalOpen() {
+      this.isCreationModalOpen = !this.isCreationModalOpen;
+    }
   },
   data() {
     return {
+        isCreationModalOpen: false,
         inFieldList: [
         { name:'Presión en 0mA (203)', client: { name: "John" }, field: {name: 'Campo1'},  irrigator:{name:'El alemán'} },
         { name:'Presión en 0mA (203)', client: { name: "John" }, field: {name: 'Campo1'},  irrigator:{name:'El alemán'} },

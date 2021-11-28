@@ -144,12 +144,10 @@ export default {
   },
   methods: {
     openGrafana(data) {
-      console.log(data);
       window.open(data.urlGrafana, "_blank").focus();
     },
-    onRowSelect(event) {
+    onRowSelect() {
       this.displayDialog = true;
-      console.log(event.data.integrationID);
     },
     handleIsOpenChange(value) {
       this.displayDialog = value;
