@@ -3,8 +3,10 @@
   <irrigator-details-dialog :isOpen="displayDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 
   <!-- Tabla -->
+  <Message v-if="!!error" severity="error" @close="onErrorClose">{{error}}</Message>
   <data-table
     :rowHover="true"
+    :loading="loading"
     :value="irrigators"
     v-model:selection="selectedIrrigator"
     selectionMode="single"
@@ -18,16 +20,16 @@
     <template #loading> Cargando datos de equipos. </template>
     <column field="integrationID" header="Id Equipo" :sortable="true"></column>
     <column field="name" header="Name" :sortable="true"></column>
-    <column field="client" header="Client" :sortable="true"></column>
+    <column field="field.client.name" header="Client" :sortable="true"></column>
     <column field="sla" header="SLA" :sortable="true"></column>
-    <column field="gtwID" header="GTW ID" :sortable="true"></column>
-    <column field="nodeID" header="Node ID" :sortable="true"></column>
-    <column field="modemID" header="Modem ID" :sortable="true"></column>
+    <column field="gateway.integrationId" header="GTW ID" :sortable="true"></column>
+    <column field="gpsNode.integrationId" header="Node ID" :sortable="true"></column>
+    <column field="gateway.satelliteModem.manufacturerId" header="Modem ID" :sortable="true"></column>
     <column field="isMapped" header="Mapped" :sortable="true"></column>
-    <column field="zone" header="Zone" :sortable="true"></column>
-    <column field="province" header="Province" :sortable="true"></column>
-    <column field="city" header="City" :sortable="true"></column>
-    <column field="field" header="Field" :sortable="true"></column>
+    <column field="field.zone.name" header="Zone" :sortable="true"></column>
+    <column field="field.province.name" header="Province" :sortable="true"></column>
+    <column field="field.city.name" header="City" :sortable="true"></column>
+    <column field="field.name" header="Field" :sortable="true"></column>
     <column field="transmissionStatus" header="Transmission Status" :sortable="true">
       <template #body="{data}">
         <span :class="'status-badge status-' + data.transmissionStatus">{{data.transmissionStatus}}</span>
@@ -61,8 +63,10 @@
 <script>
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import Message from "primevue/message";
 import { FilterMatchMode } from "primevue/api";
 import IrrigatorDetailsDialog from './IrrigatorDetailsDialog.vue';
+import { getIrrigatorsQuery } from '../api/apiRequests';
 
 export default {
   name: "TableIrrigators",
@@ -70,9 +74,12 @@ export default {
     DataTable,
     Column,
     IrrigatorDetailsDialog,
+    Message
   },
   data() {
     return {
+      error: '',
+      loading: true,
       displayDialog: false,
       selectedIrrigator: null,
       filters: {
@@ -146,6 +153,18 @@ export default {
       this.displayDialog = value;
     }
   },
+  async mounted(){
+    try{
+    const result = await getIrrigatorsQuery();
+    this.irrigators = result.data.irrigators;
+    this.loading = false;
+    }
+    catch(e){
+      this.error = e;
+      this.irrigators = [];
+      this.loading = false;
+    }
+  }
 };
 </script>
 
