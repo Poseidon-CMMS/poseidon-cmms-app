@@ -9,6 +9,9 @@ import Avatar from 'primevue/avatar';
 import Splitter from 'primevue/splitter';
 import Panel from 'primevue/panel';
 import ScrollPanel from 'primevue/scrollpanel'; 
+import Badge from 'primevue/badge'; 
+import Accordion from 'primevue/accordion'; 
+import AccordionTab from 'primevue/accordiontab'; 
 import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
@@ -26,5 +29,8 @@ app.component('Dialog', Dialog);
 app.component('Splitter', Splitter);
 app.component('ScrollPanel', ScrollPanel);
 app.component('Panel', Panel);
+app.component('Accordion', Accordion);
+app.component('AccordionTab', AccordionTab);
+app.component('Badge', Badge);
 
 app.mount('#app');

@@ -16,8 +16,16 @@
     <template #header>
       <p class="text-2xl font-semibold">Equipos de riego</p>
     </template>
-    <template #empty> No hay equipos encontrados. </template>
-    <template #loading> Cargando datos de equipos. </template>
+    <template #empty> 
+      <div class="flex align-items-center border-bottom-1 surface-border surface-overlay w-full">
+        <p class="text-2xl w-">Empty data.</p>
+      </div>
+    </template>
+    <template #loading> 
+      <div class="flex align-items-center border-bottom-1 surface-border surface-overlay w-full">
+        <p class="text-2xl w-10">Loading data...</p>
+      </div>  
+    </template>
     <column field="integrationID" header="Id Equipo" :sortable="true"></column>
     <column field="name" header="Name" :sortable="true"></column>
     <column field="field.client.name" header="Client" :sortable="true"></column>
