@@ -78,6 +78,7 @@ export default {
   },
   data() {
     return {
+      error: '',
       loading: true,
       displayDialog: false,
       selectedIrrigator: null,
