@@ -29,9 +29,11 @@
     <column field="integrationID" header="Id Equipo" :sortable="true"></column>
     <column field="name" header="Name" :sortable="true"></column>
     <column field="field.client.name" header="Client" :sortable="true"></column>
+    <column field="status" header="Status" :sortable="true"></column>
     <column field="sla" header="SLA" :sortable="true"></column>
     <column field="gateway.integrationId" header="GTW ID" :sortable="true"></column>
     <column field="gpsNode.integrationId" header="Node ID" :sortable="true"></column>
+    <column field="pressureSensor.manufacturerId" header="Pressure Sensor ID" :sortable="true"></column>
     <column field="gateway.satelliteModem.manufacturerId" header="Modem ID" :sortable="true"></column>
     <column field="isMapped" header="Mapped" :sortable="true"></column>
     <column field="field.zone.name" header="Zone" :sortable="true"></column>
@@ -150,12 +152,10 @@ export default {
   },
   methods: {
     openGrafana(data) {
-      console.log(data);
       window.open(data.urlGrafana, "_blank").focus();
     },
-    onRowSelect(event) {
+    onRowSelect() {
       this.displayDialog = true;
-      console.log(event.data.integrationID);
     },
     handleIsOpenChange(value) {
       this.displayDialog = value;

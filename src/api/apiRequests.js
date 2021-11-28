@@ -55,6 +55,7 @@ const getIrrigatorsQuery = async function () {
           long
           status
           enabled
+          transmissionStatus
           comment
           gateway {
             integrationId
