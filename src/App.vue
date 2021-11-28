@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import Menubar from 'primevue/menubar';
+import Menubar from 'primevue/menubar';
 
 export default {
   name: 'App',
@@ -53,7 +53,12 @@ export default {
                    label:'Dashboard',
                    icon:'pi pi-fw pi-th-large',
                    command: () => this.$router.push('/dashboard')
-                }
+                },
+                {
+                   label:'Issues',
+                   icon:'pi pi-fw pi-list',
+                   command: () => this.$router.push('/issues')
+                },
              ]
         }
     },
