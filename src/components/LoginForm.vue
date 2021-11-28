@@ -34,19 +34,7 @@
 <script>
 import Password from 'primevue/password';
 import InputText from 'primevue/inputtext';
-
-import {
-  ApolloClient,
-  InMemoryCache,
-  // ApolloProvider,
-  // useQuery,
-  gql
-} from "@apollo/client/core";
-
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/api/graphql',
-  cache: new InMemoryCache()
-});
+import {loginQuery} from '../api/apiRequests';
 
 
 export default {
@@ -66,28 +54,19 @@ export default {
       }
   },
   methods: {
-    onSubmit(){
+    async onSubmit(){
       this.loading = true;
-      client.mutate({
-        mutation: gql`
-          mutation ($identity: String!, $secret: String!) {
-            authenticate: authenticateUserWithPassword(email: $identity, password: $secret) 
-            {
-              ... on UserAuthenticationWithPasswordSuccess { item { id name __typename } sessionToken __typename }
-              ... on UserAuthenticationWithPasswordFailure {      message      __typename    }    __typename  }
-            }`,
-        variables:{
-          identity: this.email,
-          secret: this.password
-        }
-      }).then(result => {
-          sessionStorage.setItem('token', result.data.authenticate.sessionToken);
-          sessionStorage.setItem('name',  result.data.authenticate.item.name);
-          this.loading = false;
-          this.$router.push('dashboard');
-        }).catch(() => {
-          this.loading = false;
-        });
+      try{
+        const result = await loginQuery(this.email, this.password)
+        sessionStorage.setItem('token', result.data.authenticate.sessionToken);
+        sessionStorage.setItem('name',  result.data.authenticate.item.name);
+        this.loading = false;
+        this.$router.push('dashboard');
+      }
+      catch(e) {
+        this.loading = false;
+      }
+      
     }
   }
 }
