@@ -6,9 +6,6 @@
     </template>
     <template #content>
     <div class="grid p-fluid mt-2">
-      <div class="col-12" v-if="!!error">
-        <Message severity="error" @close="onErrorClose">Error de login, revise sus credenciales o el estado del backend</Message>
-      </div>
       <div class="col-12">
         <div class="p-field">    
         <span class="p-float-label">
@@ -24,6 +21,9 @@
             <label for="password">Password</label>
           </span>
         </div>
+      </div>  
+      <div class="col-12" v-if="!!error">
+        <Message severity="error" @close="onErrorClose">Error de login, revise sus credenciales o el estado del backend</Message>
       </div>
     </div>
     </template>
