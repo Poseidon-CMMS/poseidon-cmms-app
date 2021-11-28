@@ -6,6 +6,9 @@
     </template>
     <template #content>
     <div class="grid p-fluid mt-2">
+      <div class="col-12" v-if="!!error">
+        <Message severity="error" @close="onErrorClose">Error de login, revise sus credenciales o el estado del backend</Message>
+      </div>
       <div class="col-12">
         <div class="p-field">    
         <span class="p-float-label">
@@ -34,6 +37,7 @@
 <script>
 import Password from 'primevue/password';
 import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
 import {loginQuery} from '../api/apiRequests';
 
 
@@ -41,7 +45,8 @@ export default {
   name: 'LoginForm',
   components: {
     InputText,
-    Password
+    Password,
+    Message
   },
   props: {
     msg: String
@@ -50,7 +55,8 @@ export default {
       return {
           email:'',
           password:'',
-          loading: false
+          loading: false,
+          error: ''
       }
   },
   methods: {
@@ -65,8 +71,12 @@ export default {
       }
       catch(e) {
         this.loading = false;
+        this.error = e;
       }
       
+    },
+    onErrorClose(){
+      this.error = ''
     }
   }
 }
