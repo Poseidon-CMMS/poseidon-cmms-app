@@ -16,14 +16,24 @@
     <template #header>
       <p class="text-2xl font-semibold">Equipos de riego</p>
     </template>
-    <template #empty> No hay equipos encontrados. </template>
-    <template #loading> Cargando datos de equipos. </template>
+    <template #empty> 
+      <div class="flex align-items-center border-bottom-1 surface-border surface-overlay w-full">
+        <p class="text-2xl w-">Empty data.</p>
+      </div>
+    </template>
+    <template #loading> 
+      <div class="flex align-items-center border-bottom-1 surface-border surface-overlay w-full">
+        <p class="text-2xl w-10">Loading data...</p>
+      </div>  
+    </template>
     <column field="integrationID" header="Id Equipo" :sortable="true"></column>
     <column field="name" header="Name" :sortable="true"></column>
     <column field="field.client.name" header="Client" :sortable="true"></column>
+    <column field="status" header="Status" :sortable="true"></column>
     <column field="sla" header="SLA" :sortable="true"></column>
     <column field="gateway.integrationId" header="GTW ID" :sortable="true"></column>
     <column field="gpsNode.integrationId" header="Node ID" :sortable="true"></column>
+    <column field="pressureSensor.manufacturerId" header="Pressure Sensor ID" :sortable="true"></column>
     <column field="gateway.satelliteModem.manufacturerId" header="Modem ID" :sortable="true"></column>
     <column field="isMapped" header="Mapped" :sortable="true"></column>
     <column field="field.zone.name" header="Zone" :sortable="true"></column>
@@ -86,68 +96,66 @@ export default {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
       irrigators: [
-        {
-          integrationID: "EQ123",
-          name: "El aleman",
-          client: "Humus SRL",
-          sla: "2",
-          gtwID: "GTW 231",
-          nodeID: "Node 124",
-          modemID: "Modem 1230",
-          isMapped: true,
-          zone: "Norte semiarido",
-          province: "San juan",
-          city: "City Bell",
-          field: "El campo 1",
-          urlGrafana: "http://google.com",
-          transmissionStatus: 'transmitting',
-          lastTransmissionDate: '2021-07-10'
-        },
-        {
-          integrationID: "EQ456",
-          name: "El zapallo",
-          client: "Miguel SA",
-          sla: "2",
-          gtwID: "GTW 531",
-          nodeID: "Node 124",
-          modemID: "Modem asdasdoqw",
-          isMapped: true,
-          zone: "Norte semiarido",
-          province: "Salta",
-          city: "City Bell",
-          field: "El campo 2",
-          urlGrafana: "http://youtube.com",
-          transmissionStatus: 'error',
-          lastTransmissionDate: '2021-10-10'
-        },
-        {
-          integrationID: "EQ789",
-          name: "Tia Norma",
-          client: "Lucas SRL",
-          sla: "1 (48hs)",
-          gtwID: "GTW 332",
-          nodeID: "Node 225",
-          modemID: "SKY238742378432642",
-          isMapped: true,
-          zone: "Patagonia",
-          province: "Chubut",
-          city: "City Bell",
-          field: "El campo 1",
-          urlGrafana: "http://fi.mdp.edu.ar",
-          transmissionStatus: 'noTelemetry',
-          lastTransmissionDate: '2021-10-10'
-        },
+        // {
+        //   integrationID: "EQ123",
+        //   name: "El aleman",
+        //   client: "Humus SRL",
+        //   sla: "2",
+        //   gtwID: "GTW 231",
+        //   nodeID: "Node 124",
+        //   modemID: "Modem 1230",
+        //   isMapped: true,
+        //   zone: "Norte semiarido",
+        //   province: "San juan",
+        //   city: "City Bell",
+        //   field: "El campo 1",
+        //   urlGrafana: "http://google.com",
+        //   transmissionStatus: 'transmitting',
+        //   lastTransmissionDate: '2021-07-10'
+        // },
+        // {
+        //   integrationID: "EQ456",
+        //   name: "El zapallo",
+        //   client: "Miguel SA",
+        //   sla: "2",
+        //   gtwID: "GTW 531",
+        //   nodeID: "Node 124",
+        //   modemID: "Modem asdasdoqw",
+        //   isMapped: true,
+        //   zone: "Norte semiarido",
+        //   province: "Salta",
+        //   city: "City Bell",
+        //   field: "El campo 2",
+        //   urlGrafana: "http://youtube.com",
+        //   transmissionStatus: 'error',
+        //   lastTransmissionDate: '2021-10-10'
+        // },
+        // {
+        //   integrationID: "EQ789",
+        //   name: "Tia Norma",
+        //   client: "Lucas SRL",
+        //   sla: "1 (48hs)",
+        //   gtwID: "GTW 332",
+        //   nodeID: "Node 225",
+        //   modemID: "SKY238742378432642",
+        //   isMapped: true,
+        //   zone: "Patagonia",
+        //   province: "Chubut",
+        //   city: "City Bell",
+        //   field: "El campo 1",
+        //   urlGrafana: "http://fi.mdp.edu.ar",
+        //   transmissionStatus: 'noTelemetry',
+        //   lastTransmissionDate: '2021-10-10'
+        // },
       ],
     };
   },
   methods: {
     openGrafana(data) {
-      console.log(data);
       window.open(data.urlGrafana, "_blank").focus();
     },
-    onRowSelect(event) {
+    onRowSelect() {
       this.displayDialog = true;
-      console.log(event.data.integrationID);
     },
     handleIsOpenChange(value) {
       this.displayDialog = value;
