@@ -1,0 +1,171 @@
+<template>  
+    <div class='mt-3'>
+      <div class='fadein animation-duration-1000 box shadow-4'>
+        <Panel>
+          <template #header>
+            <p class="text-lg font-bold text-left w-10">{{ selectedIssue.name }}</p>
+          </template>
+         <!-- Lista de atributos -->
+          <div class="grid mt-3 surface-100 surface-hover">
+            <div @click="clickIrrigator()" class="col-12 md:col-6 xl:col-4 surface-hover hover:surface-300">
+              <div class="flex pointer align-items-center m-3 p-1 w-full">
+                  <p class="text-left font-bold text-blue-500 mr-3">Irrigator</p>
+                  <div class="grid justify-content-center w-full">
+                    <div class="col-8">
+                      <p class="text-lg">{{ selectedIssue.irrigator.name }}</p>
+                    </div>
+                    <div class="col-4">
+                      <div class="h-full flex align-items-center">
+                        <Button icon="pi pi-chevron-right" class="p-button-rounded p-button-primary" />
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div v-if="selectedIssue.ttr"  class="col-12 md:col-6 xl:col-4 surface-hover">
+              <div class="flex align-items-center m-3 surface-border surface-hover w-full">
+                  <p class="w-2 text-left font-bold text-blue-500 mr-3">TTR</p>
+                  <div class="grid justify-content-center w-full">
+                    <div class="col-8">
+                      <p class="text-lg">{{ selectedIssue.ttr }}</p>
+                    </div>
+                    <div class="col-3">
+                      <div class="h-full flex align-items-center">
+                        <i class="pi pi-history"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+              </div>
+            </div>
+            <div v-if="selectedIssue.downtime" class="col-12 md:col-6 xl:col-4 surface-hover">
+              <div class="flex align-items-center m-3 surface-border surface-hover w-full">
+                  <p class="w-2 text-left font-bold text-blue-500 mr-3">Downtime</p>
+                    <div class="grid justify-content-center w-full">
+                    <div class="col-8">
+                      <p class="text-lg">{{ selectedIssue.downtime + ' h'}}</p>
+                    </div>
+                    <div class="col-3">
+                      <div class="h-full flex align-items-center">
+                        <i class="pi pi-history"></i>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div  class="col-12 md:col-6 xl:col-4">
+              <div class="flex align-items-center m-2 surface-border surface-hover w-full">
+                  <p class="w-2 text-left font-bold text-blue-500 mr-3">Device type</p>
+                  <p class="text-lg w-10">{{ selectedIssue.device_type.name }}</p>
+              </div>
+            </div>
+            <div v-if="selectedIssue.gateway"  class="col-12 md:col-6 xl:col-4" >
+              <div class="flex align-items-center m-2 surface-border ssurface-hover w-full">
+                  <p class="w-2 text-left font-bold text-blue-500 mr-3">Device</p>
+
+                  <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                    <p class="text-lg w-8">{{ selectedIssue.gateway?.id}}</p>
+                    <Chip :label="selectedIssue.gateway?.pcbGateway.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                  </div>
+              </div>
+            </div>
+            <div v-else-if="selectedIssue.gpsNode" class="col-12 md:col-6 xl:col-4">
+              <div class="flex align-items-center m-2 surface-border surface-hover w-full">
+                  <p class="w-2 text-left font-bold text-blue-500 mr-3">Device</p>
+
+                  <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                    <p class="text-lg w-8">{{ selectedIssue.gpsNode?.id}}</p>
+                    <Chip :label="selectedIssue.gpsNode?.pcbNode.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                  </div>
+              </div>
+            </div>
+            <div v-else-if="selectedIssue.pressureSensor"  class="col-12 md:col-6 xl:col-4" >
+              <div class="flex align-items-center m-2 surface-border surface-hover w-full">
+                  <p class="w-2 text-left font-bold text-blue-500 mr-3">Device</p>    
+                 <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                    <p class="text-lg w-8">{{ selectedIssue.pressureSensor?.id}}</p>
+                    <Chip :label="selectedIssue.pressureSensor?.pressureSensorType.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                  </div>
+              </div>
+            </div>
+            <div  class="col-12 md:col-6 xl:col-4" >
+              <div class="flex align-items-center surface-border surface-hover w-full">
+                <p class="w-2 text-left font-bold text-blue-500 mr-3">Assignation</p>
+                <p class="w-10 text-center">
+                <Dropdown class="surface-50" v-model="selectedTechnician" @change="technicianChange" :options="technicians" optionLabel="name" :filter="true" placeholder="Technicians" :showClear="true">
+                <template #option="slotProps">
+                    <div>
+                      {{slotProps.option.name}}
+                    </div>
+                </template>  
+                </Dropdown>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- listas -->
+          <div class='mx-4 mt-4'>
+            <Accordion :multiple="true">
+              <AccordionTab header="Diagnostic">
+                Content
+              </AccordionTab>
+              <AccordionTab header="Inspections">
+                Content
+              </AccordionTab>
+              <AccordionTab header="Repairs">
+                Content
+              </AccordionTab>
+            </Accordion>
+          </div>
+      </Panel>
+      </div>
+    </div>
+/>
+</template>
+
+<script>
+import Button from 'primevue/button';
+
+export default {
+  name: 'IssueDetail',
+  components: {
+    Button,
+  },
+  methods: {
+    hasDevice: function(value) {
+      console.log(value);
+      return ( typeof value.gateway !== undefined || typeof value.gpsNode !== undefined ||typeof value.pressureSensor !== undefined );
+    },
+    technicianChange: function(evt){
+      this.selectedTechnician = evt.value;
+      console.log(evt.value);
+    },
+  },
+  props: ['selectedIssue', 'clickIrrigator'],
+  data() {
+    return {
+      displayIrrigatorDialog: false,
+      selectedTechnician: null,
+      technicians: [
+            {name: 'Juan Perez', id: 1},
+            {name: 'Fernando Navarro', id: 2},
+            {name: 'Mauricio Lima', id: 3},
+            {name: 'Hola', id: 4},
+            {name: 'Chau', id: 5},
+            {name: 'Probando', id: 6},
+            {name: 'Iñaki', id: 7},
+            {name: 'Zunda', id: 8},
+            {name: 'Test', id: 9},
+      ],
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.pointer {
+	cursor: pointer;
+}
+</style>

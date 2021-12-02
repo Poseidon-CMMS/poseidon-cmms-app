@@ -1,6 +1,6 @@
 <template>
   <!-- Dialog -->
-  <irrigator-details-dialog :isOpen="displayDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
+  <IrrigatorDetailsDialog :isOpen="displayDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></IrrigatorDetailsDialog>
 
   <!-- Tabla -->
   <Message v-if="!!error" severity="error" @close="onErrorClose">{{error}}</Message>
