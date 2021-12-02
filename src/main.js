@@ -12,6 +12,8 @@ import ScrollPanel from 'primevue/scrollpanel';
 import Badge from 'primevue/badge'; 
 import Accordion from 'primevue/accordion'; 
 import AccordionTab from 'primevue/accordiontab'; 
+import Dropdown from 'primevue/dropdown'; 
+import Chip from 'primevue/chip'; 
 import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
@@ -32,5 +34,7 @@ app.component('Panel', Panel);
 app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('Badge', Badge);
+app.component('Dropdown', Dropdown);
+app.component('Chip', Chip);
 
 app.mount('#app');
