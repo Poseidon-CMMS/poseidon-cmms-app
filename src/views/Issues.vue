@@ -18,12 +18,12 @@
 
     <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
     
-    <HdwIssueCreationDialog :isOpen="isCreationModalOpen" @updateIsOpen="toggleIsCreationModalOpen"/>
+    <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="toggleIsCreationModalOpen" />
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
 
 <script>
-import DragableList from '../components/DragableList';
+import DragableList from '../components/DraggableList';
 import Button from 'primevue/button';
 import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
@@ -89,8 +89,8 @@ export default {
             {name: 'Zunda', id: 8},
             {name: 'Test', id: 9},
       ],
-        isCreationModalOpen: false,
-        inFieldList: [
+      isCreationModalOpen: false,
+      inFieldList: [
           // .pcbGateway.firmwareVersion.version
         { 
           id: '1', 
@@ -175,7 +175,15 @@ export default {
               } 
           },
         device_type: { id: 1, name: 'GWT' }
-      }
+      },
+      selectedCreateIssueIrrigatorId: null,
+    }
+  },
+  beforeMount() {
+    const irrigatorId = this.$route.params.irrigatorId;
+    if(irrigatorId){
+      this.selectedCreateIssueIrrigatorId = irrigatorId;
+      this.toggleIsCreationModalOpen();
     }
   }
 }

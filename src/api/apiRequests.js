@@ -43,11 +43,11 @@ const loginQuery = async function (email, password) {
   });
 };
 
-const getIrrigatorsQuery = async function () {
+const getIrrigatorsQuery = async function (id) {
   return await client.query({
     query: gql`
-      query getIrrigatorsQuery {
-        irrigators {
+      query getIrrigatorsQuery($id: ID) {
+        irrigators(where: { id: { equals: $id } }) {
           id
           integrationID
           name
@@ -58,12 +58,14 @@ const getIrrigatorsQuery = async function () {
           transmissionStatus
           comment
           gateway {
+            id
             integrationId
             satelliteModem {
               manufacturerId
             }
           }
           gpsNode {
+            id
             integrationId
           }
           field {
@@ -88,12 +90,62 @@ const getIrrigatorsQuery = async function () {
             id
           }
           pressureSensor {
+            id
             manufacturerId
           }
         }
       }
     `,
+    variables: {
+      id,
+    },
   });
 };
 
-export { loginQuery, getIrrigatorsQuery };
+const getGatewaysQuery = async function (id) {
+  return await client.query({
+    query: gql`
+      query getGateway($id: ID) {
+        gateways(where: { id: { equals: $id } }) {
+          id
+          fabricationDate
+          integrationId
+          irrigator {
+            id
+            integrationID
+          }
+          housingType {
+            id
+            name
+          }
+          satelliteModem {
+            id
+            manufacturerId
+          }
+          satelliteAntenna {
+            id
+            manufacturerId
+          }
+
+          pcbGateway {
+            id
+            integrationId
+          }
+          loraAntennaType {
+            id
+            name
+          }
+          storageLocation {
+            id
+            name
+          }
+        }
+      }
+    `,
+    variables: {
+      id,
+    },
+  });
+};
+
+export { loginQuery, getIrrigatorsQuery, getGatewaysQuery };

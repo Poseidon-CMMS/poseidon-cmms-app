@@ -31,6 +31,11 @@ const routes = [
     path: '/issues',
     name: 'Issues',
     component: () => import('../views/Issues.vue')
+  },
+  {
+    path: '/issues/create/:irrigatorId',
+    name: 'Issues Creation',
+    component: () => import('../views/Issues.vue')
   }
 ]
 
@@ -40,7 +45,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  next()
   const isAuthenticated = !!sessionStorage.getItem('token');
   if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' });
   else next()

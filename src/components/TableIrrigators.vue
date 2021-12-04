@@ -205,7 +205,7 @@ export default {
       this.displayDialog = value;
     },
     createHdwIssue(data) {
-      alert('Funcionalidad pendiente!', data);
+      this.$router.push(`/issues/create/${data.id}`)
     },
     createInstallRequest(data) {
       alert('Funcionalidad pendiente!', data);
