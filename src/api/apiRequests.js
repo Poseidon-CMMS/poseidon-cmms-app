@@ -7,8 +7,11 @@ import {
 } from "@apollo/client/core";
 
 const client = new ApolloClient({
-  uri: "http://localhost:3000/api/graphql",
+  uri: "https://poseidon-cmms.herokuapp.com/api/graphql",
   cache: new InMemoryCache(),
+  fetchOptions: {
+    mode: 'no-cors',
+  },
 });
 
 const loginQuery = async function (email, password) {

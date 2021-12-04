@@ -1,17 +1,18 @@
 <template>
     
     <div class="grid text-sm mt-3">
-      <div class="col-12 flex flex-row"><Button label="Create" icon="pi pi-plus" class="p-button-success align-self-start" @click="toggleIsCreationModalOpen" /></div>
-      <div class="col-3">
+      <div class="col-12 flex flex-row pl-5">
+        <ion-button color="success" class="p-button-success align-self-start" @click="toggleIsCreationModalOpen"> + Nuevo </ion-button></div>
+      <div class="col-6 md:col-3">
         <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
       </div>
-      <div class="col-3">
+      <div class="col-6 md:col-3">
         <dragable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
       </div>
-      <div class="col-3">
+      <div class="col-6 md:col-3">
         <dragable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
       </div>
-      <div class="col-3">
+      <div class="col-6 md:col-3">
         <dragable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
       </div>
     </div>
@@ -24,7 +25,6 @@
 
 <script>
 import DragableList from '../components/DragableList';
-import Button from 'primevue/button';
 import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/IssueDetail.vue';
@@ -33,7 +33,6 @@ export default {
   name: 'Issues',
   components: {
     DragableList,
-    Button,
     HdwIssueCreationDialog,
     IrrigatorDetailsDialog,
     IssueDetail
