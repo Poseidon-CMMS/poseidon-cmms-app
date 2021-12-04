@@ -63,6 +63,7 @@
             p-button-success
             p-mr-2
           "
+          v-tooltip="'Open Grafana'"
           @click="openGrafana(slotProps.data)"
         />
       </template>

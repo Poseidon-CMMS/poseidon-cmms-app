@@ -66,12 +66,18 @@ export default {
 </script>
 
 <style>
+#body{
+  background: linear-gradient(135deg, #39e2e6, 70%, #073f7b);
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  box-sizing: border-box; 
+  min-height: 100vh;
 }
 
 #nav {
