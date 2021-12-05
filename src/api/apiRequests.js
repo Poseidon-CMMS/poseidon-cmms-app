@@ -148,4 +148,65 @@ const getGatewaysQuery = async function (id) {
   });
 };
 
-export { loginQuery, getIrrigatorsQuery, getGatewaysQuery };
+const getDiagnosticTypesQuery = async function (id) {
+  return await client.query({
+    query: gql`
+      query getDiagnosticTypes {
+        diagnosticTypes {
+          id
+          name
+          type
+        }
+      }
+    `,
+    variables: {
+      id,
+    },
+  });
+};
+
+const createHdwIssueMutation = async function (
+  creationDate,
+  diagnosticDate,
+  irrigatorId,
+  diagnosticId,
+  grafanaLink,
+  observations
+) {
+  return await client.mutate({
+    mutation: gql`
+      mutation ($data: HdwIssueCreateInput!) {
+        createHdwIssue: createHdwIssue(data: $data) {
+          id
+        }
+      }
+    `,
+    variables: {
+      data: {
+        creationDate: creationDate.toISOString(),
+        diagnosticDate: diagnosticDate.toISOString(),
+
+        irrigator: {
+          connect: {
+            id: irrigatorId
+          }
+        },
+        diagnosticType: {
+          connect: {
+            id: diagnosticId
+          }
+        },
+        grafanaLink,
+        observations,
+      },
+    },
+  });
+};
+
+export {
+  loginQuery,
+  getIrrigatorsQuery,
+  getGatewaysQuery,
+  getDiagnosticTypesQuery,
+  createHdwIssueMutation,
+};

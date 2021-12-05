@@ -1,7 +1,7 @@
 <template>
     
     <div class="grid text-sm mt-3">
-      <div class="col-12 flex flex-row"><Button label="Create" icon="pi pi-plus" class="p-button-success align-self-start" @click="toggleIsCreationModalOpen" /></div>
+      <div class="col-12 flex flex-row"><Button label="Create" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen(true)" /></div>
       <div class="col-3">
         <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
       </div>
@@ -18,7 +18,7 @@
 
     <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
     
-    <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="toggleIsCreationModalOpen" />
+    <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
 
@@ -69,8 +69,9 @@ export default {
       console.log(evt);
       this.selectedIssue = evt;
     },
-    toggleIsCreationModalOpen() {
-      this.isCreationModalOpen = !this.isCreationModalOpen;
+    setIsCreationModalOpen(val) {
+      this.isCreationModalOpen = val;
+      if(!val) this.selectedCreateIssueIrrigatorId = null; //reset select on modal close
     }
   },
   data() {
@@ -183,7 +184,7 @@ export default {
     const irrigatorId = this.$route.params.irrigatorId;
     if(irrigatorId){
       this.selectedCreateIssueIrrigatorId = irrigatorId;
-      this.toggleIsCreationModalOpen();
+      this.setIsCreationModalOpen(true);
     }
   }
 }
