@@ -52,8 +52,14 @@
         </div>
     </div>
     <template #footer>
-      <Button class="p-button-success" icon="pi pi-check" label="Submit" @click="onSubmit" :loading="loading"/>
-      <Button class="p-button-secondary" icon="pi pi-times" label="Cancel" @click="onCancel" :loading="loading"/>
+    <div class='mt-2'>
+      <ion-button color="medium" icon="pi pi-check" @click="onCancel" :loading="loading">
+          <i class="pi pi-times mr-1"></i> Cancel
+      </ion-button>
+      <ion-button color="success" icon="pi pi-check" @click="onSubmit" :loading="loading">
+          <i class="pi pi-check mr-1"></i> Submit
+      </ion-button>
+    </div>
     </template>
   </Dialog>
 </template>
@@ -62,13 +68,15 @@
 import InputText from 'primevue/inputtext'
 import Calendar from 'primevue/calendar'
 import Dropdown from 'primevue/dropdown'
+import { IonButton } from '@ionic/vue';
 
 export default {
   name: 'HdwIssueCreationDialog',
   components: {
       InputText,
       Calendar,
-      Dropdown
+      Dropdown,
+      IonButton
   },
   props: ['isOpen'],
   data() {
