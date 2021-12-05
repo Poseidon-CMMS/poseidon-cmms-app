@@ -1,5 +1,4 @@
 <template>
-    
     <div class="grid text-sm mt-3">
       <div class="col-12 flex flex-row pl-5">
         <ion-button color="success" class="p-button-success align-self-start" @click="toggleIsCreationModalOpen"> + Nuevo </ion-button></div>
