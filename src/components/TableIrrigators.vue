@@ -27,7 +27,11 @@
       </div>  
     </template>
     <column field="integrationID" header="Id Equipo" :sortable="true"></column>
-    <column field="name" header="Name" :sortable="true"></column>
+    <column field="name" header="Name" :sortable="true">
+      <template #body="{data}">
+          <Badge :value="data.hdwIssueCount?data.hdwIssueCount:'OK'" :severity="data.hdwIssueCount?'danger':'success'" class="p-mr-2"></Badge><span class="p-ml-2">{{data.name}}</span>
+        </template>
+    </column>
     <column field="field.client.name" header="Client" :sortable="true"></column>
     <column field="status" header="Status" :sortable="true"></column>
     <column field="sla" header="SLA" :sortable="true"></column>

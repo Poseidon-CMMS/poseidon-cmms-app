@@ -86,9 +86,7 @@ const getIrrigatorsQuery = async function (id) {
           installUninstallRequest {
             id
           }
-          hdwIssue {
-            id
-          }
+          hdwIssueCount
           pressureSensor {
             id
             manufacturerId
