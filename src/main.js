@@ -39,6 +39,7 @@ import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
 import router from './router'
+import Tooltip from 'primevue/tooltip';
 
 const app = createApp(App).use(router).use(PrimeVue).use(IonicVue);
 
@@ -55,5 +56,7 @@ app.component('AccordionTab', AccordionTab);
 app.component('Badge', Badge);
 app.component('Dropdown', Dropdown);
 app.component('Chip', Chip);
+
+app.directive('tooltip', Tooltip);
 
 app.mount('#app');

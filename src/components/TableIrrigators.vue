@@ -27,7 +27,11 @@
       </div>  
     </template>
     <column field="integrationID" header="Id Equipo" :sortable="true"></column>
-    <column field="name" header="Name" :sortable="true"></column>
+    <column field="name" header="Name" :sortable="true">
+      <template #body="{data}">
+          <Badge :value="data.hdwIssueCount?data.hdwIssueCount:'OK'" :severity="data.hdwIssueCount?'danger':'success'" class="p-mr-2"></Badge><span class="p-ml-2">{{data.name}}</span>
+        </template>
+    </column>
     <column field="field.client.name" header="Client" :sortable="true"></column>
     <column field="status" header="Status" :sortable="true"></column>
     <column field="sla" header="SLA" :sortable="true"></column>
@@ -51,10 +55,11 @@
       header="Actions"
       :sortable="false"
       :exportable="false"
-      style="min-width: 8rem"
+      style="min-width: 10rem"
     >
       <template #body="slotProps">
         <Button
+          v-if="slotProps.data.status==='installed'"
           icon="pi pi-chart-line"
           class="
             p-button-sm
@@ -63,7 +68,50 @@
             p-button-success
             p-mr-2
           "
+          v-tooltip="'Open Grafana'"
+          style="margin-right: 0.5em"
           @click="openGrafana(slotProps.data)"
+        />
+        <Button
+          v-if="slotProps.data.status==='installed'"
+          icon="pi pi-exclamation-triangle"
+          class="
+            p-button-sm
+            p-button-rounded
+            p-button-outlined
+            p-button-danger
+            p-mr-2
+          "
+          v-tooltip="'Create Hdw Issue'"
+          style="margin-right: 0.5em"
+          @click="createHdwIssue(slotProps.data)"
+        />
+        <Button
+          v-if="slotProps.data.status==='no-telemetry'"
+          icon="pi pi-user-plus"
+          class="
+            p-button-sm
+            p-button-rounded
+            p-button-outlined
+            p-button-success
+            p-mr-2
+          "
+          v-tooltip="'Create Install Request'"
+          style="margin-right: 0.5em"
+          @click="createInstallRequest(slotProps.data)"
+        />
+        <Button
+          v-if="slotProps.data.status==='installed'"
+          icon="pi pi-user-minus"
+          class="
+            p-button-sm
+            p-button-rounded
+            p-button-outlined
+            p-button-danger
+            p-mr-2
+          "
+          v-tooltip="'Create Uninstall Request'"
+          @click="createUninstallRequest(slotProps.data)"
         />
       </template>
     </column>
@@ -159,7 +207,16 @@ export default {
     },
     handleIsOpenChange(value) {
       this.displayDialog = value;
-    }
+    },
+    createHdwIssue(data) {
+      this.$router.push(`/issues/create/${data.id}`)
+    },
+    createInstallRequest(data) {
+      alert('Funcionalidad pendiente!', data);
+    },
+    createUninstallRequest(data) {
+      alert('Funcionalidad pendiente!', data);
+    },
   },
   async mounted(){
     try{

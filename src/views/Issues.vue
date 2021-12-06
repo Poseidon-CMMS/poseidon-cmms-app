@@ -1,8 +1,9 @@
 <template>
     <div class="grid text-sm mt-3">
+
       <div class="col-12 flex flex-row pl-5">
-        <ion-button color="success" class="p-button-success align-self-start" @click="toggleIsCreationModalOpen"> + Nuevo </ion-button>
-      </div>
+        <ion-button color="success" class="p-button-success align-self-start" @click="setIsCreationModalOpen(true)"> + Create </ion-button></div>
+
       <div class="col-6 md:col-3">
         <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
       </div>
@@ -19,12 +20,15 @@
         <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
       </div>
     </div>
-    <HdwIssueCreationDialog :isOpen="isCreationModalOpen" @updateIsOpen="toggleIsCreationModalOpen"/>
+    <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
+    
+    <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
+
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
 
 <script>
-import DragableList from '../components/DragableList';
+import DragableList from '../components/DraggableList';
 import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/IssueDetail.vue';
@@ -68,8 +72,9 @@ export default {
       console.log(evt);
       this.selectedIssue = evt;
     },
-    toggleIsCreationModalOpen() {
-      this.isCreationModalOpen = !this.isCreationModalOpen;
+    setIsCreationModalOpen(val) {
+      this.isCreationModalOpen = val;
+      if(!val) this.selectedCreateIssueIrrigatorId = null; //reset select on modal close
     }
   },
   data() {
@@ -88,8 +93,8 @@ export default {
             {name: 'Zunda', id: 8},
             {name: 'Test', id: 9},
       ],
-        isCreationModalOpen: false,
-        inFieldList: [
+      isCreationModalOpen: false,
+      inFieldList: [
           // .pcbGateway.firmwareVersion.version
         { 
           id: '1', 
@@ -174,7 +179,15 @@ export default {
               } 
           },
         device_type: { id: 1, name: 'GWT' }
-      }
+      },
+      selectedCreateIssueIrrigatorId: null,
+    }
+  },
+  beforeMount() {
+    const irrigatorId = this.$route.params.irrigatorId;
+    if(irrigatorId){
+      this.selectedCreateIssueIrrigatorId = irrigatorId;
+      this.setIsCreationModalOpen(true);
     }
   }
 }
