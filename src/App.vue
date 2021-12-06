@@ -1,5 +1,6 @@
 <template>
-  
+<ion-page>
+  <ion-content>
   <Menubar :model="items"> 
     <template #end>
         <!-- <div v-if="isLoggedIn()"> -->
@@ -9,15 +10,20 @@
   </Menubar>
 
   <router-view/>
+  </ion-content>
+  </ion-page>
 </template>
 
 <script>
 import Menubar from 'primevue/menubar';
+import { IonContent,IonPage } from '@ionic/vue';
 
 export default {
   name: 'App',
   components: {
-    Menubar
+    Menubar,
+    IonContent,
+    IonPage
   },
   beforeMount() {
     if (!sessionStorage.getItem('token')) {

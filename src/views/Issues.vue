@@ -1,9 +1,9 @@
 <template>
-    
     <div class="grid text-sm mt-3">
 
       <div class="col-12 flex flex-row pl-5">
         <ion-button color="success" class="p-button-success align-self-start" @click="setIsCreationModalOpen(true)"> + Create </ion-button></div>
+
       <div class="col-6 md:col-3">
         <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
       </div>
@@ -16,11 +16,14 @@
       <div class="col-6 md:col-3">
         <dragable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
       </div>
+      <div class="col-12">
+        <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
+      </div>
     </div>
-
     <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
     
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
+
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
 

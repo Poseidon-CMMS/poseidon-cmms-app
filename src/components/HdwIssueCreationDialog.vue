@@ -69,21 +69,15 @@
       </div>
     </div>
     <template #footer>
-      <Message v-if="!!error" severity="error" @close="onErrorClose">{{error}}</Message>
-      <Button
-        class="p-button-success"
-        icon="pi pi-check"
-        label="Submit"
-        @click="onSubmit"
-        :loading="loading"
-      />
-      <Button
-        class="p-button-secondary"
-        icon="pi pi-times"
-        label="Cancel"
-        @click="onCancel"
-        :loading="loading"
-      />
+    <Message v-if="!!error" severity="error" @close="onErrorClose">{{error}}</Message>
+    <div class='mt-2'>
+      <ion-button color="medium" icon="pi pi-check" @click="onCancel" :loading="loading">
+          <i class="pi pi-times mr-1"></i> Cancel
+      </ion-button>
+      <ion-button color="success" icon="pi pi-check" @click="onSubmit" :loading="loading">
+          <i class="pi pi-check mr-1"></i> Submit
+      </ion-button>
+    </div>
     </template>
   </Dialog>
 </template>
@@ -93,6 +87,7 @@ import InputText from "primevue/inputtext";
 import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
+import { IonButton } from '@ionic/vue';
 
 import {
   getDiagnosticTypesQuery,
@@ -100,13 +95,15 @@ import {
   createHdwIssueMutation,
 } from "../api/apiRequests";
 
+
 export default {
   name: "HdwIssueCreationDialog",
   components: {
     InputText,
     Calendar,
     Dropdown,
-    Message
+    Message,
+    IonButton
   },
   props: ["isOpen", "selectedIrrigatorId"],
   data() {
