@@ -7,7 +7,7 @@ import {
 } from "@apollo/client/core";
 
 const client = new ApolloClient({
-  uri: "https://poseidon-cmms.herokuapp.com/api/graphql",
+  uri: process.env.VUE_APP_BACKEND_URL,
   cache: new InMemoryCache(),
   fetchOptions: {
     mode: 'no-cors',
