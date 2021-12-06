@@ -29,7 +29,6 @@
 
 <script>
 import DragableList from '../components/DraggableList';
-import Button from 'primevue/button';
 import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/IssueDetail.vue';
