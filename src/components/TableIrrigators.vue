@@ -14,7 +14,7 @@
     @rowSelect="onRowSelect"
   >
     <template #header>
-      <p class="text-2xl font-semibold">Equipos de riego</p>
+      <p class="text-2xl font-semibold m-0">Irrigators</p>
     </template>
     <template #empty> 
       <div class="flex align-items-center border-bottom-1 surface-border surface-overlay w-full">

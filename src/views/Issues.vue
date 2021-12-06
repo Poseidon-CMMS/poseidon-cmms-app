@@ -1,28 +1,37 @@
 <template>
-    <div class="grid text-sm mt-3">
-
-      <div class="col-12 flex flex-row pl-5">
-        <ion-button color="success" class="p-button-success align-self-start" @click="setIsCreationModalOpen(true)"> + Create </ion-button></div>
-
-      <div class="col-6 md:col-3">
-        <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
+    <div class="grid mt-3">
+      <div class="col-12 flex flex-row">
+        <ion-button color="success" class="p-button-success align-self-start" @click="setIsCreationModalOpen(true)"> + Create </ion-button>
       </div>
-      <div class="col-6 md:col-3">
-        <dragable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
+      <div class="col-6">
+        <div class="grid text-sm">
+          <div class="col-6">
+            <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
+          </div>
+          <div class="col-6">
+            <dragable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
+          </div>
+          <div class="col-6">
+            <dragable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
+          </div>
+          <div class="col-6">
+            <dragable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
+          </div>
+        </div>
       </div>
-      <div class="col-6 md:col-3">
-        <dragable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
-      </div>
-      <div class="col-6 md:col-3">
-        <dragable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
-      </div>
-      <div class="col-12">
-        <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
+      <div class="col-6">
+        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" />
       </div>
     </div>
-    <issue-detail  v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator"></issue-detail>
-    
+      
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
+    <Dialog
+      header="Assignation"
+      v-model:visible="showAssignedDialog"
+      :style="{ width: '50vw' }"
+      :modal="true"
+    >
+    </Dialog>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -60,7 +69,8 @@ export default {
       console.log('In field: ' + evt);
     },
     assignedLog: function(evt) {
-      console.log('Assigned: ' + evt);
+      console.log(evt);
+      this.showAssignedDialog = true;
     },
     repairedLog: function(evt) {
       console.log('Repaired: ' + evt);
@@ -80,6 +90,7 @@ export default {
   data() {
     return {
       displayIrrigatorDialog: false,
+      showAssignedDialog: false,
       selectedTechnician: null,
       selectedIrrigator: null,
       technicians: [

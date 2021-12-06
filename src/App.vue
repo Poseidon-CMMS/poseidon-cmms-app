@@ -1,17 +1,23 @@
 <template>
+<ion-app>
 <ion-page>
   <ion-content>
   <Menubar :model="items"> 
     <template #end>
         <!-- <div v-if="isLoggedIn()"> -->
-          <Button class="p-button-danger" label="Logout" @click='onLogout' icon="pi pi-fw pi-power-off"/>
+          <ion-button color="danger" @click="onLogout">
+            <i class="pi pi-power-off mr-2"></i> Logout
+          </ion-button>
         <!-- </div> -->
     </template>
   </Menubar>
 
-  <router-view/>
+  <div class="mx-8">
+    <router-view/>
+  </div>
   </ion-content>
   </ion-page>
+</ion-app>
 </template>
 
 <script>
@@ -45,16 +51,11 @@ export default {
   data() {
         return {
             items: [
-                {
-                   label:'Home',
-                   icon:'pi pi-fw pi-home',
-                   command: () => this.$router.push('/')
-                },
-                {
-                   label:'About',
-                   icon:'pi pi-fw pi-power-off',
-                   command: () => this.$router.push('/about')
-                },
+                // {
+                //    label:'Home',
+                //    icon:'pi pi-fw pi-home',
+                //    command: () => this.$router.push('/')
+                // },
                 {
                    label:'Dashboard',
                    icon:'pi pi-fw pi-th-large',

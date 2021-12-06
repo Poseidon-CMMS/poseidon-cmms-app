@@ -1,5 +1,5 @@
 <template>          
-    <div class="grid">
+    <div class="grid fadein animation-duration-1000">
         <div class="col-12">
         <Panel :header="title">
           <ScrollPanel style="width: 100%; height: 300px">          
@@ -12,17 +12,13 @@
             >
               <template #item="{ element }">
                 <div class="list-group-item">
-                    <Card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
-                      <template #title>
-                        <div class="grid text-sm">
-                          <div class="col-10 m-0 p-0"> {{ element.name + ' - ' + element.field.name }} </div>
-                          <div class="col-12"> {{ element.irrigator.name }} </div>
-                        </div>
-                      </template>
-                      <template #subtitle>
-                          {{ element.name }}
-                      </template>
-                    </Card>
+                    <ion-card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
+                    <ion-card-header>
+                      <ion-card-title>{{ element.name }}</ion-card-title>
+                      <ion-card-subtitle> {{ element.field.name }} </ion-card-subtitle>
+                      <ion-card-subtitle> {{ element.irrigator.name }} </ion-card-subtitle>
+                    </ion-card-header>
+                    </ion-card>
                 </div>
               </template>
             </draggable>
