@@ -28,10 +28,7 @@
     </div>
     </template>
     <template #footer>
-      <ion-button @click="onSubmit">
-            <ion-spinner v-if="loading" class="mr-2" name="crescent"></ion-spinner>
-            <i v-else class="pi pi-check mr-2"></i> Login
-      </ion-button>
+      <Button icon="pi pi-check" label="Login" @click="onSubmit" :loading="loading"/>
     </template>
 </Card>
     </div>

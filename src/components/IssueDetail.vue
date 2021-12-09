@@ -2,7 +2,7 @@
   <div class='fadein animation-duration-1000'>
     <Panel>
       <template #header>
-        <p class="text-lg font-bold text-left w-10">{{ selectedIssue.name }}</p>
+        <p class="text-lg font-bold text-left w-10">{{ selectedIssue.comment }}</p>
       </template>
       <!-- Lista de atributos -->
       <div class="grid mt-3">
@@ -21,12 +21,12 @@
               </div>
           </div>
         </div>
-        <div v-if="selectedIssue.ttr"  class="col-12 md:col-6 hover:surface-300">
+        <div v-if="selectedIssue.TTR"  class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border surface-hover w-full">
               <p class="w-2 text-left font-bold text-blue-500 mr-3">TTR</p>
               <div class="grid justify-content-center w-full">
                 <div class="col-8">
-                  <p class="text-lg">{{ selectedIssue.ttr }}</p>
+                  <p class="text-lg">{{ selectedIssue.TTR }}</p>
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
@@ -54,7 +54,7 @@
         <div class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
               <p class="w-4 text-left font-bold text-blue-500 mr-3">Device type</p>
-              <p class="text-lg w-10">{{ selectedIssue.device_type.name }}</p>
+              <p class="text-lg w-10">{{ selectedIssue.assetType.name }}</p>
           </div>
         </div>
         <div v-if="selectedIssue.gateway" class="col-12 md:col-6 hover:surface-300">
@@ -134,12 +134,8 @@ export default {
       console.log(value);
       return ( typeof value.gateway !== undefined || typeof value.gpsNode !== undefined ||typeof value.pressureSensor !== undefined );
     },
-    technicianChange: function(evt){
-      this.selectedTechnician = evt.value;
-      console.log(evt.value);
-    },
   },
-  props: ['selectedIssue', 'clickIrrigator'],
+  props: ['selectedIssue', 'clickIrrigator', 'technicianChange'],
   data() {
     return {
       displayIrrigatorDialog: false,

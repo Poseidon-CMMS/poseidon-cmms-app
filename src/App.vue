@@ -1,13 +1,8 @@
 <template>
-<ion-app>
-<ion-page>
-  <ion-content>
   <Menubar :model="items"> 
     <template #end>
         <!-- <div v-if="isLoggedIn()"> -->
-          <ion-button color="danger" @click="onLogout">
-            <i class="pi pi-power-off mr-2"></i> Logout
-          </ion-button>
+           <Button class="p-button-danger" label="Logout" @click='onLogout' icon="pi pi-fw pi-power-off"/>
         <!-- </div> -->
     </template>
   </Menubar>
@@ -15,22 +10,15 @@
   <div class="mx-8">
     <router-view/>
   </div>
-  </ion-content>
-  </ion-page>
-</ion-app>
 </template>
 
 <script>
 import Menubar from 'primevue/menubar';
-import { IonContent,IonPage } from '@ionic/vue';
 
 export default {
   name: 'App',
   components: {
-    Menubar,
-    IonContent,
-    IonPage
-  },
+    Menubar },
   beforeMount() {
     if (!sessionStorage.getItem('token')) {
       this.$router.replace('/login')

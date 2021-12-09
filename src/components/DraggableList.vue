@@ -12,13 +12,17 @@
             >
               <template #item="{ element }">
                 <div class="list-group-item">
-                    <ion-card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
-                    <ion-card-header>
-                      <ion-card-title>{{ element.name }}</ion-card-title>
-                      <ion-card-subtitle> {{ element.field.name }} </ion-card-subtitle>
-                      <ion-card-subtitle> {{ element.irrigator.name }} </ion-card-subtitle>
-                    </ion-card-header>
-                    </ion-card>
+                  <Card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
+                    <template #title>
+                      <div class="grid text-sm">
+                        <div class="col-10 m-0 p-0"> {{ element.comment }} </div>
+                        <div class="col-12"> {{ element.field.name + ' - ' + element.irrigator.name}} </div>
+                      </div>
+                    </template>
+                    <template #subtitle>
+                        {{ element.name }}
+                    </template>
+                  </Card>
                 </div>
               </template>
             </draggable>

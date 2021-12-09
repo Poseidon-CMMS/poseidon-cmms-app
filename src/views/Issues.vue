@@ -1,7 +1,7 @@
 <template>
     <div class="grid mt-3">
       <div class="col-12 flex flex-row">
-        <ion-button color="success" class="p-button-success align-self-start" @click="setIsCreationModalOpen(true)"> + Create </ion-button>
+        <Button label="Create" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen" />
       </div>
       <div class="col-6">
         <div class="grid text-sm">
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="col-6">
-        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" />
+        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange"/>
       </div>
     </div>
       
@@ -53,24 +53,28 @@ export default {
   methods: {
     hasDevice: function(value) {
       console.log(value);
-      return ( typeof value.gateway !== undefined || typeof value.gpsNode !== undefined ||typeof value.pressureSensor !== undefined );
+      return ( typeof value.gateway !== undefined || typeof value.gpsNode !== undefined || typeof value.pressureSensor !== undefined );
     },
     handleIsOpenChange: function(value) {
       this.displayIrrigatorDialog = value;
     },
     clickIrrigator: function() {
+      this.selectedIrrigator = this.selectedIssue.irrigator;
       this.displayIrrigatorDialog = true;
     },
     technicianChange: function(evt){
       this.selectedTechnician = evt.value;
-      console.log(evt.value);
+      if(this.selectedTechnician) {
+        this.selectedIssue.technician = evt.value;
+      }
     },
     inFieldLog: function(evt) {
       console.log('In field: ' + evt);
     },
     assignedLog: function(evt) {
-      console.log(evt);
-      this.showAssignedDialog = true;
+      if(evt.added && !evt.added.user) {
+        this.showAssignedDialog = true;
+      }
     },
     repairedLog: function(evt) {
       console.log('Repaired: ' + evt);
@@ -81,6 +85,7 @@ export default {
     clickElement: function(evt) {
       console.log(evt);
       this.selectedIssue = evt;
+      this.selectedTechnician = evt.technician;
     },
     setIsCreationModalOpen(val) {
       this.isCreationModalOpen = val;
@@ -106,11 +111,10 @@ export default {
       ],
       isCreationModalOpen: false,
       inFieldList: [
-          // .pcbGateway.firmwareVersion.version
         { 
           id: '1', 
-          name:'Presión en -20mA (203)',
-          device_type: { id: 1, name: 'GWT' },
+          comment:'Presión en -20mA (203)',
+          assetType: { id: 1, name: 'GWT' },
           gateway: { 
               id: 'GTW889',
               pcbGateway: { 
@@ -120,12 +124,13 @@ export default {
           },
           irrigator: { id: 1, name:'Equipo k'},
           downtime: 10,
-          field: {name: 'Campo1'} 
+          field: {name: 'Campo1'},
+          technician: {name: 'Probando', id: 6}
         },
         { 
           id: '2',
-          name:'Se rompió (203)',
-          device_type: { id: 1, name: 'NODE' },
+          comment:'Se rompió (203)',
+          assetType: { id: 1, name: 'NODE' },
           gpsNode: { 
               id: 'NODE031',
               pcbNode: { 
@@ -146,7 +151,7 @@ export default {
       repairedList: [
         { 
           id: '3',
-          name:'Presión en 0mA (203)',
+          comment:'Presión en 0mA (203)',
           gateway: { 
               id: 'GTW77-SUR',
               pcbGateway: { 
@@ -155,17 +160,17 @@ export default {
               } 
           },
           irrigator: { id: 1, name:'Pozo 22'},
-          ttr: 10,
+          TTR: 10,
           field: {name: 'Campo1'},
-          device_type: { id: 1, name: 'GWT' }, 
+          assetType: { id: 1, name: 'GWT' }, 
         },
       ],
       outOfFieldList: [
         { 
           id: '4',
-          name:'Presión en 2mA (203)', 
+          comment:'Presión en 2mA (203)', 
           irrigator:{ id: 1, name:'El alemán'},
-          ttr: 131,
+          TTR: 131,
           gateway: { 
               id: 'GTW131',
               pcbGateway: { 
@@ -174,14 +179,14 @@ export default {
               } 
           },
           field: { name: 'Campo1' },
-          device_type: { id: 1, name: 'GWT' },
+          assetType: { id: 1, name: 'GWT' },
         },
       ],
       selectedIssue: { 
         id: '1',
-        name:'Presión en 0mA (203)',
+        comment:'Presión en 0mA (203)',
         irrigator: { id: 1, name:"Equipo 23"},
-        ttr: 231,
+        TTR: 231,
         field: {name: 'Campo1'},
         pressureSensor: { 
               id: 'SPRES 21ew',
@@ -189,7 +194,7 @@ export default {
                   name: 'Sensor tipo a'
               } 
           },
-        device_type: { id: 1, name: 'GWT' }
+        assetType: { id: 1, name: 'GWT' }
       },
       selectedCreateIssueIrrigatorId: null,
     }
