@@ -15,6 +15,7 @@ import Badge from 'primevue/badge';
 import Accordion from 'primevue/accordion'; 
 import AccordionTab from 'primevue/accordiontab'; 
 import Dropdown from 'primevue/dropdown'; 
+import Autocomplete from 'primevue/autocomplete'; 
 import Chip from 'primevue/chip'; 
 import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
@@ -36,6 +37,7 @@ app.component('Accordion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('Badge', Badge);
 app.component('Dropdown', Dropdown);
+app.component('Autocomplete', Autocomplete);
 app.component('Chip', Chip);
 
 app.directive('tooltip', Tooltip);

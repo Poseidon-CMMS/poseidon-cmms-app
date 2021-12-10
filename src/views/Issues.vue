@@ -3,35 +3,29 @@
       <div class="col-12 flex flex-row">
         <Button label="Create" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen" />
       </div>
-      <div class="col-6">
+      <div class="col-12">
         <div class="grid text-sm">
-          <div class="col-6">
+          <div class="col-3">
             <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
           </div>
-          <div class="col-6">
+          <div class="col-3">
             <dragable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
           </div>
-          <div class="col-6">
+          <div class="col-3">
             <dragable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
           </div>
-          <div class="col-6">
+          <div class="col-3">
             <dragable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
           </div>
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-12">
         <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange"/>
       </div>
     </div>
       
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
-    <Dialog
-      header="Assignation"
-      v-model:visible="showAssignedDialog"
-      :style="{ width: '50vw' }"
-      :modal="true"
-    >
-    </Dialog>
+    <assignation-dialog :isOpen="showAssignedDialog" :technician="selectedTechnician" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-dialog>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -41,6 +35,7 @@ import DragableList from '../components/DraggableList';
 import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/IssueDetail.vue';
+import AssignationDialog from '../components/AssignationDialog.vue';
 
 export default {
   name: 'Issues',
@@ -48,7 +43,8 @@ export default {
     DragableList,
     HdwIssueCreationDialog,
     IrrigatorDetailsDialog,
-    IssueDetail
+    IssueDetail,
+    AssignationDialog
   },
   methods: {
     hasDevice: function(value) {
@@ -57,6 +53,9 @@ export default {
     },
     handleIsOpenChange: function(value) {
       this.displayIrrigatorDialog = value;
+    },
+    handleIsOpenAssignation: function(value) {
+      this.showAssignedDialog = value;
     },
     clickIrrigator: function() {
       this.selectedIrrigator = this.selectedIssue.irrigator;
@@ -90,25 +89,15 @@ export default {
     setIsCreationModalOpen(val) {
       this.isCreationModalOpen = val;
       if(!val) this.selectedCreateIssueIrrigatorId = null; //reset select on modal close
-    }
+    },
   },
   data() {
     return {
+      loading: false,
       displayIrrigatorDialog: false,
       showAssignedDialog: false,
       selectedTechnician: null,
       selectedIrrigator: null,
-      technicians: [
-            {name: 'Juan Perez', id: 1},
-            {name: 'Fernando Navarro', id: 2},
-            {name: 'Mauricio Lima', id: 3},
-            {name: 'Hola', id: 4},
-            {name: 'Chau', id: 5},
-            {name: 'Probando', id: 6},
-            {name: 'Iñaki', id: 7},
-            {name: 'Zunda', id: 8},
-            {name: 'Test', id: 9},
-      ],
       isCreationModalOpen: false,
       inFieldList: [
         { 
@@ -201,6 +190,7 @@ export default {
   },
   beforeMount() {
     const irrigatorId = this.$route.params.irrigatorId;
+    this.loading = false;
     if(irrigatorId){
       this.selectedCreateIssueIrrigatorId = irrigatorId;
       this.setIsCreationModalOpen(true);

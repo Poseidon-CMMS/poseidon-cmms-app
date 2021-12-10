@@ -91,13 +91,16 @@
           <div class="flex align-items-center mx-2 pr-2 w-full">
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Assignation</p>
             <p class="w-6 text-center">
-            <Dropdown class="surface-50" v-model="selectedTechnician" @change="technicianChange" :options="technicians" optionLabel="name" :filter="true" placeholder="Technicians" :showClear="true">
-            <template #option="slotProps">
-                <div>
-                  {{slotProps.option.name}}
-                </div>
-            </template>  
-            </Dropdown>
+            <Dropdown
+                id="irrigator"
+                :filter="true"
+                class="inputfield w-full"
+                v-model="selectedTechnician"
+                :options="technicians"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Select a technician"
+              />
             </p>
           </div>
         </div>
