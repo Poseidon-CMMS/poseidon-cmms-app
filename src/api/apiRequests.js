@@ -18,11 +18,11 @@ const loginQuery = async function (email, password) {
   return await client.mutate({
     mutation: gql`
       mutation ($identity: String!, $secret: String!) {
-        authenticate: authenticateUserWithPassword(
+        authenticate: authenticateuserWithPassword(
           email: $identity
           password: $secret
         ) {
-          ... on UserAuthenticationWithPasswordSuccess {
+          ... on userAuthenticationWithPasswordSuccess {
             item {
               id
               name
@@ -31,7 +31,7 @@ const loginQuery = async function (email, password) {
             sessionToken
             __typename
           }
-          ... on UserAuthenticationWithPasswordFailure {
+          ... on userAuthenticationWithPasswordFailure {
             message
             __typename
           }
