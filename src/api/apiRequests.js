@@ -52,24 +52,24 @@ const getIrrigatorsQuery = async function (id) {
       query getIrrigatorsQuery($id: ID) {
         irrigators(where: { id: { equals: $id } }) {
           id
-          integrationID
+          integration_id
           name
           lat
           long
           status
           enabled
-          transmissionStatus
+          transmission_status
           comment
           gateway {
             id
-            integrationId
-            satelliteModem {
-              manufacturerId
+            integration_id
+            satellite_modem {
+              manufacturer_id
             }
           }
-          gpsNode {
+          gps_node {
             id
-            integrationId
+            integration_id
           }
           field {
             client {
@@ -86,13 +86,13 @@ const getIrrigatorsQuery = async function (id) {
               name
             }
           }
-          installUninstallRequest {
+          install_uninstall_request {
             id
           }
-          hdwIssueCount
-          pressureSensor {
+          hdw_issueCount
+          pressure_sensor {
             id
-            manufacturerId
+            manufacturer_id
           }
         }
       }
@@ -109,34 +109,34 @@ const getGatewaysQuery = async function (id) {
       query getGateway($id: ID) {
         gateways(where: { id: { equals: $id } }) {
           id
-          fabricationDate
-          integrationId
+          fabrication_date
+          integration_id
           irrigator {
             id
-            integrationID
+            integration_id
           }
-          housingType {
+          housing_type {
             id
             name
           }
-          satelliteModem {
+          satellite_modem {
             id
-            manufacturerId
+            manufacturer_id
           }
-          satelliteAntenna {
+          satellite_antenna {
             id
-            manufacturerId
+            manufacturer_id
           }
 
-          pcbGateway {
+          pcb_gateway {
             id
-            integrationId
+            integration_id
           }
-          loraAntennaType {
+          lora_antenna_type {
             id
             name
           }
-          storageLocation {
+          storage_location {
             id
             name
           }
@@ -153,7 +153,7 @@ const getDiagnosticTypesQuery = async function (id) {
   return await client.query({
     query: gql`
       query getDiagnosticTypes {
-        diagnosticTypes {
+        diagnostic_types {
           id
           name
           type
@@ -172,7 +172,7 @@ const createHdwIssueMutation = async function (
   irrigatorId,
   diagnosticId,
   grafanaLink,
-  observations
+  comments
 ) {
   return await client.mutate({
     mutation: gql`
@@ -184,21 +184,21 @@ const createHdwIssueMutation = async function (
     `,
     variables: {
       data: {
-        creationDate: creationDate.toISOString(),
-        diagnosticDate: diagnosticDate.toISOString(),
+        creation_date: creationDate.toISOString(),
+        diagnostic_date: diagnosticDate.toISOString(),
 
         irrigator: {
           connect: {
             id: irrigatorId
           }
         },
-        diagnosticType: {
+        diagnostic_type: {
           connect: {
             id: diagnosticId
           }
         },
-        grafanaLink,
-        observations,
+        grafana_link: grafanaLink,
+        comments: comments,
       },
     },
   });
