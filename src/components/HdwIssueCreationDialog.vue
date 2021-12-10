@@ -59,10 +59,10 @@
         />
       </div>
       <div class="field">
-        <label for="observartions">Observations</label>
+        <label for="comments">Comments</label>
         <InputText
-          id="observations"
-          v-model="observations"
+          id="comments"
+          v-model="comments"
           type="text"
           class="inputfield w-full"
         />
@@ -113,7 +113,7 @@ export default {
 
       //text
       grafanaLink: "",
-      observations: "",
+      comments: "",
 
       //dropdown options
       irrigatorOptions: [],
@@ -130,7 +130,7 @@ export default {
           this.selectedIrrigator,
           this.selectedDiagnostic,
           this.grafanaLink,
-          this.observations
+          this.comments
         );
         if (!result?.data?.createHdwIssue?.id)
           throw new Error("Missing Hdw Issue ID. Possible server error.");

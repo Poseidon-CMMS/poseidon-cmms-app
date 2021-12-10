@@ -172,7 +172,7 @@ const createHdwIssueMutation = async function (
   irrigatorId,
   diagnosticId,
   grafanaLink,
-  observations
+  comments
 ) {
   return await client.mutate({
     mutation: gql`
@@ -197,8 +197,8 @@ const createHdwIssueMutation = async function (
             id: diagnosticId
           }
         },
-        grafana_link,
-        comments,
+        grafana_link: grafanaLink,
+        comments: comments,
       },
     },
   });
