@@ -26,6 +26,7 @@ const loginQuery = async function (email, password) {
             item {
               id
               name
+              type
               __typename
             }
             sessionToken
