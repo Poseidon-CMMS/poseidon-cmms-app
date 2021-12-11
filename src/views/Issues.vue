@@ -5,16 +5,16 @@
       </div>
       <div class="col-12">
         <div class="grid text-sm">
-          <div class="col-3">
+          <div class="col-6 lg:col-3">
             <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
           </div>
-          <div class="col-3">
+          <div class="col-6 lg:col-3">
             <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
           </div>
-          <div class="col-3">
+          <div class="col-6 lg:col-3">
             <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
           </div>
-          <div class="col-3">
+          <div class="col-6 lg:col-3">
             <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default {
       issues: [
         { 
           id: '1', 
-          comment:'Presión en -20mA (203)',
+          comment:'Presión en -20mA (207)',
           assetType: { id: 1, name: 'GTW' },
           gateway: { 
               id: 'GTW889',
@@ -115,7 +115,20 @@ export default {
           downtime: 10,
           field: {name: 'Campo1'},
           technician: {name: 'Probando', id: 6},
-          status: 'in-field'
+          status: 'in-field',
+          diagnostic: {
+            date: '2021/12/25',
+            grafana_link: "www.issues.com/1232",
+            user: {
+              name: 'Fernando Navarro'
+            },
+            diagnostic_type: {
+              name: 'No conecta el GTW'
+            }
+          },
+          inspections: [
+            {id:1}, {id:2}
+          ]
         },
         { 
           id: '2',

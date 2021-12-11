@@ -112,23 +112,55 @@
           <AccordionTab header="Diagnostic">
             <ScrollPanel style="width: 100%; height: 200px" class="custom">
               <div class="grid">
-                <div class="col-6">
+                <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
-                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Title</div>
-                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Heat</div>
+                    <div class="col-2 text-500 font-medium">Fecha</div>
+                    <div  v-if='selectedIssue.diagnostic' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.date ?? ''}}</div>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
-                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Title</div>
-                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Heat</div>
+                    <div v-if='selectedIssue.diagnostic && selectedIssue.diagnostic.user' class="col-2 text-500 w-6 md:w-2 font-medium">Usuario</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.user.name }}</div>
+                  </div>
+                </div>
+                <div class="col-12 md:col-6 ">
+                  <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Equipo</div>
+                    <div v-if='selectedIssue.irrigator' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.irrigator.name }}</div>
+                  </div>
+                </div>
+                <div class="col-12 md:col-6 ">
+                  <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Diagnóstico</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.diagnostic_type.name }}</div>
+                  </div>
+                </div>
+                <div class="col-12 md:col-6 ">
+                  <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Device</div>
+                    <div v-if='selectedIssue.assetType' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.assetType.name }}</div>
+                  </div>
+                </div>
+                <div class="col-12 md:col-6 ">
+                  <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Grafana Link</div>
+                    <div v-if='selectedIssue.diagnostic' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.grafana_link }}</div>
                   </div>
                 </div>
               </div>
             </ScrollPanel>
           </AccordionTab>
           <AccordionTab header="Inspections">
-            Content
+            <ScrollPanel style="width: 100%; height: 200px" class="custom">
+              <ul id="example-2">
+                <li v-bind:key='index' v-for="(item, index) in selectedIssue.inspections">
+                  {{ index }} - {{ item.id }}
+                  <Divider />
+                </li>
+              </ul>
+
+            </ScrollPanel>
           </AccordionTab>
           <AccordionTab header="Repairs">
             Content
@@ -175,7 +207,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style  scoped>
 .pointer {
 	cursor: pointer;
 }
@@ -195,3 +227,4 @@ export default {
     background-color: #135ba1;
 }
 </style>
+
