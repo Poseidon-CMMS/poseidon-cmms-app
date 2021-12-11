@@ -32,9 +32,7 @@
 
 <script>
 // import { ref } from 'vue'
-import {
-  getIrrigatorsQuery,
-} from "../api/apiRequests";
+import { getTechniciansQuery } from "../api/apiRequests";
 
 export default {
   name: "AssignationDialog",
@@ -50,6 +48,8 @@ export default {
   methods: {
     async onSubmitAsignation() {
       this.loading = true;
+
+
       
       setTimeout(() => {
           this.loading = false;
@@ -72,13 +72,14 @@ export default {
   async beforeMount() {
     //todo: error han dling
     this.selectedTecnician = this.selectedTechnician || null;
-    this.loading = false;
+    this.loading = true;
 
     //populate dropdowns
-    const result = await getIrrigatorsQuery();
-    const technicians = result.data.irrigators;
+    const result = await getTechniciansQuery();
+    console.log('AAA');
+    const technicians = result.data.users;
     this.technicianOptions = technicians.map((tec) => ({
-      name: tec.integrationID,
+      name: tec.name,
       id: tec.id,
     }));
 
