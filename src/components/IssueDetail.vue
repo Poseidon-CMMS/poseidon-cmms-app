@@ -110,7 +110,22 @@
       <div class='mx-4 mt-4'>
         <Accordion :multiple="true">
           <AccordionTab header="Diagnostic">
-            Content
+            <ScrollPanel style="width: 100%; height: 200px" class="custom">
+              <div class="grid">
+                <div class="col-6">
+                  <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Title</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Heat</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Title</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">Heat</div>
+                  </div>
+                </div>
+              </div>
+            </ScrollPanel>
           </AccordionTab>
           <AccordionTab header="Inspections">
             Content
@@ -163,5 +178,20 @@ export default {
 <style scoped>
 .pointer {
 	cursor: pointer;
+}
+
+
+.custom .p-scrollpanel-wrapper {
+    border-right: 9px solid #f4f4f4;
+}
+
+.custom .p-scrollpanel-bar {
+    background-color: #1976d2;
+    opacity: 1;
+    transition: background-color .3s;
+}
+
+.custom .p-scrollpanel-bar:hover {
+    background-color: #135ba1;
 }
 </style>

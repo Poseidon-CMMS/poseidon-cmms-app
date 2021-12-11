@@ -17,11 +17,13 @@ import AccordionTab from 'primevue/accordiontab';
 import Dropdown from 'primevue/dropdown'; 
 import Autocomplete from 'primevue/autocomplete'; 
 import Chip from 'primevue/chip'; 
+import Divider from 'primevue/divider'; 
 import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
 import router from './router'
 import Tooltip from 'primevue/tooltip';
+
 
 const app = createApp(App).use(router).use(PrimeVue);
 
@@ -39,6 +41,7 @@ app.component('Badge', Badge);
 app.component('Dropdown', Dropdown);
 app.component('Autocomplete', Autocomplete);
 app.component('Chip', Chip);
+app.component('Divider', Divider);
 
 app.directive('tooltip', Tooltip);
 
