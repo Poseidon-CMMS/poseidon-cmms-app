@@ -38,7 +38,7 @@ import {
 
 export default {
   name: "AssignationDialog",
-  props: ["isOpen", "selectedIssueId"],
+  props: ["isOpen", "selectedIssue"],
   data() {
     return {
       selectedTechnician: null,
@@ -65,7 +65,7 @@ export default {
         return this.isOpen;
       },
       set(value) {
-        this.$emit("updateIsOpenAssignation", value);
+        this.$emit("issueUpdated", value);
       },
     },
   },
