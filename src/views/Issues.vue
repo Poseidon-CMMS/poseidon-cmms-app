@@ -36,7 +36,6 @@ import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/IssueDetail.vue';
 import AssignationDialog from '../components/AssignationDialog.vue';
-import { getIssues } from "../api/apiRequests";
 
 export default {
   name: 'Issues',
