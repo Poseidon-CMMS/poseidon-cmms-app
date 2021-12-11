@@ -6,16 +6,16 @@
       <div class="col-12">
         <div class="grid text-sm">
           <div class="col-3">
-            <dragable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
+            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
           </div>
           <div class="col-3">
-            <dragable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
+            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
           </div>
           <div class="col-3">
-            <dragable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
+            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
           </div>
           <div class="col-3">
-            <dragable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
+            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
           </div>
         </div>
       </div>
@@ -25,13 +25,13 @@
     </div>
       
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
-    <assignation-dialog :isOpen="showAssignedDialog" :technician="selectedTechnician" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-dialog>
+    <assignation-dialog :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueHasBeenUpdated"></assignation-dialog>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
 
 <script>
-import DragableList from '../components/DraggableList';
+import DraggableList from '../components/DraggableList';
 import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/IssueDetail.vue';
@@ -41,7 +41,7 @@ import { getIssues } from "../api/apiRequests";
 export default {
   name: 'Issues',
   components: {
-    DragableList,
+    DraggableList,
     HdwIssueCreationDialog,
     IrrigatorDetailsDialog,
     IssueDetail,
@@ -55,8 +55,9 @@ export default {
     handleIsOpenChange: function(value) {
       this.displayIrrigatorDialog = value;
     },
-    handleIsOpenAssignation: function(value) {
-      this.showAssignedDialog = value;
+    handleIssueHasBeenUpdated: function(updatedIssue) {
+      const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
+      this.issues = [...allOtherIssues, updatedIssue];
     },
     clickIrrigator: function() {
       this.selectedIrrigator = this.selectedIssue.irrigator;
@@ -85,7 +86,6 @@ export default {
     clickElement: function(evt) {
       console.log(evt);
       this.selectedIssue = evt;
-      this.selectedTechnician = evt.technician;
     },
     setIsCreationModalOpen(val) {
       this.isCreationModalOpen = val;
@@ -100,11 +100,11 @@ export default {
       selectedTechnician: null,
       selectedIrrigator: null,
       isCreationModalOpen: false,
-      inFieldList: [
+      issues: [
         { 
           id: '1', 
           comment:'Presión en -20mA (203)',
-          assetType: { id: 1, name: 'GWT' },
+          assetType: { id: 1, name: 'GTW' },
           gateway: { 
               id: 'GTW889',
               pcbGateway: { 
@@ -115,7 +115,8 @@ export default {
           irrigator: { id: 1, name:'Equipo k'},
           downtime: 10,
           field: {name: 'Campo1'},
-          technician: {name: 'Probando', id: 6}
+          technician: {name: 'Probando', id: 6},
+          status: 'in-field'
         },
         { 
           id: '2',
@@ -134,11 +135,8 @@ export default {
           },
           downtime: 123,
           field: { name: 'Campo1'}, 
+          status: 'in-field'
         },
-      ],
-      assignedList: [
-      ],
-      repairedList: [
         { 
           id: '3',
           comment:'Presión en 0mA (203)',
@@ -152,10 +150,9 @@ export default {
           irrigator: { id: 1, name:'Pozo 22'},
           TTR: 10,
           field: {name: 'Campo1'},
-          assetType: { id: 1, name: 'GWT' }, 
+          assetType: { id: 1, name: 'GTW' }, 
+          status: 'repaired'
         },
-      ],
-      outOfFieldList: [
         { 
           id: '4',
           comment:'Presión en 2mA (203)', 
@@ -169,30 +166,37 @@ export default {
               } 
           },
           field: { name: 'Campo1' },
-          assetType: { id: 1, name: 'GWT' },
-        },
+          assetType: { id: 1, name: 'GTW' },
+          status: 'out-of-field'
+        }
       ],
-      selectedIssue: { 
-        id: '1',
-        comment:'Presión en 0mA (203)',
-        irrigator: { id: 1, name:"Equipo 23"},
-        TTR: 231,
-        field: {name: 'Campo1'},
-        pressureSensor: { 
-              id: 'SPRES 21ew',
-              pressureSensorType: { 
-                  name: 'Sensor tipo a'
-              } 
-          },
-        assetType: { id: 1, name: 'GWT' }
-      },
+      selectedIssue: null,
       selectedCreateIssueIrrigatorId: null,
     }
   },
-  async beforeMount() {
-    const result = await getIssues('In field');
-    // console.log(result.data);
-    this.inFieldList = result.data.hdwIssues;
+  computed: {
+    inFieldList: {
+      get(){
+        return this.issues.filter(i => i.status ==='in-field');
+      }
+    },
+    assignedList: {
+      get(){
+        return this.issues.filter(i => i.status ==='assigned');
+      }
+    },
+    repairedList: {
+      get(){
+        return this.issues.filter(i => i.status ==='repaired');
+      }
+    },
+    outOfFieldList: {
+      get(){
+        return this.issues.filter(i => i.status ==='out-of-field');
+      }
+    },
+  },
+  beforeMount() {
     const irrigatorId = this.$route.params.irrigatorId;
     this.loading = false;
     if(irrigatorId){

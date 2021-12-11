@@ -1,5 +1,5 @@
 <template>  
-  <div class='fadein animation-duration-1000'>
+  <div class='fadein animation-duration-1000' v-if="selectedIssue">
     <Panel>
       <template #header>
         <p class="text-lg font-bold text-left w-10">{{ selectedIssue.comment }}</p>
