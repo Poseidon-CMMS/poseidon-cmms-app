@@ -36,6 +36,7 @@ import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/IssueDetail.vue';
 import AssignationDialog from '../components/AssignationDialog.vue';
+import { getIssues } from "../api/apiRequests";
 
 export default {
   name: 'Issues',
@@ -188,7 +189,10 @@ export default {
       selectedCreateIssueIrrigatorId: null,
     }
   },
-  beforeMount() {
+  async beforeMount() {
+    const result = await getIssues('In field');
+    // console.log(result.data);
+    this.inFieldList = result.data.hdwIssues;
     const irrigatorId = this.$route.params.irrigatorId;
     this.loading = false;
     if(irrigatorId){

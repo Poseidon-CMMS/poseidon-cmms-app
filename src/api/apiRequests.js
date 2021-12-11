@@ -103,6 +103,23 @@ const getIrrigatorsQuery = async function (id) {
   });
 };
 
+const getTechniciansQuery = async function (id) {
+  return await client.query({
+    query: gql`
+      query getTechniciansQuery($id: ID) {
+        users(where: { id: { equals: $id } }) {
+          id,
+          name,
+          email,
+        }
+      }
+    `,
+    variables: {
+      id,
+    },
+  });
+};
+
 const getGatewaysQuery = async function (id) {
   return await client.query({
     query: gql`
@@ -166,6 +183,44 @@ const getDiagnosticTypesQuery = async function (id) {
   });
 };
 
+const getIssues = async function () {
+  return await client.query({
+    query: gql`
+      query getIssues {
+        hdwIssues {
+          id,
+          creation_date,
+          close_date,
+          TTR,
+          comments,
+          irrigator {
+            name
+          },
+          field {
+            name
+          },
+          diagnostic {
+            id,
+            date,
+            comments,
+            angles,
+            height_diff,
+            battery2to3,
+            time_start,
+            time_end,
+            gps_positions,
+            packets_lost,
+            distance_to_irrigator_center_in_meters,
+            initial_snr,
+            pressure_sensor_packets,
+            grafana_link,
+          },
+        }
+      }
+    `
+  });
+}
+
 const createHdwIssueMutation = async function (
   creationDate,
   diagnosticDate,
@@ -207,6 +262,8 @@ const createHdwIssueMutation = async function (
 export {
   loginQuery,
   getIrrigatorsQuery,
+  getIssues,
+  getTechniciansQuery,
   getGatewaysQuery,
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
