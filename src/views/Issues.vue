@@ -127,7 +127,22 @@ export default {
             }
           },
           inspections: [
-            {id:1}, {id:2}
+            {
+              id: 1,
+              date: '2021-01-01',
+              user: {
+                name: 'Juan Sanchez Miño'
+              },
+              comments: 'Sin problemas'
+            },
+            {
+              id: 2,
+              date: '2021-02-01',
+              user: {
+                name: 'Marcos Miño'
+              },
+              comments: 'Tuve que reinstalar el capacitor c-1'
+            },
           ]
         },
         { 

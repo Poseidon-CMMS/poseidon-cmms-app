@@ -110,7 +110,7 @@
       <div class='mx-4 mt-4'>
         <Accordion :multiple="true">
           <AccordionTab header="Diagnostic">
-            <ScrollPanel style="width: 100%; height: 200px" class="custom">
+            <ScrollPanel style="width: 100%; height: 200px">
               <div class="grid">
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
@@ -151,13 +151,23 @@
               </div>
             </ScrollPanel>
           </AccordionTab>
-          <AccordionTab header="Inspections">
-            <ScrollPanel style="width: 100%; height: 200px" class="custom">
-              <ul id="example-2">
-                <li v-bind:key='index' v-for="(item, index) in selectedIssue.inspections">
-                  {{ index }} - {{ item.id }}
+          <AccordionTab header="Inspections" >
+            <ScrollPanel style="width: 100%; height: 150px" class="custom">
+              <ul>
+                <div class="itemList hover:surface-300 m-1" v-bind:key='index' v-for="(item, index) in selectedIssue.inspections">
+                  <div class="grid">
+                    <div class="col-12 md:col-4">
+                      <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> {{ item.date }}
+                    </div>
+                    <div class="col-12 md:col-4">
+                      {{ item.comments }}
+                    </div>
+                    <div class="col-12 md:col-4">
+                      <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item.user.name }}
+                    </div>
+                  </div>
                   <Divider />
-                </li>
+                </div>
               </ul>
 
             </ScrollPanel>
@@ -210,6 +220,10 @@ export default {
 <style  scoped>
 .pointer {
 	cursor: pointer;
+}
+
+.itemList {
+  border: #135ba1;
 }
 
 
