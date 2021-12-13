@@ -10,19 +10,35 @@
         <p class="text-lg line-height-2">Technician:</p>
       </div>
       <div class="col-4">
-       <Autocomplete v-model="selectedTechnician" :suggestions="technicianOptions" @complete="searchTechnician" :dropdown="true" field="name" force-selection>
-          <template #item="slotProps">
-            <div class="p-ml-2">{{slotProps.item.name}}</div>
-          </template>
-        </Autocomplete>
+        <Dropdown
+          :filter="true"
+          class="inputfield w-full"
+          v-model="selectedTechnician"
+          :options="technicianOptions"
+          optionLabel="name"
+          optionValue="code"
+          placeholder="Seleccione un técnico"
+        />
       </div>
       <div class="col-12 mt-2">
         <div class="grid">
           <div class="col-2 col-offset-8">
-            <Button class="p-button-success" icon="pi pi-check" label="Submit" @click="onSubmitAsignation" :loading="loading"/>
+            <Button
+              class="p-button-success"
+              icon="pi pi-check"
+              label="Submit"
+              @click="onSubmitAsignation"
+              :loading="loading"
+            />
           </div>
           <div class="col-2">
-            <Button class="p-button-secondary" icon="pi pi-times" label="Cancel" @click="onCancelAsignation" :loading="loading"/>
+            <Button
+              class="p-button-secondary"
+              icon="pi pi-times"
+              label="Cancel"
+              @click="onCancelAsignation"
+              :loading="loading"
+            />
           </div>
         </div>
       </div>
@@ -33,10 +49,12 @@
 <script>
 // import { ref } from 'vue'
 import { getTechniciansQuery } from "../api/apiRequests";
+import Dropdown from "primevue/dropdown";
 
 export default {
   name: "AssignationDialog",
   props: ["isOpen", "selectedIssue"],
+  components: { Dropdown },
   data() {
     return {
       selectedTechnician: null,
@@ -49,11 +67,9 @@ export default {
     async onSubmitAsignation() {
       this.loading = true;
 
-
-      
       setTimeout(() => {
-          this.loading = false;
-        }, 750);
+        this.loading = false;
+      }, 750);
     },
     onCancelAsignation() {
       this.computedIsOpen = false;
@@ -73,14 +89,12 @@ export default {
     //todo: error han dling
     this.selectedTecnician = this.selectedTechnician || null;
     this.loading = true;
-
     //populate dropdowns
     const result = await getTechniciansQuery();
-    console.log('AAA');
     const technicians = result.data.users;
     this.technicianOptions = technicians.map((tec) => ({
       name: tec.name,
-      id: tec.id,
+      code: tec.id,
     }));
 
     this.loading = false;
