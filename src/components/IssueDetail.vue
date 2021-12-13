@@ -151,19 +151,32 @@
               </div>
             </ScrollPanel>
           </AccordionTab>
-          <AccordionTab header="Inspections" >
-            <ScrollPanel style="width: 100%; height: 150px" class="custom">
+          <AccordionTab>
+            <template #header>
+              <div class="flex align-items-start" style="width: 100%">
+                <div class="flex align-items-center h-full w-10 my-3 align-start">
+                  Inspections
+                </div>
+                <div class="mt-1">
+                  <Button @click="handleOpenInspectionForm" class="p-button-info" style="width: 100px; margin: auto;" icon="pi pi-plus-circle"></Button>
+                </div>
+              </div>
+            </template>
+            <ScrollPanel style="width: 100%; height: 200px" class="custom">
               <ul>
-                <div class="itemList hover:surface-300 m-1" v-bind:key='index' v-for="(item, index) in selectedIssue.inspections">
-                  <div class="grid">
-                    <div class="col-12 md:col-4">
+                <div class="itemList hover:surface-300 m-1" @click="handleClickInspection(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.inspections">
+                  <div class="grid mx-5">
+                    <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> {{ item.date }}
                     </div>
-                    <div class="col-12 md:col-4">
-                      {{ item.comments }}
+                    <div class="col-12 md:col-4 mt-3">
+                      <i class="pi pi-comment" style="fontSize: 1.2rem"></i> {{ item.comments }}
                     </div>
-                    <div class="col-12 md:col-4">
+                    <div class="col-12 md:col-3 mt-3">
                       <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item.user.name }}
+                    </div>
+                    <div class="col-12 md:col-3 mt-2">
+                      <Button icon="pi pi-external-link" style="width: 85px; margin: auto;"></Button>
                     </div>
                   </div>
                   <Divider />
@@ -172,27 +185,52 @@
 
             </ScrollPanel>
           </AccordionTab>
-          <AccordionTab header="Repairs">
-            Content
+          <AccordionTab>
+            <template #header>
+              <div class="flex align-items-start" style="width: 100%">
+                <div class="flex align-items-center h-full w-10 my-3 align-start">
+                  Repairs
+                </div>
+                <div class="mt-1">
+                  <Button class="p-button-info" style="width: 100px; margin: auto;" icon="pi pi-plus-circle"></Button>
+                </div>
+              </div>
+            </template>
           </AccordionTab>
         </Accordion>
       </div>
   </Panel>
   </div>
+  <inspection-form :isOpen="showInspectionForm" @issueUpdated="handleIsOpenInspectionUpdated"></inspection-form>
+  <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenDetailUpdated"></inspection-detail>
 </template>
 
 <script>
 import Button from 'primevue/button';
-
+import InspectionDetail from './InspectionDetail.vue';
+import InspectionForm from './InspectionForm.vue';
 export default {
   name: 'IssueDetail',
   components: {
     Button,
+    InspectionDetail,
+    InspectionForm
   },
   methods: {
     hasDevice: function(value) {
-      console.log(value);
       return ( typeof value.gateway !== undefined || typeof value.gpsNode !== undefined ||typeof value.pressureSensor !== undefined );
+    },
+    handleOpenInspectionForm: function() {
+      this.showInspectionForm = true;
+    },
+    handleClickInspection: function(inspection) {
+      this.selectedInspection = inspection;
+    },
+    handleIsOpenDetailUpdated: function() {
+      this.selectedInspection = null;
+    },
+    handleIsOpenInspectionUpdated: function() {
+      this.showInspectionForm = false;
     },
   },
   props: ['selectedIssue', 'clickIrrigator', 'technicianChange'],
@@ -200,6 +238,8 @@ export default {
     return {
       displayIrrigatorDialog: false,
       selectedTechnician: null,
+      selectedInspection: null,
+      showInspectionForm: false,
       technicians: [
             {name: 'Juan Perez', id: 1},
             {name: 'Fernando Navarro', id: 2},

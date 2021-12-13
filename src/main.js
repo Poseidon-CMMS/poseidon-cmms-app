@@ -16,8 +16,9 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab'; 
 import Dropdown from 'primevue/dropdown'; 
 import Autocomplete from 'primevue/autocomplete'; 
-import Chip from 'primevue/chip'; 
-import Divider from 'primevue/divider'; 
+import Chip from 'primevue/chip';
+import Divider from 'primevue/divider';
+import Calendar from 'primevue/calendar'; 
 import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
@@ -42,6 +43,7 @@ app.component('Dropdown', Dropdown);
 app.component('Autocomplete', Autocomplete);
 app.component('Chip', Chip);
 app.component('Divider', Divider);
+app.component('Calendar', Calendar);
 
 app.directive('tooltip', Tooltip);
 
