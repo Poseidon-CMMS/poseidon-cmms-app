@@ -10,7 +10,7 @@ const client = new ApolloClient({
   uri: process.env.VUE_APP_BACKEND_URL,
   cache: new InMemoryCache(),
   fetchOptions: {
-    mode: 'no-cors',
+    mode: "no-cors",
   },
 });
 
@@ -107,8 +107,8 @@ const getIrrigatorsQuery = async function (id) {
 const getTechniciansQuery = async function (id) {
   return await client.query({
     query: gql`
-      query getTechniciansQuery($id: ID) {
-        users(where: { id: { equals: $id } }) {
+      query getTechniciansQuery {
+        users(where: { type: { equals: "technician" } }) {
           id,
           name,
           email,
@@ -167,20 +167,17 @@ const getGatewaysQuery = async function (id) {
   });
 };
 
-const getDiagnosticTypesQuery = async function (id) {
+const getDiagnosticTypesQuery = async function () {
   return await client.query({
     query: gql`
       query getDiagnosticTypes {
-        diagnostic_types {
+        diagnosticTypes {
           id
           name
           type
         }
       }
-    `,
-    variables: {
-      id,
-    },
+    `
   });
 };
 
@@ -189,38 +186,38 @@ const getIssues = async function () {
     query: gql`
       query getIssues {
         hdwIssues {
-          id,
-          creation_date,
-          close_date,
-          TTR,
-          comments,
+          id
+          creation_date
+          close_date
+          TTR
+          comments
           irrigator {
             name
-          },
+          }
           field {
             name
-          },
+          }
           diagnostic {
-            id,
-            date,
-            comments,
-            angles,
-            height_diff,
-            battery2to3,
-            time_start,
-            time_end,
-            gps_positions,
-            packets_lost,
-            distance_to_irrigator_center_in_meters,
-            initial_snr,
-            pressure_sensor_packets,
-            grafana_link,
-          },
+            id
+            date
+            comments
+            angles
+            height_diff
+            battery2to3
+            time_start
+            time_end
+            gps_positions
+            packets_lost
+            distance_to_irrigator_center_in_meters
+            initial_snr
+            pressure_sensor_packets
+            grafana_link
+          }
         }
       }
-    `
+    `,
   });
-}
+};
 
 const createHdwIssueMutation = async function (
   creationDate,
@@ -245,13 +242,13 @@ const createHdwIssueMutation = async function (
 
         irrigator: {
           connect: {
-            id: irrigatorId
-          }
+            id: irrigatorId,
+          },
         },
         diagnostic_type: {
           connect: {
-            id: diagnosticId
-          }
+            id: diagnosticId,
+          },
         },
         grafana_link: grafanaLink,
         comments: comments,
