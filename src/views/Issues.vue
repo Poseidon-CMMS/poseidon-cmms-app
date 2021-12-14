@@ -111,7 +111,7 @@ export default {
                     { version: '0.2.8' } 
               } 
           },
-          irrigator: { id: 'EQ23', name:'Equipo k'},
+          irrigator: { integration_id: 'EQ23', name:'Equipo k'},
           downtime: 10,
           field: {name: 'Campo1'},
           technician: {name: 'Probando', id: 6},
@@ -157,7 +157,7 @@ export default {
               } 
           },
           irrigator: { 
-            id: 'EQ13',
+            integration_id: 'EQ13',
             name:'R2'
           },
           downtime: 123,
@@ -174,7 +174,7 @@ export default {
                     { version: '2.4.1' } 
               } 
           },
-          irrigator: { id: 'EQ19', name:'Pozo 22'},
+          irrigator: { integration_id: 'EQ19', name:'Pozo 22'},
           TTR: 10,
           field: {name: 'Campo1'},
           assetType: { id: 1, name: 'GTW' }, 
