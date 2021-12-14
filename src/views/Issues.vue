@@ -111,7 +111,7 @@ export default {
                     { version: '0.2.8' } 
               } 
           },
-          irrigator: { id: 1, name:'Equipo k'},
+          irrigator: { id: 'EQ23', name:'Equipo k'},
           downtime: 10,
           field: {name: 'Campo1'},
           technician: {name: 'Probando', id: 6},
@@ -157,7 +157,7 @@ export default {
               } 
           },
           irrigator: { 
-            id: 1,
+            id: 'EQ13',
             name:'R2'
           },
           downtime: 123,
@@ -174,7 +174,7 @@ export default {
                     { version: '2.4.1' } 
               } 
           },
-          irrigator: { id: 1, name:'Pozo 22'},
+          irrigator: { id: 'EQ19', name:'Pozo 22'},
           TTR: 10,
           field: {name: 'Campo1'},
           assetType: { id: 1, name: 'GTW' }, 
@@ -183,7 +183,7 @@ export default {
         { 
           id: '4',
           comment:'Presión en 2mA (203)', 
-          irrigator:{ id: 1, name:'El alemán'},
+          irrigator:{ id: 'EQ02', name:'El alemán'},
           TTR: 131,
           gateway: { 
               id: 'GTW131',

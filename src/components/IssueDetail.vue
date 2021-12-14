@@ -11,7 +11,7 @@
               <p class="text-left font-bold text-blue-500 mr-3">Irrigator</p>
               <div class="grid justify-content-center w-full">
                 <div class="col-8">
-                  <p class="text-lg">{{ selectedIssue.irrigator.name }}</p>
+                  <p class="text-lg">{{ selectedIssue.irrigator.name +' - ' + selectedIssue.irrigator.id }}</p>
                 </div>
                 <div class="col-4">
                   <div class="h-full flex align-items-center">
@@ -127,7 +127,7 @@
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Equipo</div>
-                    <div v-if='selectedIssue.irrigator' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.irrigator.name }}</div>
+                    <div v-if='selectedIssue.irrigator' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.irrigator.name + ' - ' + selectedIssue.irrigator.id }}</div>
                   </div>
                 </div>
                 <div class="col-12 md:col-6 ">
