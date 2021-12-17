@@ -64,7 +64,6 @@ export default {
       this.loading = true;
       try{
         const result = await loginQuery(this.email, this.password)
-        sessionStorage.setItem('token', result.data.authenticate.sessionToken);
         sessionStorage.setItem('name',  result.data.authenticate.item.name);
         sessionStorage.setItem('type',  result.data.authenticate.item.type);
         this.loading = false;

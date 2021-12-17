@@ -19,20 +19,10 @@ export default {
   name: 'App',
   components: {
     Menubar },
-  beforeMount() {
-    if (!sessionStorage.getItem('token')) {
-      this.$router.replace('/login')
-    } 
-  }, 
-  beforeUpdate() {
-    if (!sessionStorage.getItem('token')) {
-      this.$router.replace('/login');
-    }
-  },
   methods: {
     onLogout() {
       sessionStorage.removeItem('name');
-      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('type');
       this.$router.push('/login')
     }
   },

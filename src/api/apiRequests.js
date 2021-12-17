@@ -12,6 +12,7 @@ const client = new ApolloClient({
   fetchOptions: {
     mode: "no-cors",
   },
+  credentials: "include"
 });
 
 const loginQuery = async function (email, password) {
