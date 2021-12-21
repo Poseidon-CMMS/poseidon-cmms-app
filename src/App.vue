@@ -29,20 +29,20 @@ export default {
   data() {
         return {
             items: [
-                // {
-                //    label:'Home',
-                //    icon:'pi pi-fw pi-home',
-                //    command: () => this.$router.push('/')
-                // },
                 {
-                   label:'Dashboard',
+                   label:'Irrigators',
                    icon:'pi pi-fw pi-th-large',
-                   command: () => this.$router.push('/dashboard')
+                   command: () => this.$router.push('/irrigators')
                 },
                 {
                    label:'Issues',
                    icon:'pi pi-fw pi-list',
                    command: () => this.$router.push('/issues')
+                },
+                {
+                   label:'Dashboard',
+                   icon:'pi pi-fw pi-list',
+                   command: () => this.$router.push('/dashboard')
                 },
              ]
         }
