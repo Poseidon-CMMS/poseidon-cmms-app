@@ -71,8 +71,8 @@
     <template #footer>
     <Message v-if="!!error" severity="error" @close="onErrorClose">{{error}}</Message>
     <div class='mt-2'>
-      <Button class="p-button-success" icon="pi pi-check" label="Submit" @click="onSubmit" :loading="loading"/>
-      <Button class="p-button-secondary" icon="pi pi-times" label="Cancel" @click="onCancel" :loading="loading"/>
+      <Button class="p-button-success" icon="pi pi-check" label="Guardar" @click="onSubmit" :loading="loading"/>
+      <Button class="p-button-secondary" icon="pi pi-times" label="Cancelar" @click="onCancel" :loading="loading"/>
     </div>
     </template>
   </Dialog>

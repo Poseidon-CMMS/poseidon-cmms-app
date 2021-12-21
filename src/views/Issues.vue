@@ -1,7 +1,7 @@
 <template>
     <div class="grid mt-3">
       <div class="col-12 flex flex-row">
-        <Button label="Create" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen" />
+        <Button label="Nuevo" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen" />
       </div>
       <div class="col-12">
         <div class="grid text-sm">

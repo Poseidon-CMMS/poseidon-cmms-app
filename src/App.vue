@@ -2,7 +2,7 @@
   <Menubar :model="items"> 
     <template #end>
         <!-- <div v-if="isLoggedIn()"> -->
-           <Button class="p-button-danger" label="Logout" @click='onLogout' icon="pi pi-fw pi-power-off"/>
+           <Button class="p-button-danger" label="Salir" @click='onLogout' icon="pi pi-fw pi-power-off"/>
         <!-- </div> -->
     </template>
   </Menubar>
@@ -51,8 +51,17 @@ export default {
 </script>
 
 <style>
+.p-button-success{
+  background: #19dd19 !important;
+  border-color: #19dd19 !important;
+}
+
+.p-button-success:hover{
+  background: #18c518e3 !important;
+  border-color: #18c518e3 !important;
+}
 #body{
-  background: linear-gradient(135deg, #39e2e6, 70%, #073f7b);
+  background: linear-gradient(135deg, #6ca3d6, 70%, #073f7b);
 }
 
 #app {

@@ -8,7 +8,7 @@
       <div class="grid mt-3">
         <div @click="clickIrrigator()" class="col-12 md:col-6 hover:surface-300">
           <div class="flex pointer align-items-center mx-2 w-full">
-              <p class="text-left font-bold text-blue-500 mr-3">Irrigator</p>
+              <p class="text-left font-bold text-blue-500 mr-3">Equipo de riego</p>
               <div class="grid justify-content-center w-full">
                 <div class="col-8">
                   <p class="text-lg">{{ selectedIssue.irrigator.name +' - ' + selectedIssue.irrigator.integration_id }}</p>
@@ -53,13 +53,13 @@
         </div>
         <div class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
-              <p class="w-4 text-left font-bold text-blue-500 mr-3">Device type</p>
+              <p class="w-4 text-left font-bold text-blue-500 mr-3">Tipo de dispositivo</p>
               <p class="text-lg w-10">{{ selectedIssue.assetType.name }}</p>
           </div>
         </div>
         <div v-if="selectedIssue.gateway" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
-              <p class="w-4 text-left font-bold text-blue-500 mr-3">Device</p>
+              <p class="w-4 text-left font-bold text-blue-500 mr-3">Dispositivo</p>
 
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
                 <p class="text-lg w-8">{{ selectedIssue.gateway?.id}}</p>
@@ -69,7 +69,7 @@
         </div>
         <div v-else-if="selectedIssue.gpsNode" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
-              <p class="w-2 text-left font-bold text-blue-500 mr-3">Device</p>
+              <p class="w-2 text-left font-bold text-blue-500 mr-3">Dispositivo</p>
 
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
                 <p class="text-lg w-8">{{ selectedIssue.gpsNode?.id}}</p>
@@ -79,7 +79,7 @@
         </div>
         <div v-else-if="selectedIssue.pressureSensor"  class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
-              <p class="w-2 text-left font-bold text-blue-500 mr-3">Device</p>    
+              <p class="w-2 text-left font-bold text-blue-500 mr-3">Dispositivo</p>    
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
                 <p class="text-lg w-8">{{ selectedIssue.pressureSensor?.id}}</p>
                 <Chip :label="selectedIssue.pressureSensor?.pressureSensorType.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
@@ -89,7 +89,7 @@
         
         <div class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 pr-2 w-full">
-            <p class="w-8 text-left font-bold text-blue-500 mr-3">Assignation</p>
+            <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
             <Dropdown
                 id="irrigator"
@@ -99,7 +99,7 @@
                 :options="technicians"
                 optionLabel="name"
                 optionValue="id"
-                placeholder="Select a technician"
+                placeholder="Seleccione un técnico"
               />
             </p>
           </div>
@@ -109,7 +109,7 @@
       <!-- listas -->
       <div class='mx-4 mt-4'>
         <Accordion :multiple="true">
-          <AccordionTab header="Diagnostic">
+          <AccordionTab header="Diagnóstico">
             <ScrollPanel style="width: 100%; height: 200px">
               <div class="grid">
                 <div class="col-12 md:col-6 ">
@@ -154,11 +154,11 @@
           <AccordionTab>
             <template #header>
               <div class="flex align-items-start" style="width: 100%">
-                <div class="flex align-items-center h-full w-10 my-3 align-start">
-                  Inspections
+                <div class="flex align-items-center h-full w-11 my-2 align-start">
+                  Pericias
                 </div>
                 <div class="mt-1">
-                  <Button @click="handleOpenInspectionForm" class="p-button-info" style="width: 100px; margin: auto;" icon="pi pi-plus-circle"></Button>
+                  <Button @click="handleOpenInspectionForm" icon="pi pi-plus-circle" class="p-button-raised"/>
                 </div>
               </div>
             </template>
@@ -176,7 +176,7 @@
                       <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item.user.name }}
                     </div>
                     <div class="col-12 md:col-3 mt-2">
-                      <Button icon="pi pi-external-link" style="width: 85px; margin: auto;"></Button>
+                      <Button icon="pi pi-external-link" class="p-button-raised p-button-rounded" style="margin: auto;"></Button>
                     </div>
                   </div>
                   <Divider />
@@ -188,11 +188,23 @@
           <AccordionTab>
             <template #header>
               <div class="flex align-items-start" style="width: 100%">
-                <div class="flex align-items-center h-full w-10 my-3 align-start">
-                  Repairs
+                <div class="flex align-items-center h-full w-11 my-2 align-start">
+                  Reparaciones
                 </div>
                 <div class="mt-1">
-                  <Button class="p-button-info" style="width: 100px; margin: auto;" icon="pi pi-plus-circle"></Button>
+                  <Button @click="handleOpenInspectionForm" icon="pi pi-plus-circle" class="p-button-raised"/>
+                </div>
+              </div>
+            </template>
+          </AccordionTab>
+          <AccordionTab>
+            <template #header>
+              <div class="flex align-items-start" style="width: 100%">
+                <div class="flex align-items-center h-full w-11 my-2 align-start">
+                  Autopsias
+                </div>
+                <div class="mt-1">
+                  <Button @click="handleOpenInspectionForm" icon="pi pi-plus-circle" class="p-button-raised"/>
                 </div>
               </div>
             </template>

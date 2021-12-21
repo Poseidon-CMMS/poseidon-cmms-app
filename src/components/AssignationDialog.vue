@@ -26,7 +26,7 @@
             <Button
               class="p-button-success"
               icon="pi pi-check"
-              label="Submit"
+              label="Guardar"
               @click="onSubmitAsignation"
               :loading="loading"
             />
@@ -35,7 +35,7 @@
             <Button
               class="p-button-secondary"
               icon="pi pi-times"
-              label="Cancel"
+              label="Cancelar"
               @click="onCancelAsignation"
               :loading="loading"
             />

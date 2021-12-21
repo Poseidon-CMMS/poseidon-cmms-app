@@ -1,6 +1,6 @@
 <template>
   <Dialog
-    header="New inspection"
+    header="Nueva pericia"
     v-model:visible="computedIsOpen"
     :style="{ width: '50vw' }"
     :modal="true"  
@@ -9,38 +9,38 @@
       <div class="col-12 xl:col-6">
         <div class="flex justify-content-start flex-wrap">
           <div class="flex align-items-center justify-content-center mx-3 mt-3">
-             <p class="w-3 text-left font-bold text-blue-500">Date</p>
+             <p class="w-3 text-left font-bold text-blue-500">Fecha</p>
           </div>
           <div class="flex align-items-center w-7 justify-content-center mx-3 mt-3">
-            <Calendar :show-icon="true" :show-button-bar="true" v-model="calendarValue"></Calendar>
+            <Calendar :show-icon="true" v-model="calendarValue" dateFormat="yy-mm-dd"></Calendar>
           </div>
         </div>
       </div>
       <div class="col-12 xl:col-6">
         <div class="flex justify-content-start flex-wrap">
-          <div class="flex mx-3 mt-3">
-             <p class="w-1 text-left font-bold text-blue-500">Type</p>
+          <div class="flex align-items-center justify-content-center mx-3 mt-3">
+             <p class="w-3 text-left font-bold text-blue-500">Tipo</p>
           </div>
-          <div class="flex align-items-center justify-content-center mx-3 h-2 mt-3">
-            <Dropdown v-model="inspectionType" :options="inspectionTypes" optionLabel="name" placeholder="Inspection type" />
+          <div class="flex align-items-center w-7 justify-content-center h-2 mt-3">
+            <Dropdown v-model="inspectionType" :options="inspectionTypes" optionLabel="name" placeholder="Tipo de pericia" />
           </div>
         </div>
       </div>
-      <div class="col-12">
-        <div class="flex align-items-center justify-content-center mx-4 mt-3">
-          <p class="w-12 text-left font-bold text-blue-500">Comments</p>
+      <div class="col-12 px-4">
+        <div class="flex align-items-center justify-content-center mx-3 mt-3">
+          <p class="w-12 text-left font-bold text-blue-500">Comentarios</p>
         </div>
         <div class="flex align-items-center w-14 justify-content-center mx-3 pr-2 mt-3">
-          <Textarea placeholder="Comments about inspection..." v-model="comments" :autoResize="true" rows="2" cols="70"></Textarea>
+          <Textarea placeholder="Observaciones acerca de la pericia" v-model="comments" :autoResize="true" rows="2" cols="70"></Textarea>
         </div>
       </div>
       <div class="col-12 mt-2">
         <div class="flex justify-content-end flex-wrap">
           <div class="flex align-items-center justify-content-center mx-3 mt-3">
-            <Button class="p-button-success" icon="pi pi-check" label="Submit" @click="onSubmit" :loading="loading"/>
+            <Button class="p-button-success" icon="pi pi-check" label="Guardar" @click="onSubmit" :loading="loading"/>
           </div>
           <div class="flex align-items-center justify-content-center mx-3 mt-3">
-            <Button class="p-button-secondary" icon="pi pi-times" label="Cancel" @click="onCancel" :loading="loading"/>
+            <Button class="p-button-secondary" icon="pi pi-times" label="Cancelar" @click="onCancel" :loading="loading"/>
           </div>
         </div>
       </div>
