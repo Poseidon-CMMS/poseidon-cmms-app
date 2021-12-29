@@ -67,7 +67,7 @@ export default {
         sessionStorage.setItem('name',  result.data.authenticate.item.name);
         sessionStorage.setItem('type',  result.data.authenticate.item.type);
         this.loading = false;
-        this.$router.push('dashboard');
+        this.$router.push('/');
       }
       catch(e) {
         this.loading = false;
