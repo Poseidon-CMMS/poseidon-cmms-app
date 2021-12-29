@@ -32,7 +32,7 @@ export default {
                 {
                    label:'Irrigators',
                    icon:'pi pi-fw pi-th-large',
-                   command: () => this.$router.push('/irrigators')
+                   command: () => this.$router.push('/')
                 },
                 {
                    label:'Issues',
