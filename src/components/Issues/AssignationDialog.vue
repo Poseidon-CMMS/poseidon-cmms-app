@@ -48,7 +48,7 @@
 
 <script>
 // import { ref } from 'vue'
-import { getTechniciansQuery } from "../api/apiRequests";
+import { getTechniciansQuery } from "../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
 
 export default {

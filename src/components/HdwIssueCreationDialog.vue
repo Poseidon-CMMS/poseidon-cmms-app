@@ -7,7 +7,7 @@
   >
     <div class="card">
       <div class="field">
-        <label for="creationDate">Creation Date</label>
+        <label for="creationDate">Fecha de creación</label>
         <Calendar
           class="inputfield w-full"
           id="creationDate"
@@ -16,7 +16,7 @@
         />
       </div>
       <div class="field">
-        <label for="diagnosticDate">Diagnostic Date</label>
+        <label for="diagnosticDate">Fecha de comienzo de la falla</label>
         <Calendar
           class="inputfield w-full"
           id="diagnosticDate"
@@ -25,7 +25,7 @@
         />
       </div>
       <div class="field">
-        <label for="gtw">Irrigator</label>
+        <label for="gtw">Equipo de riego</label>
         <Dropdown
           id="irrigator"
           :filter="true"
@@ -38,7 +38,7 @@
         />
       </div>
       <div class="field">
-        <label for="diagnostic">Diagnostic</label>
+        <label for="diagnostic">Diagnóstico</label>
         <Dropdown
           id="diagnostic"
           class="inputfield w-full"
@@ -50,7 +50,7 @@
         />
       </div>
       <div class="field">
-        <label for="grafanaLink">Grafana Link</label>
+        <label for="grafanaLink">Link a Grafana</label>
         <InputText
           id="grafanaLink"
           v-model="grafanaLink"
@@ -59,7 +59,7 @@
         />
       </div>
       <div class="field">
-        <label for="comments">Comments</label>
+        <label for="comments">Comentarios</label>
         <InputText
           id="comments"
           v-model="comments"

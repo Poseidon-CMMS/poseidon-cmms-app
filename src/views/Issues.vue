@@ -34,8 +34,8 @@
 import DraggableList from '../components/DraggableList';
 import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
-import IssueDetail from '../components/IssueDetail.vue';
-import AssignationDialog from '../components/AssignationDialog.vue';
+import IssueDetail from '../components/Issues/IssueDetail.vue';
+import AssignationDialog from '../components/Issues/AssignationDialog.vue';
 
 export default {
   name: 'Issues',
