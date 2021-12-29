@@ -72,7 +72,6 @@ export default {
   methods: {
     async onSubmit() {
       this.loading = true;
-      console.log(this.comments);
       setTimeout(() => {
           this.loading = false;
         }, 750);

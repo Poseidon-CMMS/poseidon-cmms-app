@@ -182,7 +182,7 @@ const getDiagnosticTypesQuery = async function () {
   });
 };
 
-const getIssues = async function () {
+const getHdwIssuesQuery = async function () {
   return await client.query({
     query: gql`
       query getIssues {
@@ -190,8 +190,9 @@ const getIssues = async function () {
           id
           creation_date
           close_date
-          TTR
+          time_to_repair_hours
           comments
+          status
           irrigator {
             name
           }
@@ -201,6 +202,11 @@ const getIssues = async function () {
           diagnostic {
             id
             date
+            user {
+              id
+              name
+              email
+            }
             comments
             angles
             height_diff
@@ -261,7 +267,7 @@ const createHdwIssueMutation = async function (
 export {
   loginQuery,
   getIrrigatorsQuery,
-  getIssues,
+  getHdwIssuesQuery,
   getTechniciansQuery,
   getGatewaysQuery,
   getDiagnosticTypesQuery,

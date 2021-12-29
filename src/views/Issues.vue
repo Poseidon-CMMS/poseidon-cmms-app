@@ -36,6 +36,7 @@ import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/Issues/IssueDetail.vue';
 import AssignationDialog from '../components/Issues/AssignationDialog.vue';
+import {getHdwIssuesQuery} from '../api/apiRequests';
 
 export default {
   name: 'Issues',
@@ -60,6 +61,7 @@ export default {
     handleIssueHasBeenUpdated: function(updatedIssue) {
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
       this.issues = [...allOtherIssues, updatedIssue];
+      this.selectedIssue = this.issues.find(issue => issue.id === this.selectedIssue.id);
     },
     clickIrrigator: function() {
       this.selectedIrrigator = this.selectedIssue.irrigator;
@@ -68,15 +70,17 @@ export default {
     technicianChange: function(evt){
       this.selectedTechnician = evt.value;
       if(this.selectedTechnician) {
-        this.selectedIssue.technician = evt.value;
+        this.selectedIssue.assigned_technician = evt.value;
       }
     },
     inFieldLog: function(evt) {
       console.log('In field: ' + evt);
     },
     assignedLog: function(evt) {
-      if(evt.added && !evt.added.user) {
+      if(evt?.added?.element && !evt.added.element.user) {
         this.showAssignedDialog = true;
+        console.log('hola')
+        this.selectedIssue = evt.added.element;
       }
     },
     repairedLog: function(evt) {
@@ -226,13 +230,18 @@ export default {
       }
     },
   },
-  beforeMount() {
+  async beforeMount() {
+    //traer hdw issues todo: manejo de errores
+    const result = await getHdwIssuesQuery();
+    this.issues = result.data.hdwIssues;
+
     const irrigatorId = this.$route.params.irrigatorId;
     this.loading = false;
     if(irrigatorId){
       this.selectedCreateIssueIrrigatorId = irrigatorId;
       this.setIsCreationModalOpen(true);
     }
+
   }
 }
 </script>

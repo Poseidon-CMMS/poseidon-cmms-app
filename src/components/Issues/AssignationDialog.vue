@@ -16,7 +16,7 @@
           v-model="selectedTechnician"
           :options="technicianOptions"
           optionLabel="name"
-          optionValue="code"
+          optionValue="id"
           placeholder="Seleccione un técnico"
         />
       </div>
@@ -65,10 +65,18 @@ export default {
   },
   methods: {
     async onSubmitAssignation() {
-      this.loading = true;
+      if(!this.selectedTechnician){
+        this.error = "Debe seleccionar algún técnico";
+        setTimeout(() => {this.error=null}, 2000);
+        return;
+      }
 
+      this.loading = true;
+      //todo: enviar al servidor
       setTimeout(() => {
         this.loading = false;
+        const newIssue = {...this.selectedIssue, status: 'assigned', technician: this.selectedTechnician};
+        this.$emit("issueUpdated", newIssue);
       }, 750);
     },
     onCancelAssignation() {
@@ -94,7 +102,7 @@ export default {
     const technicians = result.data.users;
     this.technicianOptions = technicians.map((tec) => ({
       name: tec.name,
-      code: tec.id,
+      id: tec.id,
     }));
 
     this.loading = false;

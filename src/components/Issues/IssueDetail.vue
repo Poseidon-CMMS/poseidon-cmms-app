@@ -11,7 +11,7 @@
               <p class="text-left font-bold text-blue-500 mr-3">Equipo de riego</p>
               <div class="grid justify-content-center w-full">
                 <div class="col-8">
-                  <p class="text-lg">{{ selectedIssue.irrigator.name +' - ' + selectedIssue.irrigator.integration_id }}</p>
+                  <p class="text-lg">{{ selectedIssue?.irrigator?.name +' - ' + selectedIssue?.irrigator?.integration_id }}</p>
                 </div>
                 <div class="col-4">
                   <div class="h-full flex align-items-center">
@@ -96,7 +96,7 @@
                 :filter="true"
                 class="inputfield w-full"
                 v-model="selectedTechnician"
-                :options="technicians"
+                :options="technicianOptions"
                 optionLabel="name"
                 optionValue="id"
                 placeholder="Seleccione un técnico"
@@ -221,6 +221,7 @@
 import Button from 'primevue/button';
 import InspectionDetail from './InspectionDetail.vue';
 import InspectionForm from './InspectionForm.vue';
+import {getTechniciansQuery} from '../../api/apiRequests';
 export default {
   name: 'IssueDetail',
   components: {
@@ -249,22 +250,26 @@ export default {
   data() {
     return {
       displayIrrigatorDialog: false,
-      selectedTechnician: null,
+      selectedTechnician: this?.selectedIssue?.assigned_technician || null,
       selectedInspection: null,
       showInspectionForm: false,
-      technicians: [
-            {name: 'Juan Perez', id: 1},
-            {name: 'Fernando Navarro', id: 2},
-            {name: 'Mauricio Lima', id: 3},
-            {name: 'Hola', id: 4},
-            {name: 'Chau', id: 5},
-            {name: 'Probando', id: 6},
-            {name: 'Iñaki', id: 7},
-            {name: 'Zunda', id: 8},
-            {name: 'Test', id: 9},
-      ],
+      technicianOptions: [],
     }
-  }
+  },
+  async beforeMount() {
+    //todo: error handling
+    this.selectedTecnician = this.selectedTechnician || null;
+    this.loading = true;
+    //populate dropdowns
+    const result = await getTechniciansQuery();
+    const technicians = result.data.users;
+    this.technicianOptions = technicians.map((tec) => ({
+      name: tec.name,
+      id: tec.id,
+    }));
+
+    this.loading = false;
+  },
 }
 </script>
 

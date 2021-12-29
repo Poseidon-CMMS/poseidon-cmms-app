@@ -16,7 +16,7 @@
                     <template #title>
                       <div class="grid text-sm">
                         <div class="col-10 m-0 p-0"> {{ element.comments }} </div>
-                        <div class="col-12"> {{ element.field?.name + ' - ' + element.irrigator.name + " (" + element.irrigator.integration_id + ")"}} </div>
+                        <div class="col-12"> {{ element?.field?.name + ' - ' + element?.irrigator?.name + " (" + element?.irrigator?.integration_id + ")"}} </div>
                       </div>
                     </template>
                     <template #subtitle>
