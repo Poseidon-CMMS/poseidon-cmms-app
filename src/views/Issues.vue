@@ -25,7 +25,7 @@
     </div>
       
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
-    <assignation-dialog :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueHasBeenUpdated"></assignation-dialog>
+    <assignation-dialog :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueHasBeenUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-dialog>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -53,6 +53,9 @@ export default {
     },
     handleIsOpenChange: function(value) {
       this.displayIrrigatorDialog = value;
+    },
+    handleIsOpenAssignation: function(value) {
+      this.showAssignedDialog = value;
     },
     handleIssueHasBeenUpdated: function(updatedIssue) {
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);

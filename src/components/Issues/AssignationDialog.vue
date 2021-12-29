@@ -1,13 +1,13 @@
 <template>
   <Dialog
-    header="Assignation"
-    :visible="isOpen"
+    header="Asignación de técnicos"
+    v-model:visible="computedIsOpen"
     :style="{ width: '50vw' }"
     :modal="true"
   >
     <div class="grid">
       <div class="col-4 col-offset-2">
-        <p class="text-lg line-height-2">Technician:</p>
+        <p class="text-lg line-height-2">Técnico:</p>
       </div>
       <div class="col-4">
         <Dropdown
@@ -27,7 +27,7 @@
               class="p-button-success"
               icon="pi pi-check"
               label="Guardar"
-              @click="onSubmitAsignation"
+              @click="onSubmitAssignation"
               :loading="loading"
             />
           </div>
@@ -36,7 +36,7 @@
               class="p-button-secondary"
               icon="pi pi-times"
               label="Cancelar"
-              @click="onCancelAsignation"
+              @click="onCancelAssignation"
               :loading="loading"
             />
           </div>
@@ -64,14 +64,14 @@ export default {
     };
   },
   methods: {
-    async onSubmitAsignation() {
+    async onSubmitAssignation() {
       this.loading = true;
 
       setTimeout(() => {
         this.loading = false;
       }, 750);
     },
-    onCancelAsignation() {
+    onCancelAssignation() {
       this.computedIsOpen = false;
     },
   },
@@ -81,7 +81,7 @@ export default {
         return this.isOpen;
       },
       set(value) {
-        this.$emit("issueUpdated", value);
+        this.$emit("updateIsOpenAssignation", value);
       },
     },
   },
