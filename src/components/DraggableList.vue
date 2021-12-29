@@ -36,7 +36,7 @@
 import draggable from "vuedraggable";
 
 export default {
-  name: 'Dashboard',
+  name: 'DraggableList',
   components: {
     draggable,
   },

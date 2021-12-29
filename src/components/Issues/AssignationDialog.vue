@@ -42,19 +42,24 @@
           </div>
         </div>
       </div>
+      <div class="col-12 mt-1"  v-if="!!error">
+        <Message v-if="!!error" severity="error" @close="onErrorClose">{{
+          error
+        }}</Message>
+      </div>
     </div>
   </Dialog>
 </template>
 
 <script>
-// import { ref } from 'vue'
 import { getTechniciansQuery } from "../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
+import Message from "primevue/message";
 
 export default {
   name: "AssignationDialog",
   props: ["isOpen", "selectedIssue"],
-  components: { Dropdown },
+  components: { Dropdown, Message },
   data() {
     return {
       selectedTechnician: null,
@@ -65,9 +70,11 @@ export default {
   },
   methods: {
     async onSubmitAssignation() {
-      if(!this.selectedTechnician){
+      if (!this.selectedTechnician) {
         this.error = "Debe seleccionar algún técnico";
-        setTimeout(() => {this.error=null}, 2000);
+        setTimeout(() => {
+          this.error = null;
+        }, 5000);
         return;
       }
 
@@ -75,8 +82,13 @@ export default {
       //todo: enviar al servidor
       setTimeout(() => {
         this.loading = false;
-        const newIssue = {...this.selectedIssue, status: 'assigned', technician: this.selectedTechnician};
+        const newIssue = {
+          ...this.selectedIssue,
+          status: "assigned",
+          assigned_technician: this.selectedTechnician,
+        };
         this.$emit("issueUpdated", newIssue);
+        this.computedIsOpen = false;
       }, 750);
     },
     onCancelAssignation() {
@@ -95,7 +107,6 @@ export default {
   },
   async beforeMount() {
     //todo: error han dling
-    this.selectedTecnician = this.selectedTechnician || null;
     this.loading = true;
     //populate dropdowns
     const result = await getTechniciansQuery();

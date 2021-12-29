@@ -54,7 +54,7 @@
         <div class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
               <p class="w-4 text-left font-bold text-blue-500 mr-3">Tipo de dispositivo</p>
-              <p class="text-lg w-10">{{ selectedIssue.assetType.name }}</p>
+              <p class="text-lg w-10">{{ selectedIssue?.assetType?.name }}</p>
           </div>
         </div>
         <div v-if="selectedIssue.gateway" class="col-12 md:col-6 hover:surface-300">
@@ -82,7 +82,7 @@
               <p class="w-2 text-left font-bold text-blue-500 mr-3">Dispositivo</p>    
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
                 <p class="text-lg w-8">{{ selectedIssue.pressureSensor?.id}}</p>
-                <Chip :label="selectedIssue.pressureSensor?.pressureSensorType.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <Chip :label="selectedIssue.pressureSensor?.pressureSensorType?.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
@@ -121,25 +121,25 @@
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div v-if='selectedIssue.diagnostic && selectedIssue.diagnostic.user' class="col-2 text-500 w-6 md:w-2 font-medium">Usuario</div>
-                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.user.name }}</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic?.user?.name }}</div>
                   </div>
                 </div>
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Equipo</div>
-                    <div v-if='selectedIssue.irrigator' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.irrigator.name + ' - ' + selectedIssue.irrigator.integration_id }}</div>
+                    <div v-if='selectedIssue.irrigator' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.irrigator?.name + ' - ' + selectedIssue?.irrigator?.integration_id }}</div>
                   </div>
                 </div>
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Diagnóstico</div>
-                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.diagnostic_type.name }}</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic?.diagnostic_type?.name }}</div>
                   </div>
                 </div>
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Device</div>
-                    <div v-if='selectedIssue.assetType' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.assetType.name }}</div>
+                    <div v-if='selectedIssue.assetType' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.assetType?.name }}</div>
                   </div>
                 </div>
                 <div class="col-12 md:col-6 ">
@@ -173,7 +173,7 @@
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> {{ item.comments }}
                     </div>
                     <div class="col-12 md:col-3 mt-3">
-                      <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item.user.name }}
+                      <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item?.user?.name }}
                     </div>
                     <div class="col-12 md:col-3 mt-2">
                       <Button icon="pi pi-external-link" class="p-button-raised p-button-rounded" style="margin: auto;"></Button>
@@ -250,7 +250,7 @@ export default {
   data() {
     return {
       displayIrrigatorDialog: false,
-      selectedTechnician: this?.selectedIssue?.assigned_technician || null,
+      selectedTechnician: null,
       selectedInspection: null,
       showInspectionForm: false,
       technicianOptions: [],
@@ -258,18 +258,17 @@ export default {
   },
   async beforeMount() {
     //todo: error handling
-    this.selectedTecnician = this.selectedTechnician || null;
     this.loading = true;
     //populate dropdowns
     const result = await getTechniciansQuery();
     const technicians = result.data.users;
-    this.technicianOptions = technicians.map((tec) => ({
-      name: tec.name,
-      id: tec.id,
-    }));
-
+    this.technicianOptions = technicians
+    
     this.loading = false;
   },
+  async beforeUpdate() {  
+    this.selectedTechnician = this.selectedIssue.assigned_technician || null;
+  }
 }
 </script>
 
