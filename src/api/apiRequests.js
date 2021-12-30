@@ -201,10 +201,11 @@ const getHdwIssuesQuery = async function () {
             name
           }
           irrigator {
+            integration_id
             name
-          }
-          field {
-            name
+            field {
+              name
+            }
           }
           diagnostic {
             id

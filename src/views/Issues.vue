@@ -79,7 +79,6 @@ export default {
     assignedLog: function(evt) {
       if(evt?.added?.element && !evt.added.element.user) {
         this.showAssignedDialog = true;
-        console.log('hola')
         this.selectedIssue = evt.added.element;
       }
     },

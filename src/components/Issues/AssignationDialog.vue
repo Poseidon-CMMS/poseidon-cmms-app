@@ -84,10 +84,11 @@ export default {
         this.selectedTechnician
       );
       this.loading = false;
+      const technicianObject = this.technicianOptions.find(t => t.id ===this.selectedTechnician);
       const newIssue = {
         ...this.selectedIssue,
         status: "assigned",
-        assigned_technician: this.selectedTechnician,
+        assigned_technician: technicianObject,
       };
       this.$emit("issueUpdated", newIssue);
       this.computedIsOpen = false;
