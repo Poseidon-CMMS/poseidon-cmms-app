@@ -309,6 +309,41 @@ const createHdwIssueMutation = async function (
   });
 };
 
+const getAssetTypesQuery = async function () {
+  return await client.query({
+    query: gql`
+      query getAssetTypes {
+        assetTypes {
+          id
+          name
+        }
+      }
+    `,
+  });
+};
+
+const getInspectionTypesQuery = async function () {
+  return await client.query({
+    query: gql`
+      query getInspectionTypes {
+        inspectionTypes {
+          id
+          type {
+            name
+            
+          }
+          lora_power
+          pot_sat
+          gateway_battery_voltage
+          gps_node_battery_voltage
+          pressure_sensor_signal
+          name
+        }
+      }
+    `,
+  });
+};
+
 export {
   loginQuery,
   getIrrigatorsQuery,
@@ -318,4 +353,6 @@ export {
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
   assignHdwIssueMutation,
+  getAssetTypesQuery,
+  getInspectionTypesQuery
 };
