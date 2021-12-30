@@ -51,12 +51,6 @@
               </div>
           </div>
         </div>
-        <div class="col-12 md:col-6 hover:surface-300">
-          <div class="flex align-items-center mx-2 surface-border w-full">
-              <p class="w-4 text-left font-bold text-blue-500 mr-3">Tipo de dispositivo</p>
-              <p class="text-lg w-10">{{ selectedIssue?.diagnostic?.diagnostic_type?.type?.name }}</p>
-          </div>
-        </div>
         <div v-if="selectedIssue.gateway" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
               <p class="w-4 text-left font-bold text-blue-500 mr-3">Dispositivo</p>
@@ -139,7 +133,7 @@
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Device</div>
-                    <div v-if='selectedIssue.assetType' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.assetType?.name }}</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic?.diagnostic_type?.type?.name  }}</div>
                   </div>
                 </div>
                 <div class="col-12 md:col-6 ">
