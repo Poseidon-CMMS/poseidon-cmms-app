@@ -41,6 +41,7 @@
         <label for="diagnostic">Diagnóstico</label>
         <Dropdown
           id="diagnostic"
+          :filter="true"
           class="inputfield w-full"
           v-model="selectedDiagnostic"
           :options="diagnosticOptions"
@@ -135,7 +136,7 @@ export default {
         if (!result?.data?.createHdwIssue?.id)
           throw new Error("Missing Hdw Issue ID. Possible server error.");
         this.computedIsOpen = false;
-        this.$router.push("/issues");
+        this.$router.go();
       } catch (e) {
         this.error = e;
         this.loading = false;
@@ -165,14 +166,14 @@ export default {
     const result = await getIrrigatorsQuery();
     const irrigators = result.data.irrigators;
     this.irrigatorOptions = irrigators.map((irr) => ({
-      name: irr.integrationID,
+      name: irr.integration_id,
       code: irr.id,
     }));
 
     const dtypesraw = await getDiagnosticTypesQuery();
     const diagnosticTypes = dtypesraw.data.diagnosticTypes;
     this.diagnosticOptions = diagnosticTypes.map((d) => ({
-      name: d.name,
+      name: `${d.type.name} - ${d.name}`,
       code: d.id,
     }));
 

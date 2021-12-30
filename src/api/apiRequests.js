@@ -175,7 +175,10 @@ const getDiagnosticTypesQuery = async function () {
         diagnosticTypes {
           id
           name
-          type
+          type {
+            name
+            id
+          }
         }
       }
     `,
@@ -267,8 +270,8 @@ const createHdwIssueMutation = async function (
 ) {
   return await client.mutate({
     mutation: gql`
-      mutation ($data: HdwIssueCreateInput!) {
-        createHdwIssue: createHdwIssue(data: $data) {
+      mutation ($data: hdw_issueCreateInput!) {
+        createHdwIssue: createhdw_issue(data: $data) {
           id
         }
       }
@@ -276,20 +279,24 @@ const createHdwIssueMutation = async function (
     variables: {
       data: {
         creation_date: creationDate.toISOString(),
-        diagnostic_date: diagnosticDate.toISOString(),
-
+        status: "in-field",
+        diagnostic: {
+          create: {
+            date: diagnosticDate.toISOString(),
+            diagnostic_type: {
+              connect: {
+                id: diagnosticId,
+              },
+            },
+            grafana_link: grafanaLink,
+            comments: comments,
+          },
+        },
         irrigator: {
           connect: {
             id: irrigatorId,
           },
         },
-        diagnostic_type: {
-          connect: {
-            id: diagnosticId,
-          },
-        },
-        grafana_link: grafanaLink,
-        comments: comments,
       },
     },
   });
@@ -303,5 +310,5 @@ export {
   getGatewaysQuery,
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
-  assignHdwIssueMutation
+  assignHdwIssueMutation,
 };
