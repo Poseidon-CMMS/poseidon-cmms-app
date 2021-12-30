@@ -193,6 +193,10 @@ const getHdwIssuesQuery = async function () {
           time_to_repair_hours
           comments
           status
+          assigned_technician {
+            id
+            name
+          }
           irrigator {
             name
           }

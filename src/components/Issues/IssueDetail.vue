@@ -267,7 +267,7 @@ export default {
     this.loading = false;
   },
   async beforeUpdate() {  
-    this.selectedTechnician = this.selectedIssue.assigned_technician || null;
+    this.selectedTechnician = this.selectedIssue.assigned_technician.id || null;
   }
 }
 </script>
