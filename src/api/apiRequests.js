@@ -215,6 +215,12 @@ const getHdwIssuesQuery = async function () {
               name
               email
             }
+            diagnostic_type {
+              name
+              type {
+                name
+              }
+            }
             comments
             angles
             height_diff

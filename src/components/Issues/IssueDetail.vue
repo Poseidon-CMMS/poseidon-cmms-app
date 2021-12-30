@@ -54,7 +54,7 @@
         <div class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
               <p class="w-4 text-left font-bold text-blue-500 mr-3">Tipo de dispositivo</p>
-              <p class="text-lg w-10">{{ selectedIssue?.assetType?.name }}</p>
+              <p class="text-lg w-10">{{ selectedIssue?.diagnostic?.diagnostic_type?.type?.name }}</p>
           </div>
         </div>
         <div v-if="selectedIssue.gateway" class="col-12 md:col-6 hover:surface-300">
