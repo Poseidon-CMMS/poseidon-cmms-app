@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 mt-1"  v-if="!!error">
+      <div class="col-12 mt-1" v-if="!!error">
         <Message v-if="!!error" severity="error" @close="onErrorClose">{{
           error
         }}</Message>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getTechniciansQuery } from "../../api/apiRequests";
+import { getTechniciansQuery, assignHdwIssueMutation } from "../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
 
@@ -78,18 +78,19 @@ export default {
         return;
       }
 
-      this.loading = true;
-      //todo: enviar al servidor
-      setTimeout(() => {
-        this.loading = false;
-        const newIssue = {
-          ...this.selectedIssue,
-          status: "assigned",
-          assigned_technician: this.selectedTechnician,
-        };
-        this.$emit("issueUpdated", newIssue);
-        this.computedIsOpen = false;
-      }, 750);
+      this.loading = true; //todo control de errores
+      await assignHdwIssueMutation(
+        this.selectedIssue.id,
+        this.selectedTechnician
+      );
+      this.loading = false;
+      const newIssue = {
+        ...this.selectedIssue,
+        status: "assigned",
+        assigned_technician: this.selectedTechnician,
+      };
+      this.$emit("issueUpdated", newIssue);
+      this.computedIsOpen = false;
     },
     onCancelAssignation() {
       this.computedIsOpen = false;

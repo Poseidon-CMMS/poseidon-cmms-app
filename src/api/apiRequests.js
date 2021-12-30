@@ -12,7 +12,7 @@ const client = new ApolloClient({
   fetchOptions: {
     mode: "no-cors",
   },
-  credentials: "include"
+  credentials: "include",
 });
 
 const loginQuery = async function (email, password) {
@@ -110,9 +110,9 @@ const getTechniciansQuery = async function (id) {
     query: gql`
       query getTechniciansQuery {
         users(where: { type: { equals: "technician" } }) {
-          id,
-          name,
-          email,
+          id
+          name
+          email
         }
       }
     `,
@@ -178,7 +178,7 @@ const getDiagnosticTypesQuery = async function () {
           type
         }
       }
-    `
+    `,
   });
 };
 
@@ -223,6 +223,33 @@ const getHdwIssuesQuery = async function () {
         }
       }
     `,
+  });
+};
+
+const assignHdwIssueMutation = async function (hdwIssueId, technicianId) {
+  return await client.mutate({
+    mutation: gql`
+      mutation (
+        $where: hdw_issueWhereUniqueInput!
+        $data: hdw_issueUpdateInput!
+      ) {
+        updatehdw_issue: updatehdw_issue(where: $where, data: $data) {
+          id
+        }
+      }
+    `,
+    variables: {
+      where: {
+        id: hdwIssueId,
+      },
+      data: {
+        assigned_technician: {
+          connect: {
+            id: technicianId,
+          },
+        },
+      },
+    },
   });
 };
 
@@ -272,4 +299,5 @@ export {
   getGatewaysQuery,
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
+  assignHdwIssueMutation
 };
