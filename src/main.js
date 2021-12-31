@@ -24,9 +24,10 @@ import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
 import router from './router'
 import Tooltip from 'primevue/tooltip';
+import ToastService from 'primevue/toastservice';
 
 
-const app = createApp(App).use(router).use(PrimeVue);
+const app = createApp(App).use(router).use(PrimeVue).use(ToastService);
 
 app.component('Button', Button);
 app.component('Card', Card);

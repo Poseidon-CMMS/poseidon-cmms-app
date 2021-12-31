@@ -309,6 +309,64 @@ const createHdwIssueMutation = async function (
   });
 };
 
+const createInspectionMutation = async function (
+  date,
+  led_gtw,
+  jumper_wifi,
+  user_id,
+  hdw_issue_id,
+  inspection_type_id,
+  comments,
+  picture,
+  log,
+  satellite_power = null,
+  gateway_battery_voltage = null,
+  lora_power = null,
+  gps_node_battery_voltage = null,
+  pressure_sensor_signal = null
+) {
+  return await client.mutate({
+    mutation: gql`
+      mutation ($data: inspectionCreateInput!) {
+        createinspection: createinspection(data: $data) {
+          id
+        }
+      }
+    `,
+    variables: {
+      data: {
+        date,
+        led_gtw,
+        jumper_wifi,
+        user: {
+          connect: {
+            id: user_id,
+          },
+        },
+        hdw_issue: {
+          connect: {
+            id: hdw_issue_id,
+          },
+        },
+        inspection_type: {
+          connect: {
+            id: inspection_type_id,
+          },
+        },
+        comments,
+        //inspection type-dependents
+        picture: null,
+        log: null,
+        satellite_power,
+        gateway_battery_voltage,
+        lora_power,
+        gps_node_battery_voltage,
+        pressure_sensor_signal,
+      },
+    },
+  });
+};
+
 const getAssetTypesQuery = async function () {
   return await client.query({
     query: gql`
@@ -322,6 +380,50 @@ const getAssetTypesQuery = async function () {
   });
 };
 
+const getInspectionsQuery = async function (hwd_issue_id) {
+  return await client.query({
+    query: gql`
+      query getInspections($where: inspectionWhereInput) {
+        inspections(where: $where) {
+          id
+          date
+          comments
+          led_gtw
+          jumper_wifi
+          satellite_power
+          gateway_battery_voltage
+          lora_power
+          gps_node_battery_voltage
+          pressure_sensor_signal
+          picture {
+            url
+          }
+          log {
+            url
+          }
+          user {
+            id
+            name
+          }
+          inspection_type {
+            name
+            id
+          }
+        }
+      }
+    `,
+    variables: {
+      where: {
+        hdw_issue: {
+          id: {
+            equals: hwd_issue_id,
+          },
+        },
+      },
+    },
+  });
+};
+
 const getInspectionTypesQuery = async function () {
   return await client.query({
     query: gql`
@@ -330,7 +432,6 @@ const getInspectionTypesQuery = async function () {
           id
           type {
             name
-            
           }
           lora_power
           pot_sat
@@ -354,5 +455,7 @@ export {
   createHdwIssueMutation,
   assignHdwIssueMutation,
   getAssetTypesQuery,
-  getInspectionTypesQuery
+  getInspectionTypesQuery,
+  createInspectionMutation,
+  getInspectionsQuery,
 };

@@ -100,6 +100,7 @@ export default {
     Dropdown,
     Message  },
   props: ["isOpen", "selectedIrrigatorId"],
+  emits: ['updateIsOpen'],
   data() {
     return {
       loading: false,

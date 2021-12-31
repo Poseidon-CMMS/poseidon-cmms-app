@@ -207,7 +207,7 @@
       </div>
   </Panel>
   </div>
-  <inspection-form :isOpen="showInspectionForm" @issueUpdated="handleIsOpenInspectionUpdated"></inspection-form>
+  <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenInspectionUpdated"></inspection-form>
   <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenDetailUpdated"></inspection-detail>
 </template>
 

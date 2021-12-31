@@ -36,7 +36,7 @@ import HdwIssueCreationDialog from '../components/HdwIssueCreationDialog.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/Issues/IssueDetail.vue';
 import AssignationDialog from '../components/Issues/AssignationDialog.vue';
-import {getHdwIssuesQuery} from '../api/apiRequests';
+import { getHdwIssuesQuery, getInspectionsQuery } from '../api/apiRequests';
 
 export default {
   name: 'Issues',
@@ -88,9 +88,10 @@ export default {
     outOfFieldLog: function(evt) {
       console.log('Out of field: ' + evt);
     },
-    clickElement: function(evt) {
-      console.log(evt);
+    clickElement: async function(evt) {// todo mostrar un loading
       this.selectedIssue = evt;
+      const issueInspections = (await getInspectionsQuery(this.selectedIssue.id)).data.inspections; //todo caso error
+      this.selectedIssue = {...this.selectedIssue, inspections: issueInspections};
     },
     setIsCreationModalOpen(val) {
       this.isCreationModalOpen = val;

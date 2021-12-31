@@ -66,6 +66,8 @@ export default {
         const result = await loginQuery(this.email, this.password)
         sessionStorage.setItem('name',  result.data.authenticate.item.name);
         sessionStorage.setItem('type',  result.data.authenticate.item.type);
+        sessionStorage.setItem('id',  result.data.authenticate.item.id);
+
         this.loading = false;
         this.$router.push('/');
       }
