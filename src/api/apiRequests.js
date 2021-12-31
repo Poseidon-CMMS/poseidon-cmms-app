@@ -325,6 +325,7 @@ const createInspectionMutation = async function (
   gps_node_battery_voltage = null,
   pressure_sensor_signal = null
 ) {
+  console.log('aeiou')
   return await client.mutate({
     mutation: gql`
       mutation ($data: inspectionCreateInput!) {
@@ -355,7 +356,9 @@ const createInspectionMutation = async function (
         },
         comments,
         //inspection type-dependents
-        picture: null,
+        picture: {
+          upload: picture
+        },
         log: null,
         satellite_power,
         gateway_battery_voltage,
