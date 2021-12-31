@@ -47,7 +47,9 @@
         />
       </div>
       <div class="field" v-if="inspectionType?.gateway_battery_voltage">
-        <label for="gateway_battery_voltage">Tensión de batería del gateway</label>
+        <label for="gateway_battery_voltage"
+          >Tensión de batería del gateway</label
+        >
         <InputNumber
           id="gateway_battery_voltage"
           v-model="gateway_battery_voltage"
@@ -57,7 +59,9 @@
         />
       </div>
       <div class="field" v-if="inspectionType?.gps_node_battery_voltage">
-        <label for="gps_node_battery_voltage">Tensión de batería del nodo GPS</label>
+        <label for="gps_node_battery_voltage"
+          >Tensión de batería del nodo GPS</label
+        >
         <InputNumber
           id="gps_node_battery_voltage"
           v-model="gps_node_battery_voltage"
@@ -255,7 +259,7 @@
       </div>
     </template>
   </Dialog>
-<Toast position="bottom-right" />
+  <Toast position="bottom-right" />
 </template>
 
 <script>
@@ -272,11 +276,32 @@ import {
   createInspectionMutation,
 } from "../../api/apiRequests";
 
+function initialData() {
+  return {
+    inspection: null,
+    loading: false,
+    error: null,
+    comments: "",
+    creationDate: null,
+    inspectioTypes: [],
+    inspectionType: null,
+    assetType: null,
+    jumper_wifi: false,
+    led_gtw: "",
+    log_file: null,
+    image_file: null,
+    pot_sat: null,
+    gateway_battery_voltage: null,
+    gps_node_battery_voltage: null,
+    lora_power: null,
+    pressure_sensor_signal: null,
+  };
+}
 
 export default {
   name: "InspectionForm",
-  props: ["isOpen", "selectedIssue"], 
-  emits: ['updateIsOpen'],
+  props: ["isOpen", "selectedIssue"],
+  emits: ["updateIsOpen"],
   components: {
     Textarea,
     InputNumber,
@@ -284,35 +309,18 @@ export default {
     FileUpload,
     InlineMessage,
     Message,
-    Toast
+    Toast,
   },
   data() {
-    return {
-      inspection: null,
-      loading: false,
-      error: null,
-      comments: "",
-      creationDate: null,
-      inspectionTypes: [],
-      inspectionType: null,
-      assetType: null,
-      jumper_wifi: false,
-      led_gtw: "",
-      log_file: null,
-      image_file: null,
-      pot_sat: null,
-      gateway_battery_voltage: null,
-      gps_node_battery_voltage: null,
-      lora_power: null,
-      pressure_sensor_signal: null
-    };
+    return initialData();
   },
+
   methods: {
     async onSubmit() {
-      
       this.loading = true;
-      const user_id = sessionStorage.getItem('id');
-      const inspectionResult = await createInspectionMutation( //TODO: validar q todos los campso esten completos
+      const user_id = sessionStorage.getItem("id");
+      const inspectionResult = await createInspectionMutation(
+        //TODO: validar q todos los campso esten completos
         this.creationDate,
         this.led_gtw,
         this.jumper_wifi,
@@ -327,37 +335,39 @@ export default {
         this.lora_power,
         this.gps_node_battery_voltage,
         this.pressure_sensor_signal
-      )
+      );
 
-      if(inspectionResult.data.createinspection.id){
+      if (inspectionResult.data.createinspection.id) {
         this.showSuccess();
         this.computedIsOpen = false;
-      }
-      else{
+        this.resetWindow();
+      } else {
         this.showError();
       }
       this.loading = false;
     },
+    resetWindow: function () {
+      Object.assign(this.$data, initialData());
+    },
     showSuccess() {
-      this.$toast.add({severity:'success', summary: 'Pericia creada correctamente', detail:'creacion: ' + this.creationDate, life: 3000});
+      this.$toast.add({
+        severity: "success",
+        summary: "Pericia creada correctamente",
+        detail: "creacion: " + this.creationDate,
+        life: 3000,
+      });
     },
     showError() {
-      this.$toast.add({severity:'error', summary: 'Error al crear la pericia', detail:'error', life: 3000});
+      this.$toast.add({
+        severity: "error",
+        summary: "Error al crear la pericia",
+        detail: "error",
+        life: 3000,
+      });
     },
     onCancel() {
+      this.resetWindow();
       this.computedIsOpen = false;
-      this.inspection = null;
-      this.loading = false;
-      this.error = null;
-      this.comments = "";
-      this.creationDate = null;
-      console.log(" OMMMMMMM COPIAPEGAR ESTO")
-      this.inspectionType = null;
-      this.assetType = null;
-      this.jumper_wifi = false;
-      this.led_gtw = "";
-      this.log_file = null;
-      this.image_file = null;
     },
     imageUploadHandler(event) {
       console.log("hola image");
