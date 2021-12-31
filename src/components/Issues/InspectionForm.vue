@@ -312,9 +312,6 @@ export default {
       
       this.loading = true;
       const user_id = sessionStorage.getItem('id');
-      const file = await fetch(this.image_file.objectURL);
-      const imageBlob = await file.blob();
-      console.log('oaoaoaoaoao')
       const inspectionResult = await createInspectionMutation( //TODO: validar q todos los campso esten completos
         this.creationDate,
         this.led_gtw,
@@ -323,7 +320,7 @@ export default {
         this.selectedIssue.id,
         this.inspectionType.id,
         this.comments,
-        imageBlob,
+        this.image_file,
         this.log_file,
         this.satellite_power,
         this.gateway_battery_voltage,

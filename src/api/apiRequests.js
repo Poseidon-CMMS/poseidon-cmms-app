@@ -3,16 +3,32 @@ import {
   InMemoryCache,
   // ApolloProvider,
   // useQuery,
+  ApolloLink,
   gql,
 } from "@apollo/client/core";
+import { HttpLink } from "@apollo/client/link/http";
+import { createUploadLink } from "apollo-upload-client";
+
+const httpOptions = {
+  uri: process.env.VUE_APP_BACKEND_URL,
+  credentials: "include",
+};
+
+const httpLink = ApolloLink.split(
+  (operation) => operation.getContext().hasUpload,
+  createUploadLink(httpOptions),
+  new HttpLink(httpOptions)
+);
 
 const client = new ApolloClient({
-  uri: process.env.VUE_APP_BACKEND_URL,
   cache: new InMemoryCache(),
   fetchOptions: {
     mode: "no-cors",
   },
-  credentials: "include",
+  link: ApolloLink.from([
+    // ...
+    httpLink,
+  ]),
 });
 
 const loginQuery = async function (email, password) {
@@ -325,7 +341,46 @@ const createInspectionMutation = async function (
   gps_node_battery_voltage = null,
   pressure_sensor_signal = null
 ) {
-  console.log('aeiou')
+  const _variables = {
+    data: {
+      date,
+      led_gtw,
+      jumper_wifi,
+      user: {
+        connect: {
+          id: user_id,
+        },
+      },
+      hdw_issue: {
+        connect: {
+          id: hdw_issue_id,
+        },
+      },
+      inspection_type: {
+        connect: {
+          id: inspection_type_id,
+        },
+      },
+      comments,
+      //inspection type-dependents
+      picture: picture
+        ? {
+            upload: picture,
+          }
+        : null,
+      log: log
+        ? {
+            upload: log,
+          }
+        : null,
+      satellite_power,
+      gateway_battery_voltage,
+      lora_power,
+      gps_node_battery_voltage,
+      pressure_sensor_signal,
+    },
+  };
+
   return await client.mutate({
     mutation: gql`
       mutation ($data: inspectionCreateInput!) {
@@ -334,38 +389,9 @@ const createInspectionMutation = async function (
         }
       }
     `,
-    variables: {
-      data: {
-        date,
-        led_gtw,
-        jumper_wifi,
-        user: {
-          connect: {
-            id: user_id,
-          },
-        },
-        hdw_issue: {
-          connect: {
-            id: hdw_issue_id,
-          },
-        },
-        inspection_type: {
-          connect: {
-            id: inspection_type_id,
-          },
-        },
-        comments,
-        //inspection type-dependents
-        picture: {
-          upload: picture
-        },
-        log: null,
-        satellite_power,
-        gateway_battery_voltage,
-        lora_power,
-        gps_node_battery_voltage,
-        pressure_sensor_signal,
-      },
+    variables: _variables,
+    context: {
+      hasUpload: !!(log || picture),
     },
   });
 };
