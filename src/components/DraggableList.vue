@@ -14,14 +14,13 @@
                 <div class="list-group-item">
                   <Card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
                     <template #title>
-                      <div class="grid text-sm">
-                        <div class="col-10 m-0 p-0"> {{ element.comments }} </div>
-                        <div class="col-12"> {{ element?.irrigator?.field?.name || 'Campo desconocido' }} </div>
-                        <div class="col-12"> {{ element?.irrigator?.name + " (" + element?.irrigator?.integration_id + ")" }} </div>
-                      </div>
+                      {{ element.irrigator?.field?.name + " | " + element.irrigator.name + " (" + element.irrigator.integration_id+")" }}
                     </template>
                     <template #subtitle>
-                        {{ element.name }}
+                      {{ element.diagnostic.diagnostic_type.name }}
+                    </template>
+                    <template #content>
+                      {{ element.comments }}
                     </template>
                   </Card>
                 </div>
