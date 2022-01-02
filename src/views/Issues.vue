@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import DraggableList from '../components/DraggableList';
-import HdwIssueCreationDialog from '../components/HdwIssueCreationForm.vue';
+import DraggableList from '../components/Issues/DraggableList';
+import HdwIssueCreationDialog from '../components/Issues/Forms/HdwIssueCreationForm.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/Issues/IssueDetail.vue';
 import AssignationDialog from '../components/Issues/AssignationDialog.vue';

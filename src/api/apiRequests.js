@@ -395,6 +395,90 @@ const createHdwIssueMutation = async function (
   });
 };
 
+const createRepairMutation = async function (
+  date,
+  user_id,
+  hdw_issue_id,
+  repair_type_id,
+  replaced_asset_type_id,
+  new_gateway_id,
+  new_gps_node_id,
+  new_pressure_sensor_id,
+  work_order_id,
+  comments,
+  log,
+) {
+  const _variables = {
+    data: {
+      date,
+      user: {
+        connect: {
+          id: user_id,
+        },
+      },
+      hdw_issue: {
+        connect: {
+          id: hdw_issue_id,
+        },
+      },
+      repair_type: {
+        connect: {
+          id: repair_type_id,
+        },
+      },
+      replaced_asset_type: {
+        connect: {
+          id: replaced_asset_type_id,
+        },
+      },
+      work_order: {
+        connect: {
+          id: work_order_id,
+        },
+      },
+      gateway: new_gateway_id ?
+      {
+        connect: {
+          id: new_gateway_id,
+        },
+      } : null,
+      gps_node: new_gps_node_id ?
+      {
+        connect: {
+          id: new_gps_node_id,
+        },
+      } : null,
+      pressure_sensor: new_pressure_sensor_id ?
+      {
+        connect: {
+          id: new_pressure_sensor_id,
+        },
+      } : null,
+      comments,
+      //repair type-dependents
+      log: log
+        ? {
+            upload: log,
+          }
+        : null,
+    },
+  };
+
+  return await client.mutate({
+    mutation: gql`
+      mutation ($data: repairCreateInput!) {
+        createrepair: createrepair(data: $data) {
+          id
+        }
+      }
+    `,
+    variables: _variables,
+    context: {
+      hasUpload: !!log,
+    },
+  });
+}
+
 const createInspectionMutation = async function (
   date,
   led_gtw,
@@ -542,7 +626,22 @@ const getInspectionTypesQuery = async function () {
       }
     `,
   });
-};
+}
+
+const getRepairTypesQuery = async function () {
+  return await client.query({
+    query: gql`
+      query getRepairTypes {
+        repairTypes {
+          id
+          type {
+            name
+          }
+        }
+      }
+    `,
+  });
+}
 
 export {
   loginQuery,
@@ -557,4 +656,6 @@ export {
   getInspectionTypesQuery,
   createInspectionMutation,
   getInspectionsQuery,
+  createRepairMutation,
+  getRepairTypesQuery,
 };

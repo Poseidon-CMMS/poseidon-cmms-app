@@ -242,7 +242,7 @@ import {
   getDiagnosticTypesQuery,
   getIrrigatorsQuery,
   createHdwIssueMutation,
-} from "../api/apiRequests";
+} from "../../../api/apiRequests";
 
 export default {
   name: "HdwIssueCreationForm",

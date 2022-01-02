@@ -282,7 +282,7 @@
                   Reparaciones
                 </div>
                 <div class="mt-1">
-                  <Button @click="handleOpenInspectionForm" icon="pi pi-plus-circle" class="p-button-raised"/>
+                  <Button @click="handleOpenRepairForm" icon="pi pi-plus-circle" class="p-button-raised"/>
                 </div>
               </div>
             </template>
@@ -304,13 +304,14 @@
   </Panel>
   </div>
   <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenInspectionUpdated"></inspection-form>
+  <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
   <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenDetailUpdated"></inspection-detail>
 </template>
 
 <script>
 import Button from "primevue/button";
 import InspectionDetail from "./InspectionDetail.vue";
-import InspectionForm from "./InspectionForm.vue";
+import InspectionForm from "./Forms/InspectionForm.vue";
 import { getTechniciansQuery } from "../../api/apiRequests";
 export default {
   name: "IssueDetail",
@@ -330,6 +331,9 @@ export default {
     handleOpenInspectionForm: function () {
       this.showInspectionForm = true;
     },
+    handleOpenRepairForm: function () {
+      this.showRepairForm = true;
+    },
     handleClickInspection: function (inspection) {
       this.selectedInspection = inspection;
     },
@@ -339,6 +343,9 @@ export default {
     handleIsOpenInspectionUpdated: function () {
       this.showInspectionForm = false;
     },
+    handleIsOpenRepairUpdated: function () {
+      this.showRepairForm = false;
+    },
   },
   props: ["selectedIssue", "clickIrrigator", "technicianChange"],
   data() {
@@ -347,6 +354,7 @@ export default {
       selectedTechnician: null,
       selectedInspection: null,
       showInspectionForm: false,
+      showRepairForm: false,
       technicianOptions: [],
     };
   },

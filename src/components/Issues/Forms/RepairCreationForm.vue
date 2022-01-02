@@ -1,121 +1,101 @@
 <template>
   <Dialog
-    header="Nueva pericia"
+    header="Nueva reparación"
     v-model:visible="computedIsOpen"
     :style="{ width: '50vw' }"
     :modal="true"
   >
     <div class="card">
       <div class="field">
-        <label for="creationDate">Fecha</label>
+        <label for="date">Orden de trabajo</label>
+        <Dropdown
+          id="date"
+          v-model="selectedWorkOrder"
+          :options="workOrders"
+          optionLabel="work_date"
+          class="inputfield w-full"
+          placeholder="Orden de trabajo"
+        />
+      </div>
+      <div class="field">
+        <label for="date">Fecha de reparación en campo</label>
         <Calendar
           :show-icon="true"
-          v-model="creationDate"
+          v-model="date"
           dateFormat="yy-mm-dd"
           class="inputfield w-full"
         />
       </div>
       <div class="field">
-        <label for="diagnosticDate">Dispositivo con fallas</label>
+        <label for="repair_type">Tipo de reparación</label>
         <Dropdown
-          v-model="assetType"
-          :options="assetTypes"
-          optionLabel="name"
-          class="inputfield w-full"
-          placeholder="Dispositivo con fallas"
-        />
-      </div>
-      <div class="field">
-        <label for="gtw">Tipo de pericia</label>
-        <Dropdown
-          v-model="inspectionType"
-          :options="inspectionTypes"
+          id="repair_type"
+          v-model="repairType"
+          :options="repairTypes"
           optionLabel="name"
           :filter="true"
           class="inputfield w-full"
-          placeholder="Tipo de pericia"
+          placeholder="Tipo de reparación"
         />
       </div>
-      <div class="field" v-if="inspectionType?.pot_sat">
-        <label for="pot_sat">Potencia satelital</label>
-        <InputNumber
-          id="pot_sat"
-          v-model="pot_sat"
-          mode="decimal"
-          :minFractionDigits="2"
-          class="inputfield w-full"
+      <div class="field" v-if="repair_type?.code ==='device_change'">
+        <label for="asset_type">Dispositivo con fallas</label>
+        <SelectButton
+          id="asset_type"
+          v-model="assetType"
+          :options="assetTypes"
+          optionLabel="name"
         />
       </div>
-      <div class="field" v-if="inspectionType?.gateway_battery_voltage">
-        <label for="gateway_battery_voltage"
-          >Tensión de batería del gateway</label
-        >
-        <InputNumber
-          id="gateway_battery_voltage"
-          v-model="gateway_battery_voltage"
-          mode="decimal"
-          :minFractionDigits="2"
+      <div class="field" v-if="repair_type?.code ==='device_change' && assetType.name=='Gateway'">
+        <label for="asset_type">Nuevo gateway instalado</label>
+        <Dropdown
+          id="solution"
+          v-model="selectedSolution"
+          :options="solutionTypes"
+          optionLabel="name"
           class="inputfield w-full"
+          placeholder="Solución"
         />
       </div>
-      <div class="field" v-if="inspectionType?.gps_node_battery_voltage">
-        <label for="gps_node_battery_voltage"
-          >Tensión de batería del nodo GPS</label
-        >
-        <InputNumber
-          id="gps_node_battery_voltage"
-          v-model="gps_node_battery_voltage"
-          mode="decimal"
-          :minFractionDigits="2"
+      <div class="field" v-if="repair_type?.code ==='device_change' && assetType.name=='Nodo GPS'">
+        <label for="asset_type">Nuevo nodo instalado</label>
+        <Dropdown
+          id="solution"
+          v-model="selectedSolution"
+          :options="solutionTypes"
+          optionLabel="name"
           class="inputfield w-full"
+          placeholder="Solución"
         />
       </div>
-      <div class="field" v-if="inspectionType?.lora_power">
-        <label for="lora_power">Potencia LoRa</label>
-        <InputNumber
-          id="lora_power"
-          v-model="lora_power"
-          mode="decimal"
-          :minFractionDigits="2"
+      <div class="field" v-if="repair_type?.code ==='device_change' && assetType.name=='Sensor de presión'">
+        <label for="asset_type">Nuevo sensor de presión instalado</label>
+        <Dropdown
+          id="solution"
+          v-model="selectedSolution"
+          :options="solutionTypes"
+          optionLabel="name"
           class="inputfield w-full"
+          placeholder="Solución"
         />
       </div>
-      <div class="field" v-if="inspectionType?.pressure_sensor_signal">
-        <label for="pressure_sensor_signal">Señal sensor de presión</label>
-        <InputNumber
-          id="pressure_sensor_signal"
-          v-model="pressure_sensor_signal"
-          mode="decimal"
-          :minFractionDigits="2"
+      <div class="field" v-if="repair_type?.code ==='device_repair'">
+        <label for="solution">Solución</label>
+        <Dropdown
+          id="solution"
+          v-model="selectedSolution"
+          :options="solutionTypes"
+          optionLabel="name"
           class="inputfield w-full"
-        />
-      </div>
-      <div class="field">
-        <div class="p-field-checkbox">
-          <Checkbox
-            id="jumper_wifi"
-            name="jumper_wifi"
-            value="Jumper WiFi conectado"
-            :binary="true"
-            v-model="jumper_wifi"
-          />
-          <label class="ml-2" for="jumper_wifi">Jumper WiFi conectado</label>
-        </div>
-      </div>
-      <div class="field">
-        <label for="led_gtw">Color led Gateway</label>
-        <InputText
-          id="led_gtw"
-          v-model="led_gtw"
-          type="text"
-          class="inputfield w-full"
+          placeholder="Solución"
         />
       </div>
       <div class="field">
         <label for="comments">Comentarios</label>
         <Textarea
           id="comments"
-          placeholder="Observaciones acerca de la pericia"
+          placeholder="Observaciones acerca de la reparación"
           v-model="comments"
           :autoResize="true"
           class="inputfield w-full"
@@ -137,64 +117,8 @@
             border-round
           "
         >
-          <p class="text-left font-bold text-blue-500">Imagen</p>
-        </div>
-        <div
-          class="
-            flex-none flex
-            align-items-center
-            justify-content-center
-            font-bold
-            text-white
-            m-2
-            px-5
-            py-3
-            border-round
-          "
-        >
-          <FileUpload
-            name="image_upload"
-            :customUpload="true"
-            @uploader="imageUploadHandler"
-            mode="basic"
-            accept="image/*"
-            :auto="true"
-          />
-        </div>
-        <div
-          class="
-            flex-1 flex
-            align-items-center
-            justify-content-center
-            font-bold
-            text-white
-            m-2
-            px-5
-            py-3
-            border-round
-          "
-        >
-          <InlineMessage v-if="!!this.image_file" severity="success"
-            >Cargado {{ this.image_file.name }}</InlineMessage
-          >
-        </div>
-      </div>
-      <div class="field flex">
-        <div
-          class="
-            flex-1 flex
-            align-items-center
-            justify-content-center
-            font-bold
-            text-white
-            m-2
-            px-5
-            py-3
-            border-round
-          "
-        >
           <p class="w-12 text-left font-bold text-blue-500">
-            Log del dispositivo
+            Log
           </p>
         </div>
         <div
@@ -270,36 +194,30 @@ import InlineMessage from "primevue/inlinemessage";
 import Message from "primevue/message";
 import FileUpload from "primevue/fileupload";
 import InputNumber from "primevue/inputnumber";
+import SelectButton from "primevue/selectbutton";
 import {
   getAssetTypesQuery,
-  getInspectionTypesQuery,
-  createInspectionMutation,
-} from "../../api/apiRequests";
+  getRepairTypesQuery,
+  createRepairMutation
+} from "../../../api/apiRequests";
 
 function initialData() {
   return {
-    inspection: null,
+    repair: null,
     loading: false,
     error: null,
     comments: "",
     creationDate: null,
-    inspectioTypes: [],
-    inspectionType: null,
+    repairTypes: [],
+    repairType: null,
     assetType: null,
-    jumper_wifi: false,
-    led_gtw: "",
-    log_file: null,
-    image_file: null,
-    pot_sat: null,
-    gateway_battery_voltage: null,
-    gps_node_battery_voltage: null,
-    lora_power: null,
-    pressure_sensor_signal: null,
+    assetTypes: [],
+    log_file: null
   };
 }
 
 export default {
-  name: "InspectionForm",
+  name: "RepairForm",
   props: ["isOpen", "selectedIssue"],
   emits: ["updateIsOpen"],
   components: {
@@ -310,6 +228,7 @@ export default {
     InlineMessage,
     Message,
     Toast,
+    SelectButton,
   },
   data() {
     return initialData();
@@ -319,14 +238,14 @@ export default {
     async onSubmit() {
       this.loading = true;
       const user_id = sessionStorage.getItem("id");
-      const inspectionResult = await createInspectionMutation(
+      const repairResult = await createRepairMutation(
         //TODO: validar q todos los campso esten completos
         this.creationDate,
         this.led_gtw,
         this.jumper_wifi,
         user_id,
         this.selectedIssue.id,
-        this.inspectionType.id,
+        this.repairType.id,
         this.comments,
         this.image_file,
         this.log_file,
@@ -337,7 +256,7 @@ export default {
         this.pressure_sensor_signal
       );
 
-      if (inspectionResult.data.createinspection.id) {
+      if (repairResult.data.createrepair.id) {
         this.showSuccess();
         this.computedIsOpen = false;
         this.resetWindow();
@@ -352,7 +271,7 @@ export default {
     showSuccess() {
       this.$toast.add({
         severity: "success",
-        summary: "Pericia creada correctamente",
+        summary: "Reparación creada correctamente",
         detail: "creacion: " + this.creationDate,
         life: 3000,
       });
@@ -360,7 +279,7 @@ export default {
     showError() {
       this.$toast.add({
         severity: "error",
-        summary: "Error al crear la pericia",
+        summary: "Error al crear la reparación",
         detail: "error",
         life: 3000,
       });
@@ -392,9 +311,7 @@ export default {
   },
   async beforeMount() {
     this.assetTypes = (await getAssetTypesQuery()).data.assetTypes;
-    this.inspectionTypes = (
-      await getInspectionTypesQuery()
-    ).data.inspectionTypes; //todo: error handling
+    this.repairTypes = (await getRepairTypesQuery()).data.repairTypes; //todo: error handling
     this.loading = false;
   },
 };
