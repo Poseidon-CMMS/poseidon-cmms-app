@@ -204,7 +204,7 @@ const getDiagnosticTypesQuery = async function () {
           node_to_gateway_distance_in_meters
           gateway_first_data_transmission_date
           height_difference_in_meters
-          from_hour 
+          from_hour
           to_hour
           packet_203_count
           pressure_difference
@@ -249,6 +249,19 @@ const getHdwIssuesQuery = async function () {
               type {
                 name
               }
+              gateway_satellite_power
+              angles
+              packet_202_count
+              battery_2to3
+              positions
+              lost_packets
+              node_to_gateway_distance_in_meters
+              gateway_first_data_transmission_date
+              height_difference_in_meters
+              from_hour
+              to_hour
+              packet_203_count
+              pressure_difference
             }
             comments
             gateway_satellite_power
@@ -260,7 +273,7 @@ const getHdwIssuesQuery = async function () {
             node_to_gateway_distance_in_meters
             gateway_first_data_transmission_date
             height_difference_in_meters
-            from_hour 
+            from_hour
             to_hour
             packet_203_count
             pressure_difference
@@ -342,19 +355,34 @@ const createHdwIssueMutation = async function (
             grafana_link: grafanaLink,
             comments: comments,
             // optionals
-            angles: angles===null?undefined:angles,
-            gateway_satellite_power: gateway_satellite_power===null?undefined:gateway_satellite_power,
-            packet_202_count: packet_202_count===null?undefined:packet_202_count,
-            packet_203_count: packet_203_count===null?undefined:packet_203_count,
-            battery_2to3: battery_2to3===null?undefined:battery_2to3,
-            positions: positions===null?undefined:positions,
-            lost_packets: lost_packets===null?undefined:lost_packets,
-            node_to_gateway_distance_in_meters: node_to_gateway_distance_in_meters===null?undefined:node_to_gateway_distance_in_meters,
-            gateway_first_data_transmission_date: gateway_first_data_transmission_date===null?undefined:gateway_first_data_transmission_date,
-            height_difference_in_meters: height_difference_in_meters===null?undefined:height_difference_in_meters,
-            to_hour: to_hour===null?undefined:to_hour,
-            from_hour: from_hour===null?undefined:from_hour,
-            pressure_difference: pressure_difference===null?undefined:pressure_difference
+            angles: angles === null ? undefined : angles,
+            gateway_satellite_power:
+              gateway_satellite_power === null
+                ? undefined
+                : gateway_satellite_power,
+            packet_202_count:
+              packet_202_count === null ? undefined : packet_202_count,
+            packet_203_count:
+              packet_203_count === null ? undefined : packet_203_count,
+            battery_2to3: battery_2to3 === null ? undefined : battery_2to3,
+            positions: positions === null ? undefined : positions,
+            lost_packets: lost_packets === null ? undefined : lost_packets,
+            node_to_gateway_distance_in_meters:
+              node_to_gateway_distance_in_meters === null
+                ? undefined
+                : node_to_gateway_distance_in_meters,
+            gateway_first_data_transmission_date:
+              gateway_first_data_transmission_date === null
+                ? undefined
+                : gateway_first_data_transmission_date,
+            height_difference_in_meters:
+              height_difference_in_meters === null
+                ? undefined
+                : height_difference_in_meters,
+            to_hour: to_hour === null ? undefined : to_hour,
+            from_hour: from_hour === null ? undefined : from_hour,
+            pressure_difference:
+              pressure_difference === null ? undefined : pressure_difference,
           },
         },
         irrigator: {
