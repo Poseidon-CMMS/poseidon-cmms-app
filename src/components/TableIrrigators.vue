@@ -37,8 +37,8 @@
     <column field="sla" header="SLA" :sortable="true"></column>
     <column field="gateway.integrationId" header="GTW ID" :sortable="true"></column>
     <column field="gpsNode.integrationId" header="Node ID" :sortable="true"></column>
-    <column field="pressureSensor.manufacturerId" header="Pressure Sensor ID" :sortable="true"></column>
-    <column field="gateway.satelliteModem.manufacturerId" header="Modem ID" :sortable="true"></column>
+    <column field="pressureSensor.integration_id" header="Pressure Sensor ID" :sortable="true"></column>
+    <column field="gateway.satelliteModem.integration_id" header="Modem ID" :sortable="true"></column>
     <column field="isMapped" header="Mapped" :sortable="true"></column>
     <column field="field.zone.name" header="Zone" :sortable="true"></column>
     <column field="field.province.name" header="Province" :sortable="true"></column>

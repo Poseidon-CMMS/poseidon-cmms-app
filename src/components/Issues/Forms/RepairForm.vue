@@ -66,7 +66,7 @@
           id="solution"
           v-model="selectedGateway"
           :options="gateways"
-          optionLabel="name"
+          optionLabel="integration_id"
           class="inputfield w-full"
           placeholder="Gateway"
         />
@@ -77,18 +77,18 @@
           id="solution"
           v-model="selectedGpsNode"
           :options="gpsNodes"
-          optionLabel="name"
+          optionLabel="integration_id"
           class="inputfield w-full"
           placeholder="Nodo"
         />
       </div>
-      <div class="field" v-if="repairType?.value === 'device_change' && assetType?.name=='Sensor de presión'">
+      <div class="field" v-if="repairType?.value === 'device_change' && assetType?.name=='Sensor de Presión'">
         <label for="asset_type">Nuevo sensor de presión instalado</label>
         <Dropdown
           id="solution"
           v-model="selectedPressureSensor"
           :options="pressureSensors"
-          optionLabel="name"
+          optionLabel="integration_id"
           class="inputfield w-full"
           placeholder="Sensor de presión"
         />
@@ -215,9 +215,9 @@ import {
   createRepairMutation,
   getSolutionTypesQuery,
   getWorkOrdersQuery,
-  // getTechniciansGatewaysQuery,
-  // getTechniciansGpsNodesQuery,
-  // getTechniciansPressureSensorQuery,
+  getTechniciansGatewaysQuery,
+  getTechniciansGpsNodesQuery,
+  getTechniciansPressureSensorsQuery,
 } from "../../../api/apiRequests";
 
 function initialData() {
@@ -232,13 +232,13 @@ function initialData() {
     assetType: null,
     assetTypes: [],
     log_file: null,
-    workOrders: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    workOrders: [],
     selectedWorkOrder: null,
-    pressureSensors: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    pressureSensors: [],
     selectedPressureSensor: null,
-    gpsNodes: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    gpsNodes: [],
     selectedGpsNode: null,
-    gateways: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    gateways: [],
     selectedGateway: null,
     selectedSolution: null,
     solutionTypes: [],
@@ -266,11 +266,9 @@ export default {
   methods: {
     async onSubmit() {
       this.loading = true;
-      const user_id = sessionStorage.getItem("id");
       const repairResult = await createRepairMutation(
         //TODO: validar q todos los campso esten completos
         this.creationDate,
-        user_id,
         this.selectedIssue.id,
         this.repairType.id,
         this.assetType?.id,
@@ -341,9 +339,9 @@ export default {
     this.solutionTypes = (await getSolutionTypesQuery()).data.solutionTypes; //todo: error handling
     const user_id = sessionStorage.getItem("id");
     this.workOrders = (await getWorkOrdersQuery(user_id)).data.workOrders; //todo: error handling
-    // this.gateways = (await getTechniciansGatewaysQuery()).data.gateways; //todo: error handling
-    // this.pressureSensors = (await getTechniciansPressureSensorsQuery()).data.pressureSensors; //todo: error handling
-    // this.gpsNodes = (await getTechniciansGpsNodeQuery()).data.gpsNodes; //todo: error handling
+    this.gateways = (await getTechniciansGatewaysQuery()).data.gateways; //todo: error handling y traer solo las del tecnico
+    this.pressureSensors = (await getTechniciansPressureSensorsQuery()).data.pressureSensors; //todo: error handling y traer solo las del tecnico
+    this.gpsNodes = (await getTechniciansGpsNodesQuery()).data.gpsNodes; //todo: error handling y traer solo las del tecnico
 
     this.loading = false;
   },

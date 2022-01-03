@@ -82,7 +82,7 @@ const getIrrigatorsQuery = async function (id) {
             id
             integration_id
             satellite_modem {
-              manufacturer_id
+              integration_id
             }
           }
           gps_node {
@@ -110,7 +110,7 @@ const getIrrigatorsQuery = async function (id) {
           hdw_issueCount
           pressure_sensor {
             id
-            manufacturer_id
+            integration_id
           }
         }
       }
@@ -156,11 +156,11 @@ const getGatewaysQuery = async function (id) {
           }
           satellite_modem {
             id
-            manufacturer_id
+            integration_id
           }
           satellite_antenna {
             id
-            manufacturer_id
+            integration_id
           }
 
           pcb_gateway {
@@ -451,7 +451,6 @@ const createWorkOrderMutation = async function (
 
 const createRepairMutation = async function (
   date,
-  user_id,
   hdw_issue_id,
   repair_type_id,
   replaced_asset_type_id,
@@ -462,14 +461,10 @@ const createRepairMutation = async function (
   comments,
   log
 ) {
+  console.log('oooooooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
   const _variables = {
     data: {
       date,
-      technician: {
-        connect: {
-          id: user_id,
-        },
-      },
       hdw_issue: {
         connect: {
           id: hdw_issue_id,
@@ -490,21 +485,21 @@ const createRepairMutation = async function (
           id: work_order_id,
         },
       },
-      gateway: new_gateway_id
+      new_gateway: new_gateway_id
         ? {
             connect: {
               id: new_gateway_id,
             },
           }
         : null,
-      gps_node: new_gps_node_id
+      new_gps_node: new_gps_node_id
         ? {
             connect: {
               id: new_gps_node_id,
             },
           }
         : null,
-      pressure_sensor: new_pressure_sensor_id
+      new_pressure_sensor: new_pressure_sensor_id
         ? {
             connect: {
               id: new_pressure_sensor_id,
@@ -712,51 +707,42 @@ const getSolutionTypesQuery = async function () {
   });
 };
 
-const getTechniciansGatewaysQuery = async function (technician_id) {
+const getTechniciansGatewaysQuery = async function () {
   return await client.query({
     query: gql`
-      query getGateway($id: ID) {
-        gateways(where: { id: { equals: $id } }) {
+      query getGateways {
+        gateways {
           id
           integration_id
         }
       }
     `,
-    variables: {
-      technician_id,
-    },
   });
 };
 
-const getTechniciansPressureSensorQuery = async function (technician_id) {
+const getTechniciansPressureSensorsQuery = async function () {
   return await client.query({
     query: gql`
-      query getGateway($id: ID) {
-        gateways(where: { id: { equals: $id } }) {
+      query getPressureSensor {
+        pressureSensors {
           id
           integration_id
         }
       }
     `,
-    variables: {
-      technician_id,
-    },
   });
 };
 
-const getTechniciansGpsNodesQuery = async function (technician_id) {
+const getTechniciansGpsNodesQuery = async function () {
   return await client.query({
     query: gql`
-      query getGateway($id: ID) {
-        gpsNodes(where: { id: { equals: $id } }) {
+      query getGpsNodes {
+        gpsNodes {
           id
           integration_id
         }
       }
     `,
-    variables: {
-      technician_id,
-    },
   });
 };
 export {
@@ -778,6 +764,6 @@ export {
   getRepairTypesQuery,
   getSolutionTypesQuery,
   getTechniciansGatewaysQuery,
-  getTechniciansPressureSensorQuery,
+  getTechniciansPressureSensorsQuery,
   getTechniciansGpsNodesQuery,
 };
