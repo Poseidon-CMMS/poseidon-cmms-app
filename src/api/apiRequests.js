@@ -643,6 +643,70 @@ const getRepairTypesQuery = async function () {
   });
 }
 
+const getSolutionTypesQuery = async function () {
+  return await client.query({
+    query: gql`
+      query getSolutionTypes {
+        solutionTypes {
+          id
+          type {
+            name
+          }
+        }
+      }
+    `,
+  });
+}
+
+const getTechniciansGatewaysQuery = async function (technician_id) {
+  return await client.query({
+    query: gql`
+      query getGateway($id: ID) {
+        
+        
+        gateways(where: { storageLocation: { user: {equals: technician_id}}} }) {
+          id
+          integration_id
+         }
+      }
+    `,
+    variables: {
+      id,
+    },
+  });
+};
+
+
+
+const getTechniciansPressureSensorQuery = async function (technician_id) {
+  return await client.query({
+    query: gql`
+      query getSolutionTypes {
+         {
+          id
+          type {
+            name
+          }
+        }
+      }
+    `,
+  });
+}
+
+const getTechniciansGpsNodesQuery = async function (technician_id) {
+  return await client.query({
+    query: gql`
+      query getSolutionTypes {
+        solutionTypes {
+          id
+          type {
+            name
+          }
+        }
+      }
+    `,
+  });
+}
 export {
   loginQuery,
   getIrrigatorsQuery,
@@ -658,4 +722,5 @@ export {
   getInspectionsQuery,
   createRepairMutation,
   getRepairTypesQuery,
+  getSolutionTypesQuery
 };

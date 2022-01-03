@@ -7,9 +7,9 @@
   >
     <div class="card">
       <div class="field">
-        <label for="date">Orden de trabajo</label>
+        <label for="work_order">Orden de trabajo</label>
         <Dropdown
-          id="date"
+          id="work_order"
           v-model="selectedWorkOrder"
           :options="workOrders"
           optionLabel="work_date"
@@ -18,10 +18,11 @@
         />
       </div>
       <div class="field">
-        <label for="date">Fecha de reparación en campo</label>
+        <label for="creationDate">Fecha de reparación en campo</label>
         <Calendar
+          id="creationDate"
           :show-icon="true"
-          v-model="date"
+          v-model="creationDate"
           dateFormat="yy-mm-dd"
           class="inputfield w-full"
         />
@@ -51,8 +52,8 @@
         <label for="asset_type">Nuevo gateway instalado</label>
         <Dropdown
           id="solution"
-          v-model="selectedSolution"
-          :options="solutionTypes"
+          v-model="selectedGateway"
+          :options="gateways"
           optionLabel="name"
           class="inputfield w-full"
           placeholder="Solución"
@@ -62,8 +63,8 @@
         <label for="asset_type">Nuevo nodo instalado</label>
         <Dropdown
           id="solution"
-          v-model="selectedSolution"
-          :options="solutionTypes"
+          v-model="selectedGpsNode"
+          :options="gpsNodes"
           optionLabel="name"
           class="inputfield w-full"
           placeholder="Solución"
@@ -73,8 +74,8 @@
         <label for="asset_type">Nuevo sensor de presión instalado</label>
         <Dropdown
           id="solution"
-          v-model="selectedSolution"
-          :options="solutionTypes"
+          v-model="selectedPressureSensor"
+          :options="pressureSensors"
           optionLabel="name"
           class="inputfield w-full"
           placeholder="Solución"
@@ -198,11 +199,16 @@ import SelectButton from "primevue/selectbutton";
 import {
   getAssetTypesQuery,
   getRepairTypesQuery,
-  createRepairMutation
+  createRepairMutation,
+  getSolutionTypesQuery,
+  getTechniciansGatewaysQuery,
+  getTechniciansGpsNodesQuery,
+  getTechniciansPressureSensorQuery,
 } from "../../../api/apiRequests";
 
 function initialData() {
   return {
+    
     repair: null,
     loading: false,
     error: null,
@@ -212,7 +218,17 @@ function initialData() {
     repairType: null,
     assetType: null,
     assetTypes: [],
-    log_file: null
+    log_file: null,
+    workOrders: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    selectedWorkOrder: null,
+    pressureSensors: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    selectedPressureSensor: null,
+    gpsNodes: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    selectedGpsNode: null,
+    gateways: [], //TODO: que solo traiga los que estan en tu stock (si sos tecnico)
+    selectedGateway: null,
+    selectedSolution: null,
+    solutionTypes: [] 
   };
 }
 
@@ -288,13 +304,7 @@ export default {
       this.resetWindow();
       this.computedIsOpen = false;
     },
-    imageUploadHandler(event) {
-      console.log("hola image");
-      console.log(event);
-      this.image_file = event.files[0];
-    },
     logUploadHandler(event) {
-      console.log("hola log");
       console.log(event);
       this.log_file = event.files[0];
     },
@@ -312,6 +322,11 @@ export default {
   async beforeMount() {
     this.assetTypes = (await getAssetTypesQuery()).data.assetTypes;
     this.repairTypes = (await getRepairTypesQuery()).data.repairTypes; //todo: error handling
+    this.solutionTypes = (await getSolutionTypesQuery()).data.solutionTypes; //todo: error handling
+    this.gateways = (await getTechniciansGatewaysQuery()).data.gateways; //todo: error handling
+    this.pressureSensors = (await getTechniciansPressureSensorsQuery()).data.pressureSensors; //todo: error handling
+    this.gpsNodes = (await getTechniciansGpsNodeQuery()).data.gpsNodes; //todo: error handling
+
     this.loading = false;
   },
 };

@@ -370,12 +370,10 @@ export default {
       this.computedIsOpen = false;
     },
     imageUploadHandler(event) {
-      console.log("hola image");
       console.log(event);
       this.image_file = event.files[0];
     },
     logUploadHandler(event) {
-      console.log("hola log");
       console.log(event);
       this.log_file = event.files[0];
     },
