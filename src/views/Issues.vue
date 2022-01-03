@@ -25,7 +25,7 @@
     </div>
       
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
-    <assignation-dialog :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueHasBeenUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-dialog>
+    <assignation-form :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueHasBeenUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -35,7 +35,7 @@ import DraggableList from '../components/Issues/DraggableList';
 import HdwIssueCreationDialog from '../components/Issues/Forms/HdwIssueCreationForm.vue';
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/Issues/IssueDetail.vue';
-import AssignationDialog from '../components/Issues/AssignationDialog.vue';
+import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
 import { getHdwIssuesQuery, getInspectionsQuery } from '../api/apiRequests';
 
 export default {
@@ -45,7 +45,7 @@ export default {
     HdwIssueCreationDialog,
     IrrigatorDetailsDialog,
     IssueDetail,
-    AssignationDialog
+    AssignationForm
   },
   methods: {
     hasDevice: function(value) {

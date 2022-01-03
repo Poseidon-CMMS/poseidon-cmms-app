@@ -52,12 +52,12 @@
 </template>
 
 <script>
-import { getTechniciansQuery, assignHdwIssueMutation } from "../../api/apiRequests";
+import { getTechniciansQuery, assignHdwIssueMutation } from "../../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
 
 export default {
-  name: "AssignationDialog",
+  name: "AssignationForm",
   props: ["isOpen", "selectedIssue"],
   components: { Dropdown, Message },
   data() {

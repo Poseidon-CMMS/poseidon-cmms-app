@@ -312,6 +312,7 @@
 import Button from "primevue/button";
 import InspectionDetail from "./InspectionDetail.vue";
 import InspectionForm from "./Forms/InspectionForm.vue";
+import RepairForm from "./Forms/RepairForm.vue";
 import { getTechniciansQuery } from "../../api/apiRequests";
 export default {
   name: "IssueDetail",
@@ -319,6 +320,7 @@ export default {
     Button,
     InspectionDetail,
     InspectionForm,
+    RepairForm
   },
   methods: {
     hasDevice: function (value) {

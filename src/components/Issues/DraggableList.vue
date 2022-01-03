@@ -14,7 +14,7 @@
                 <div class="list-group-item">
                   <Card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
                     <template #title>
-                      {{ element.irrigator?.field?.name + " | " + element.irrigator.name + " (" + element.irrigator.integration_id+")" }}
+                      {{ element.irrigator?.field?.name ?? 'Campo desconocido' + " | " + element.irrigator.name + " (" + element.irrigator.integration_id+")" }}
                     </template>
                     <template #subtitle>
                       {{ element.diagnostic.diagnostic_type.name }}

@@ -395,6 +395,60 @@ const createHdwIssueMutation = async function (
   });
 };
 
+const getWorkOrdersQuery = async function (id) {
+  return await client.query({
+    query: gql`
+      query getWorkOrders($id: ID) {
+        workOrders(where: {technician: {id: {
+          equals: $id
+        }}}) {
+          work_date
+          id
+          km_traveled
+          comment
+        }
+      }
+    `,
+    variables: {
+      "id": id
+    }
+  });
+};
+
+const createWorkOrderMutation = async function (
+  creationDate,
+  distance_in_kilometers,
+  comments,
+  user_id
+) {
+  const _variables = {
+    data: {
+      work_date: creationDate,
+      km_traveled: distance_in_kilometers,
+      comment: comments,
+      technician: {
+        connect: {
+          id: user_id,
+        },
+      },
+    },
+  };
+
+  return await client.mutate({
+    mutation: gql`
+      mutation ($data: work_orderCreateInput!) {
+        creatework_order: creatework_order(data: $data) {
+          id
+          work_date
+          km_traveled
+          comment
+        }
+      }
+    `,
+    variables: _variables,
+  });
+};
+
 const createRepairMutation = async function (
   date,
   user_id,
@@ -406,12 +460,12 @@ const createRepairMutation = async function (
   new_pressure_sensor_id,
   work_order_id,
   comments,
-  log,
+  log
 ) {
   const _variables = {
     data: {
       date,
-      user: {
+      technician: {
         connect: {
           id: user_id,
         },
@@ -436,24 +490,27 @@ const createRepairMutation = async function (
           id: work_order_id,
         },
       },
-      gateway: new_gateway_id ?
-      {
-        connect: {
-          id: new_gateway_id,
-        },
-      } : null,
-      gps_node: new_gps_node_id ?
-      {
-        connect: {
-          id: new_gps_node_id,
-        },
-      } : null,
-      pressure_sensor: new_pressure_sensor_id ?
-      {
-        connect: {
-          id: new_pressure_sensor_id,
-        },
-      } : null,
+      gateway: new_gateway_id
+        ? {
+            connect: {
+              id: new_gateway_id,
+            },
+          }
+        : null,
+      gps_node: new_gps_node_id
+        ? {
+            connect: {
+              id: new_gps_node_id,
+            },
+          }
+        : null,
+      pressure_sensor: new_pressure_sensor_id
+        ? {
+            connect: {
+              id: new_pressure_sensor_id,
+            },
+          }
+        : null,
       comments,
       //repair type-dependents
       log: log
@@ -477,7 +534,7 @@ const createRepairMutation = async function (
       hasUpload: !!log,
     },
   });
-}
+};
 
 const createInspectionMutation = async function (
   date,
@@ -626,7 +683,7 @@ const getInspectionTypesQuery = async function () {
       }
     `,
   });
-}
+};
 
 const getRepairTypesQuery = async function () {
   return await client.query({
@@ -634,14 +691,13 @@ const getRepairTypesQuery = async function () {
       query getRepairTypes {
         repairTypes {
           id
-          type {
-            name
-          }
+          name
+          value
         }
       }
     `,
   });
-}
+};
 
 const getSolutionTypesQuery = async function () {
   return await client.query({
@@ -649,64 +705,60 @@ const getSolutionTypesQuery = async function () {
       query getSolutionTypes {
         solutionTypes {
           id
-          type {
-            name
-          }
+          name
         }
       }
     `,
   });
-}
+};
 
 const getTechniciansGatewaysQuery = async function (technician_id) {
   return await client.query({
     query: gql`
       query getGateway($id: ID) {
-        
-        
-        gateways(where: { storageLocation: { user: {equals: technician_id}}} }) {
+        gateways(where: { id: { equals: $id } }) {
           id
           integration_id
-         }
+        }
       }
     `,
     variables: {
-      id,
+      technician_id,
     },
   });
 };
 
-
-
 const getTechniciansPressureSensorQuery = async function (technician_id) {
   return await client.query({
     query: gql`
-      query getSolutionTypes {
-         {
+      query getGateway($id: ID) {
+        gateways(where: { id: { equals: $id } }) {
           id
-          type {
-            name
-          }
+          integration_id
         }
       }
     `,
+    variables: {
+      technician_id,
+    },
   });
-}
+};
 
 const getTechniciansGpsNodesQuery = async function (technician_id) {
   return await client.query({
     query: gql`
-      query getSolutionTypes {
-        solutionTypes {
+      query getGateway($id: ID) {
+        gpsNodes(where: { id: { equals: $id } }) {
           id
-          type {
-            name
-          }
+          integration_id
         }
       }
     `,
+    variables: {
+      technician_id,
+    },
   });
-}
+};
 export {
   loginQuery,
   getIrrigatorsQuery,
@@ -721,6 +773,11 @@ export {
   createInspectionMutation,
   getInspectionsQuery,
   createRepairMutation,
+  createWorkOrderMutation,
+  getWorkOrdersQuery,
   getRepairTypesQuery,
-  getSolutionTypesQuery
+  getSolutionTypesQuery,
+  getTechniciansGatewaysQuery,
+  getTechniciansPressureSensorQuery,
+  getTechniciansGpsNodesQuery,
 };
