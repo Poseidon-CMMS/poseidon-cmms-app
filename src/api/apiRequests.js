@@ -16,6 +16,55 @@ const httpOptions = {
 };
 
 const detectSessionTimeout = new ApolloLink((operation, forward) => {
+  if(operation.query.definitions[0].operation === "query"){
+    operation.query.definitions[0].selectionSet.selections.push({
+      kind: "Field",
+      name: {
+        kind: "Name",
+        value: "keystone",
+      },
+      arguments: [],
+      directives: [],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "adminMeta",
+            },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: {
+                    kind: "Name",
+                    value: "__typename",
+                  },
+                  arguments: [],
+                  directives: [],
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: {
+              kind: "Name",
+              value: "__typename",
+            },
+            arguments: [],
+            directives: [],
+          },
+        ],
+      },
+    });
+  }
+  
   //Called before the request is sent
   return forward(operation).map((data) => {
     // Called after server responds
@@ -26,21 +75,6 @@ const detectSessionTimeout = new ApolloLink((operation, forward) => {
     return data;
   });
 });
-
-const injectKeystoneIntoQuery = (originalQuery) => {
-  const trimmedQuery = originalQuery.trim();
-  const trimmedQueryWithoutLastCurlyBrace = trimmedQuery.substr(
-    0,
-    trimmedQuery.length - 1
-  );
-  const keystoneAddon = ` keystone {
-    adminMeta {
-      __typename
-    }
-    __typename
-  }`;
-  return trimmedQueryWithoutLastCurlyBrace + keystoneAddon + "}";
-};
 
 // 2-mode http link:
 // - Mode 1: File upload mode
@@ -98,58 +132,55 @@ const loginQuery = async function (email, password) {
 };
 
 const getIrrigatorsQuery = async function (id) {
-  const stringQuery = //ya esta todo listo... solo hay q hace resto en el resto del asqueries... y ver q pasa con las mutations
-    injectKeystoneIntoQuery(`query getIrrigatorsQuery($id: ID) {
-    irrigators(where: { id: { equals: $id } }) {
-      id
-      integration_id
-      name
-      lat
-      long
-      status
-      enabled
-      transmission_status
-      comment
-      gateway {
-        id
-        integration_id
-        satellite_modem {
-          integration_id
-        }
-      }
-      gps_node {
-        id
-        integration_id
-      }
-      field {
-        client {
-          name
-        }
-        name
-        province {
-          name
-        }
-        city {
-          name
-        }
-        zone {
-          name
-        }
-      }
-      install_uninstall_request {
-        id
-      }
-      hdw_issueCount
-      pressure_sensor {
-        id
-        integration_id
-      }
-    }
-  }`);
-
   return await client.query({
     query: gql`
-      ${stringQuery}
+      query getIrrigatorsQuery($id: ID) {
+        irrigators(where: { id: { equals: $id } }) {
+          id
+          integration_id
+          name
+          lat
+          long
+          status
+          enabled
+          transmission_status
+          comment
+          gateway {
+            id
+            integration_id
+            satellite_modem {
+              integration_id
+            }
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          field {
+            client {
+              name
+            }
+            name
+            province {
+              name
+            }
+            city {
+              name
+            }
+            zone {
+              name
+            }
+          }
+          install_uninstall_request {
+            id
+          }
+          hdw_issueCount
+          pressure_sensor {
+            id
+            integration_id
+          }
+        }
+      }
     `,
     variables: {
       id,
