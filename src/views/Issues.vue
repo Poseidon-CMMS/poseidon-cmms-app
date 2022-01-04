@@ -36,7 +36,7 @@ import HdwIssueCreationDialog from '../components/Issues/Forms/HdwIssueCreationF
 import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
 import IssueDetail from '../components/Issues/IssueDetail.vue';
 import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
-import { getHdwIssuesQuery, getInspectionsQuery } from '../api/apiRequests';
+import { getHdwIssuesSummaryQuery, getHdwIssueDetailsQuery } from '../api/apiRequests';
 
 export default {
   name: 'Issues',
@@ -90,8 +90,8 @@ export default {
     },
     clickElement: async function(evt) {// todo mostrar un loading
       this.selectedIssue = evt;
-      const issueInspections = (await getInspectionsQuery(this.selectedIssue.id)).data.inspections; //todo caso error
-      this.selectedIssue = {...this.selectedIssue, inspections: issueInspections};
+      const detailedIssue = (await getHdwIssueDetailsQuery(this.selectedIssue.id)).data.hdw_issue; //todo caso error
+      this.selectedIssue = detailedIssue;
     },
     setIsCreationModalOpen(val) {
       this.isCreationModalOpen = val;
@@ -135,7 +135,7 @@ export default {
   },
   async beforeMount() {
     //traer hdw issues todo: manejo de errores
-    const result = await getHdwIssuesQuery();
+    const result = await getHdwIssuesSummaryQuery();
     this.issues = result.data.hdwIssues;
 
     const irrigatorId = this.$route.params.irrigatorId;

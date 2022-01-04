@@ -16,7 +16,7 @@ const httpOptions = {
 };
 
 const detectSessionTimeout = new ApolloLink((operation, forward) => {
-  if(operation.query.definitions[0].operation === "query"){
+  if (operation.query.definitions[0].operation === "query") {
     operation.query.definitions[0].selectionSet.selections.push({
       kind: "Field",
       name: {
@@ -64,7 +64,7 @@ const detectSessionTimeout = new ApolloLink((operation, forward) => {
       },
     });
   }
-  
+
   //Called before the request is sent
   return forward(operation).map((data) => {
     // Called after server responds
@@ -281,15 +281,13 @@ const getDiagnosticTypesQuery = async function () {
   });
 };
 
-const getHdwIssuesQuery = async function () {
+const getHdwIssuesSummaryQuery = async function () {
   return await client.query({
     query: gql`
       query getIssues {
         hdwIssues {
           id
           creation_date
-          close_date
-          time_to_repair_hours
           comments
           status
           assigned_technician {
@@ -304,46 +302,9 @@ const getHdwIssuesQuery = async function () {
             }
           }
           diagnostic {
-            id
-            date
-            user {
-              id
-              name
-              email
-            }
             diagnostic_type {
               name
-              type {
-                name
-              }
-              gateway_satellite_power
-              angles
-              packet_202_count
-              battery_2to3
-              positions
-              lost_packets
-              node_to_gateway_distance_in_meters
-              gateway_first_data_transmission_date
-              height_difference_in_meters
-              from_hour
-              to_hour
-              packet_203_count
-              pressure_difference
             }
-            comments
-            gateway_satellite_power
-            angles
-            packet_202_count
-            battery_2to3
-            positions
-            lost_packets
-            node_to_gateway_distance_in_meters
-            gateway_first_data_transmission_date
-            height_difference_in_meters
-            from_hour
-            to_hour
-            packet_203_count
-            pressure_difference
           }
         }
       }
@@ -526,7 +487,6 @@ const createRepairMutation = async function (
   comments,
   log
 ) {
-  console.log("oooooooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
   const _variables = {
     data: {
       date,
@@ -680,50 +640,6 @@ const getAssetTypesQuery = async function () {
   });
 };
 
-const getInspectionsQuery = async function (hwd_issue_id) {
-  return await client.query({
-    query: gql`
-      query getInspections($where: inspectionWhereInput) {
-        inspections(where: $where) {
-          id
-          date
-          comments
-          led_gtw
-          jumper_wifi
-          satellite_power
-          gateway_battery_voltage
-          lora_power
-          gps_node_battery_voltage
-          pressure_sensor_signal
-          picture {
-            url
-          }
-          log {
-            url
-          }
-          user {
-            id
-            name
-          }
-          inspection_type {
-            name
-            id
-          }
-        }
-      }
-    `,
-    variables: {
-      where: {
-        hdw_issue: {
-          id: {
-            equals: hwd_issue_id,
-          },
-        },
-      },
-    },
-  });
-};
-
 const getInspectionTypesQuery = async function () {
   return await client.query({
     query: gql`
@@ -810,10 +726,189 @@ const getTechniciansGpsNodesQuery = async function () {
     `,
   });
 };
+
+const getHdwIssueDetailsQuery = async function (hdw_issue_id) {
+  return await client.query({
+    query: gql`
+      query getHdwIssueDetails($hdw_issue_id: ID!) {
+        hdw_issue(where: { id: $hdw_issue_id }) {
+          id
+          creation_date
+          close_date
+          time_to_repair_hours
+          time_to_diagnostic_hours
+          time_from_removal_to_autopsy_hours
+          comments
+          status
+          assigned_technician {
+            id
+            name
+          }
+          irrigator {
+            integration_id
+            name
+            field {
+              name
+            }
+          }
+          diagnostic {
+            id
+            date
+            user {
+              id
+              name
+              email
+            }
+            diagnostic_type {
+              name
+              type {
+                name
+              }
+              gateway_satellite_power
+              angles
+              packet_202_count
+              battery_2to3
+              positions
+              lost_packets
+              node_to_gateway_distance_in_meters
+              gateway_first_data_transmission_date
+              height_difference_in_meters
+              from_hour
+              to_hour
+              packet_203_count
+              pressure_difference
+            }
+            comments
+            gateway_satellite_power
+            angles
+            packet_202_count
+            battery_2to3
+            positions
+            lost_packets
+            node_to_gateway_distance_in_meters
+            gateway_first_data_transmission_date
+            height_difference_in_meters
+            from_hour
+            to_hour
+            packet_203_count
+            pressure_difference
+            grafana_link
+          }
+          inspection {
+            id
+            date
+            user {
+              name
+              email
+            }
+            comments
+            led_gtw
+            jumper_wifi
+            satellite_power
+            gateway_battery_voltage
+            lora_power
+            gps_node_battery_voltage
+            pressure_sensor_signal
+            picture {
+              url
+            }
+            log {
+              filename
+              url
+            }
+            inspection_type {
+              id
+              name
+              type {
+                id
+                name
+              }
+              pot_sat
+              gateway_battery_voltage
+              gps_node_battery_voltage
+              lora_power
+              pressure_sensor_signal
+            }
+          }
+          repair {
+            id
+            date
+            work_order {
+              technician {
+                name
+                email
+              }
+            }
+            repair_type {
+              id
+              name
+              value
+            }
+            solution_type {
+              id
+              name
+            }
+            replaced_asset_type {
+              id
+              name
+            }
+            new_gateway {
+              id
+              integration_id
+            }
+            new_gps_node {
+              id
+              integration_id
+            }
+            new_pressure_sensor {
+              id
+              integration_id
+            }
+            comments
+            log {
+              url
+              filename
+            }
+          }
+          autopsy {
+            id
+            date
+            self_diagnostic_file {
+              filename
+              url
+            }
+            pressure_log {
+              filename
+              url
+            }
+            comments
+            autopsy_type {
+              id
+              name
+              type {
+                id
+                name
+              }
+            }
+            user {
+              name
+              email
+            }
+          }
+        }
+      }
+    `,
+    variables: {
+      hdw_issue_id: hdw_issue_id,
+    },
+  });
+};
+
 export {
   loginQuery,
   getIrrigatorsQuery,
-  getHdwIssuesQuery,
+  getHdwIssuesSummaryQuery,
+  getHdwIssueDetailsQuery,
   getTechniciansQuery,
   getGatewaysQuery,
   getDiagnosticTypesQuery,
@@ -822,7 +917,6 @@ export {
   getAssetTypesQuery,
   getInspectionTypesQuery,
   createInspectionMutation,
-  getInspectionsQuery,
   createRepairMutation,
   createWorkOrderMutation,
   getWorkOrdersQuery,

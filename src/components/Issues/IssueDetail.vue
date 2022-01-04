@@ -254,13 +254,13 @@
             </template>
             <ScrollPanel style="width: 100%; height: 200px" class="custom">
               <ul>
-                <div class="itemList hover:surface-300 m-1" @click="handleClickInspection(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.inspections">
+                <div class="itemList hover:surface-300 m-1" @click="handleClickInspection(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.inspection">
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> {{ item.date }}
                     </div>
                     <div class="col-12 md:col-4 mt-3">
-                      <i class="pi pi-comment" style="fontSize: 1.2rem"></i> {{ item.comments }}
+                      <i class="pi pi-comment" style="fontSize: 1.2rem"></i> {{ item?.inspection_type?.name }}
                     </div>
                     <div class="col-12 md:col-3 mt-3">
                       <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item?.user?.name }}
@@ -286,6 +286,29 @@
                 </div>
               </div>
             </template>
+            <ScrollPanel style="width: 100%; height: 200px" class="custom">
+              <ul>
+                <div class="itemList hover:surface-300 m-1" @click="handleClickRepair(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.repair">
+                  <div class="grid mx-5">
+                    <div class="col-12 md:col-2 mt-3">
+                      <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> {{ item.date }}
+                    </div>
+                    <div class="col-12 md:col-4 mt-3">
+                      <i class="pi pi-comment" style="fontSize: 1.2rem"></i> 
+                      {{ (item.repair_type.value === 'device_change')?`Nuevo ${item?.replaced_asset_type?.name}`:item?.solution_type?.name }}
+                    </div>
+                    <div class="col-12 md:col-3 mt-3">
+                      <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item?.work_order?.technician?.email }}
+                    </div>
+                    <div class="col-12 md:col-3 mt-2">
+                      <Button icon="pi pi-external-link" class="p-button-raised p-button-rounded" style="margin: auto;"></Button>
+                    </div>
+                  </div>
+                  <Divider />
+                </div>
+              </ul>
+
+            </ScrollPanel>
           </AccordionTab>
           <AccordionTab>
             <template #header>
