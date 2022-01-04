@@ -31,17 +31,17 @@ export default {
             items: [
                 {
                    label:'Irrigators',
-                   icon:'pi pi-fw pi-th-large',
+                   icon:'pi pi-fw pi-list',
                    command: () => this.$router.push('/')
                 },
                 {
                    label:'Issues',
-                   icon:'pi pi-fw pi-list',
+                   icon:'pi pi-fw pi-hashtag',
                    command: () => this.$router.push('/issues')
                 },
                 {
                    label:'Dashboard',
-                   icon:'pi pi-fw pi-list',
+                   icon:'pi pi-fw pi-th-large',
                    command: () => this.$router.push('/dashboard')
                 },
              ]
