@@ -8,18 +8,50 @@ import {
 } from "@apollo/client/core";
 import { HttpLink } from "@apollo/client/link/http";
 import { createUploadLink } from "apollo-upload-client";
+import { logout } from "../utils/logout";
 
 const httpOptions = {
   uri: process.env.VUE_APP_BACKEND_URL,
   credentials: "include",
 };
 
+const detectSessionTimeout = new ApolloLink((operation, forward) => {
+  //Called before the request is sent
+  return forward(operation).map((data) => {
+    // Called after server responds
+    if (data?.errors?.find((e) => e.message.includes("Access denied"))) {
+      console.log("Session expired");
+      logout();
+    }
+    return data;
+  });
+});
+
+const injectKeystoneIntoQuery = (originalQuery) => {
+  const trimmedQuery = originalQuery.trim();
+  const trimmedQueryWithoutLastCurlyBrace = trimmedQuery.substr(
+    0,
+    trimmedQuery.length - 1
+  );
+  const keystoneAddon = ` keystone {
+    adminMeta {
+      __typename
+    }
+    __typename
+  }`;
+  return trimmedQueryWithoutLastCurlyBrace + keystoneAddon + "}";
+};
+
+// 2-mode http link:
+// - Mode 1: File upload mode
+// - Mode 2: Default link mode
 const httpLink = ApolloLink.split(
   (operation) => operation.getContext().hasUpload,
   createUploadLink(httpOptions),
   new HttpLink(httpOptions)
 );
 
+//final client creation
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   fetchOptions: {
@@ -27,6 +59,7 @@ const client = new ApolloClient({
   },
   link: ApolloLink.from([
     // ...
+    detectSessionTimeout,
     httpLink,
   ]),
 });
@@ -65,55 +98,58 @@ const loginQuery = async function (email, password) {
 };
 
 const getIrrigatorsQuery = async function (id) {
-  return await client.query({
-    query: gql`
-      query getIrrigatorsQuery($id: ID) {
-        irrigators(where: { id: { equals: $id } }) {
-          id
+  const stringQuery = //ya esta todo listo... solo hay q hace resto en el resto del asqueries... y ver q pasa con las mutations
+    injectKeystoneIntoQuery(`query getIrrigatorsQuery($id: ID) {
+    irrigators(where: { id: { equals: $id } }) {
+      id
+      integration_id
+      name
+      lat
+      long
+      status
+      enabled
+      transmission_status
+      comment
+      gateway {
+        id
+        integration_id
+        satellite_modem {
           integration_id
-          name
-          lat
-          long
-          status
-          enabled
-          transmission_status
-          comment
-          gateway {
-            id
-            integration_id
-            satellite_modem {
-              integration_id
-            }
-          }
-          gps_node {
-            id
-            integration_id
-          }
-          field {
-            client {
-              name
-            }
-            name
-            province {
-              name
-            }
-            city {
-              name
-            }
-            zone {
-              name
-            }
-          }
-          install_uninstall_request {
-            id
-          }
-          hdw_issueCount
-          pressure_sensor {
-            id
-            integration_id
-          }
         }
       }
+      gps_node {
+        id
+        integration_id
+      }
+      field {
+        client {
+          name
+        }
+        name
+        province {
+          name
+        }
+        city {
+          name
+        }
+        zone {
+          name
+        }
+      }
+      install_uninstall_request {
+        id
+      }
+      hdw_issueCount
+      pressure_sensor {
+        id
+        integration_id
+      }
+    }
+  }`);
+
+  return await client.query({
+    query: gql`
+      ${stringQuery}
     `,
     variables: {
       id,
@@ -399,9 +435,7 @@ const getWorkOrdersQuery = async function (id) {
   return await client.query({
     query: gql`
       query getWorkOrders($id: ID) {
-        workOrders(where: {technician: {id: {
-          equals: $id
-        }}}) {
+        workOrders(where: { technician: { id: { equals: $id } } }) {
           work_date
           id
           km_traveled
@@ -410,8 +444,8 @@ const getWorkOrdersQuery = async function (id) {
       }
     `,
     variables: {
-      "id": id
-    }
+      id: id,
+    },
   });
 };
 
@@ -461,7 +495,7 @@ const createRepairMutation = async function (
   comments,
   log
 ) {
-  console.log('oooooooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')
+  console.log("oooooooommmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
   const _variables = {
     data: {
       date,

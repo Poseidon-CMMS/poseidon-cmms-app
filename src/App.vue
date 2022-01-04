@@ -1,66 +1,75 @@
 <template>
-  <Menubar :model="items"> 
+  <Menubar :model="items">
     <template #end>
-        <!-- <div v-if="isLoggedIn()"> -->
-           <Button class="p-button-danger" label="Salir" @click='onLogout' icon="pi pi-fw pi-power-off"/>
-        <!-- </div> -->
+      <Button
+        v-if="isNotOnLoginPage"
+        class="p-button-danger"
+        label="Salir"
+        @click="onLogout"
+        icon="pi pi-fw pi-power-off"
+      />
     </template>
   </Menubar>
 
   <div class="mx-8">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import Menubar from 'primevue/menubar';
+import Menubar from "primevue/menubar";
+import { logout } from "./utils/logout";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Menubar },
+    Menubar,
+  },
   methods: {
     onLogout() {
-      sessionStorage.removeItem('name');
-      sessionStorage.removeItem('type');
-      this.$router.push('/login')
-    }
+      logout();
+    },
   },
   data() {
-        return {
-            items: [
-                {
-                   label:'Irrigators',
-                   icon:'pi pi-fw pi-list',
-                   command: () => this.$router.push('/')
-                },
-                {
-                   label:'Issues',
-                   icon:'pi pi-fw pi-hashtag',
-                   command: () => this.$router.push('/issues')
-                },
-                {
-                   label:'Dashboard',
-                   icon:'pi pi-fw pi-th-large',
-                   command: () => this.$router.push('/dashboard')
-                },
-             ]
-        }
+    return {
+      items: [
+        {
+          label: "Irrigators",
+          icon: "pi pi-fw pi-list",
+          command: () => this.$router.push("/"),
+        },
+        {
+          label: "Issues",
+          icon: "pi pi-fw pi-hashtag",
+          command: () => this.$router.push("/issues"),
+        },
+        {
+          label: "Dashboard",
+          icon: "pi pi-fw pi-th-large",
+          command: () => this.$router.push("/dashboard"),
+        },
+      ],
+    };
+  },
+  computed: {
+    isNotOnLoginPage() {
+      return this.$route.name !== 'Login'
     },
-}
+  },
+};
 </script>
 
 <style>
-.p-button-success{
+.p-button-success {
   background: #19dd19 !important;
   border-color: #19dd19 !important;
 }
 
-.p-button-success:hover{
+.p-button-success:hover {
   background: #18c518e3 !important;
   border-color: #18c518e3 !important;
 }
-#body{
+#body {
   background: linear-gradient(135deg, #6ca3d6, 70%, #073f7b);
 }
 
@@ -70,7 +79,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   min-height: 100vh;
 }
 
