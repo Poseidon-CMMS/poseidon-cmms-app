@@ -30,7 +30,9 @@
               </div>
               <div class="text-900 col-12">
                   {{ repair?.repair_type.name + ' | ' + 
-                    (repair?.repair_type?.value === 'device_change' ? repair?.replaced_asset_type?.name : repair?.solution_type?.name) }}</div>
+                    (repair?.repair_type?.value === 'device_change' ? 
+                    repair?.replaced_asset_type?.name : 
+                    repair?.solution_type?.name) }}</div>
             </div>
           </div>
           <div v-if='repair?.new_gateway' class="col-6 pl-5">
