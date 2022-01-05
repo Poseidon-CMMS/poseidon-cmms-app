@@ -10,7 +10,7 @@
       <ul class="list-none p-0 m-0">
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">ID Equipo</div>
-          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.integrationID }}</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.integration_id }}</div>
         </li>
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">Cliente</div>

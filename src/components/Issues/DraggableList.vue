@@ -2,7 +2,8 @@
     <div class="grid fadein animation-duration-1000">
         <div class="col-12">
         <Panel :header="title">
-          <ScrollPanel style="width: 100%; height: 300px">          
+          <ProgressSpinner v-if="this.loading" />
+          <ScrollPanel v-else style="width: 100%; height: 300px">          
             <draggable
               class="list-group"
               :list="list"
@@ -14,7 +15,8 @@
                 <div class="list-group-item">
                   <Card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
                     <template #title>
-                      {{ element.irrigator?.field?.name ?? 'Campo desconocido' + " | " + element.irrigator.name + " (" + element.irrigator.integration_id+")" }}
+                      {{ (element.irrigator?.field?.name ?? 'Campo desconocido') + ' | '
+                      + element.irrigator?.name + " (" + element.irrigator?.integration_id+")" }}
                     </template>
                     <template #subtitle>
                       {{ element.diagnostic.diagnostic_type.name }}
@@ -34,13 +36,15 @@
 
 <script>
 import draggable from "vuedraggable";
+import ProgressSpinner from "primevue/progressspinner";
 
 export default {
   name: 'DraggableList',
   components: {
     draggable,
+    ProgressSpinner
   },
-  props: ['title', 'list', 'log', 'clickElement'],
+  props: ['title', 'list', 'log', 'clickElement', 'loading'],
 }
 </script>
 

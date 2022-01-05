@@ -1,5 +1,8 @@
-<template>  
-  <div class='fadein animation-duration-1000' v-if="selectedIssue">
+<template>
+  <Panel v-if='loading'>
+    <ProgressSpinner />
+  </Panel>
+  <div class='fadein animation-duration-1000' v-else-if="selectedIssue">
     <Panel>
       <template #header>
         <p class="text-lg font-bold text-left w-10">{{ selectedIssue.comment }}</p>
@@ -94,6 +97,7 @@
                 optionLabel="name"
                 optionValue="id"
                 placeholder="Seleccione un técnico"
+                :loading="technicians_loading"
               />
             </p>
           </div>
@@ -109,7 +113,11 @@
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 font-medium">Fecha</div>
-                    <div  v-if='selectedIssue.diagnostic' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.date ?? ''}}</div>
+                    <div  v-if='selectedIssue.diagnostic' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                      {{
+                         `${(new Date(selectedIssue?.diagnostic?.date)).getFullYear()}/${(new Date(selectedIssue?.diagnostic.date)).getMonth() + 1}/${(new Date(selectedIssue?.diagnostic.date)).getDate()}` 
+                      }}
+                    </div>
                   </div>
                 </div>
 
@@ -252,18 +260,19 @@
                 </div>
               </div>
             </template>
-            <ScrollPanel style="width: 100%; height: 200px" class="custom">
+            <ScrollPanel style="width: 100%; height: 100px" class="custom">
               <ul>
                 <div class="itemList hover:surface-300 m-1" @click="handleClickInspection(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.inspection">
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
-                      <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> {{ item.date }}
+                      <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
+                      {{ `${(new Date(item.date)).getFullYear()}/${( new Date(item.date)).getMonth() + 1}/${( new Date(item.date)).getDate()}` }}
                     </div>
                     <div class="col-12 md:col-4 mt-3">
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> {{ item?.inspection_type?.name }}
                     </div>
                     <div class="col-12 md:col-3 mt-3">
-                      <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item?.user?.name }}
+                      <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item?.user?.email }}
                     </div>
                     <div class="col-12 md:col-3 mt-2">
                       <Button icon="pi pi-external-link" class="p-button-raised p-button-rounded" style="margin: auto;"></Button>
@@ -286,12 +295,13 @@
                 </div>
               </div>
             </template>
-            <ScrollPanel style="width: 100%; height: 200px" class="custom">
+            <ScrollPanel style="width: 100%; height: 100px" class="custom">
               <ul>
                 <div class="itemList hover:surface-300 m-1" @click="handleClickRepair(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.repair">
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
-                      <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> {{ item.date }}
+                      <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
+                      {{ `${(new Date(item.date)).getFullYear()}/${( new Date(item.date)).getMonth() + 1}/${( new Date(item.date)).getDate()}` }}
                     </div>
                     <div class="col-12 md:col-4 mt-3">
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> 
@@ -327,15 +337,19 @@
   </Panel>
   </div>
   <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenInspectionUpdated"></inspection-form>
+  <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenInspectionDetailUpdated"></inspection-detail>
+  
   <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
-  <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenDetailUpdated"></inspection-detail>
+  <repair-detail :repair="selectedRepair" :isOpen="selectedRepair != null" @updateIsOpen="handleIsOpenRepairDetailUpdated"></repair-detail>
 </template>
 
 <script>
 import Button from "primevue/button";
+import ProgressSpinner from "primevue/progressspinner";
 import InspectionDetail from "./InspectionDetail.vue";
 import InspectionForm from "./Forms/InspectionForm.vue";
 import RepairForm from "./Forms/RepairForm.vue";
+import RepairDetail from "./RepairDetail.vue";
 import { getTechniciansQuery } from "../../api/apiRequests";
 export default {
   name: "IssueDetail",
@@ -343,7 +357,9 @@ export default {
     Button,
     InspectionDetail,
     InspectionForm,
-    RepairForm
+    RepairForm,
+    RepairDetail,
+    ProgressSpinner
   },
   methods: {
     hasDevice: function (value) {
@@ -362,8 +378,14 @@ export default {
     handleClickInspection: function (inspection) {
       this.selectedInspection = inspection;
     },
-    handleIsOpenDetailUpdated: function () {
+    handleClickRepair: function (repair) {
+      this.selectedRepair = repair;
+    },
+    handleIsOpenInspectionDetailUpdated: function () {
       this.selectedInspection = null;
+    },
+    handleIsOpenRepairDetailUpdated: function () {
+      this.selectedRepair = null;
     },
     handleIsOpenInspectionUpdated: function () {
       this.showInspectionForm = false;
@@ -372,26 +394,28 @@ export default {
       this.showRepairForm = false;
     },
   },
-  props: ["selectedIssue", "clickIrrigator", "technicianChange"],
+  props: ["selectedIssue", "clickIrrigator", "loading"],
   data() {
     return {
       displayIrrigatorDialog: false,
       selectedTechnician: null,
       selectedInspection: null,
+      selectedRepair: null,
       showInspectionForm: false,
       showRepairForm: false,
       technicianOptions: [],
+      technicians_loading: true,
     };
   },
   async beforeMount() {
     //todo: error handling
-    this.loading = true;
+    this.technicians_loading = true;
     //populate dropdowns
     const result = await getTechniciansQuery();
     const technicians = result.data.users;
     this.technicianOptions = technicians;
 
-    this.loading = false;
+    this.technicians_loading = false;
   },
   async beforeUpdate() {
     this.selectedTechnician =

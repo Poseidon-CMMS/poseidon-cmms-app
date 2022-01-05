@@ -6,21 +6,21 @@
       <div class="col-12">
         <div class="grid text-sm">
           <div class="col-6 lg:col-3">
-            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement'/>
+            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement' :loading='loading'/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement'/>
+            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement' :loading='loading'/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement'/>
+            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement' :loading='loading'/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement'/>
+            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement' :loading='loading'/>
           </div>
         </div>
       </div>
       <div class="col-12">
-        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange"/>
+        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange" :loading='loading_details'/>
       </div>
     </div>
       
@@ -61,17 +61,15 @@ export default {
     handleIssueHasBeenUpdated: function(updatedIssue) {
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
       this.issues = [...allOtherIssues, updatedIssue];
-      this.selectedIssue = this.issues.find(issue => issue.id === this.selectedIssue.id);
+      if(this.selectedIssue.id === updatedIssue.id){
+        this.selectedIssue = {...this.selectedIssue, assigned_technician: updatedIssue.assigned_technician};
+      }
+
+      // this.selectedIssue = this.issues.find(issue => issue.id === this.selectedIssue.id);
     },
     clickIrrigator: function() {
       this.selectedIrrigator = this.selectedIssue.irrigator;
       this.displayIrrigatorDialog = true;
-    },
-    technicianChange: function(evt){
-      this.selectedTechnician = evt.value;
-      if(this.selectedTechnician) {
-        this.selectedIssue.assigned_technician = evt.value;
-      }
     },
     inFieldLog: function(evt) {
       console.log('In field: ' + evt);
@@ -79,7 +77,7 @@ export default {
     assignedLog: function(evt) {
       if(evt?.added?.element && !evt.added.element.user) {
         this.showAssignedDialog = true;
-        this.selectedIssue = evt.added.element;
+        this.clickElement(evt.added.element);
       }
     },
     repairedLog: function(evt) {
@@ -88,10 +86,11 @@ export default {
     outOfFieldLog: function(evt) {
       console.log('Out of field: ' + evt);
     },
-    clickElement: async function(evt) {// todo mostrar un loading
-      this.selectedIssue = evt;
-      const detailedIssue = (await getHdwIssueDetailsQuery(this.selectedIssue.id)).data.hdw_issue; //todo caso error
+    clickElement: async function(evt) {
+      this.loading_details = true;
+      const detailedIssue = (await getHdwIssueDetailsQuery(evt.id)).data.hdw_issue; //todo caso error
       this.selectedIssue = detailedIssue;
+      this.loading_details = false;
     },
     setIsCreationModalOpen(val) {
       this.isCreationModalOpen = val;
@@ -100,7 +99,8 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      loading: true,
+      loading_details: false,
       displayIrrigatorDialog: false,
       showAssignedDialog: false,
       selectedTechnician: null,
