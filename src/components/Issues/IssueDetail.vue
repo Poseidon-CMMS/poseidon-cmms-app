@@ -327,7 +327,7 @@
                   Autopsias
                 </div>
                 <div class="mt-1">
-                  <Button @click="handleOpenInspectionForm" icon="pi pi-plus-circle" class="p-button-raised"/>
+                  <Button @click="handleOpenAutopsyForm" icon="pi pi-plus-circle" class="p-button-raised"/>
                 </div>
               </div>
             </template>
@@ -341,6 +341,8 @@
   
   <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
   <repair-detail :repair="selectedRepair" :isOpen="selectedRepair != null" @updateIsOpen="handleIsOpenRepairDetailUpdated"></repair-detail>
+
+  <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsyUpdated"></autopsy-form>
 </template>
 
 <script>
@@ -350,6 +352,7 @@ import InspectionDetail from "./InspectionDetail.vue";
 import InspectionForm from "./Forms/InspectionForm.vue";
 import RepairForm from "./Forms/RepairForm.vue";
 import RepairDetail from "./RepairDetail.vue";
+import AutopsyForm from './Forms/AutopsyForm.vue';
 import { getTechniciansQuery } from "../../api/apiRequests";
 export default {
   name: "IssueDetail",
@@ -359,7 +362,8 @@ export default {
     InspectionForm,
     RepairForm,
     RepairDetail,
-    ProgressSpinner
+    ProgressSpinner,
+    AutopsyForm
   },
   methods: {
     hasDevice: function (value) {
@@ -374,6 +378,9 @@ export default {
     },
     handleOpenRepairForm: function () {
       this.showRepairForm = true;
+    },
+    handleOpenAutopsyForm: function () {
+      this.showAutopsyForm = true;
     },
     handleClickInspection: function (inspection) {
       this.selectedInspection = inspection;
@@ -393,6 +400,9 @@ export default {
     handleIsOpenRepairUpdated: function () {
       this.showRepairForm = false;
     },
+    handleIsOpenAutopsyUpdated: function () {
+      this.showAutopsyForm = false;
+    }
   },
   props: ["selectedIssue", "clickIrrigator", "loading"],
   data() {
@@ -403,6 +413,7 @@ export default {
       selectedRepair: null,
       showInspectionForm: false,
       showRepairForm: false,
+      showAutopsyForm: false,
       technicianOptions: [],
       technicians_loading: true,
     };
