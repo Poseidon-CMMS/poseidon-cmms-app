@@ -88,17 +88,8 @@
           <div class="flex align-items-center mx-2 pr-2 w-full">
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
-            <Dropdown
-                id="irrigator"
-                :filter="true"
-                class="inputfield w-full"
-                v-model="selectedTechnician"
-                :options="technicianOptions"
-                optionLabel="name"
-                optionValue="id"
-                placeholder="Seleccione un técnico"
-                :loading="technicians_loading"
-              />
+              {{selectedIssue.assigned_technician? selectedIssue.assigned_technician.name : 'Ningún técnico asignado'}}
+            <Button class="mr-1 p-button-warning" icon="pi pi-pencil" @click="handleTechnicianEdit" />
             </p>
           </div>
         </div>
@@ -447,9 +438,13 @@ export default {
     },
     handleIsOpenAutopsyUpdated: function () {
       this.showAutopsyForm = false;
+    },
+    handleTechnicianEdit: function() {
+      this.$emit("openAssignationDialog", true);
     }
   },
   props: ["selectedIssue", "clickIrrigator", "loading"],
+  emits: ["openAssignationDialog"],
   data() {
     return {
       displayIrrigatorDialog: false,

@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="col-12">
-        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange" :loading='loading_details'/>
+        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation"/>
       </div>
     </div>
       
