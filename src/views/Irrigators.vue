@@ -36,7 +36,7 @@
 
 <script>
 import MetricCard from '../components/MetricCard.vue';
-import TableIrrigators from '../components/TableIrrigators.vue'; 
+import TableIrrigators from '../components/Irrigators/TableIrrigators.vue'; 
 
 export default {
   name: 'Dashboard',

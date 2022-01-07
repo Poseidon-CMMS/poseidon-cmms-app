@@ -331,6 +331,30 @@
                 </div>
               </div>
             </template>
+             <ScrollPanel style="width: 100%; height: 100px" class="custom">
+              <ul>
+                <div class="itemList hover:surface-300 m-1" @click="handleClickAutopsy(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.autopsy">
+                  <div class="grid mx-5">
+                    <div class="col-12 md:col-2 mt-3">
+                      <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
+                      {{ `${(new Date(item.date)).getFullYear()}/${( new Date(item.date)).getMonth() + 1}/${( new Date(item.date)).getDate()}` }}
+                    </div>
+                    <div class="col-12 md:col-4 mt-3">
+                      <i class="pi pi-comment" style="fontSize: 1.2rem"></i> 
+                      {{ item?.autopsy_type?.name }}
+                    </div>
+                    <div class="col-12 md:col-3 mt-3">
+                      <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item?.user?.email }}
+                    </div>
+                    <div class="col-12 md:col-3 mt-2">
+                      <Button icon="pi pi-external-link" class="p-button-raised p-button-rounded" style="margin: auto;"></Button>
+                    </div>
+                  </div>
+                  <Divider />
+                </div>
+              </ul>
+
+            </ScrollPanel>
           </AccordionTab>
         </Accordion>
       </div>
@@ -343,27 +367,42 @@
   <repair-detail :repair="selectedRepair" :isOpen="selectedRepair != null" @updateIsOpen="handleIsOpenRepairDetailUpdated"></repair-detail>
 
   <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsyUpdated"></autopsy-form>
+  <autopsy-detail :autopsy="selectedAutopsy" :isOpen="selectedAutopsy != null" @updateIsOpen="handleIsOpenAutopsyDetailUpdated"></autopsy-detail>
 </template>
 
 <script>
-import Button from "primevue/button";
+import Divider from 'primevue/divider';
+import Accordion from 'primevue/accordion'; 
+import AccordionTab from 'primevue/accordiontab'; 
 import ProgressSpinner from "primevue/progressspinner";
-import InspectionDetail from "./InspectionDetail.vue";
-import InspectionForm from "./Forms/InspectionForm.vue";
-import RepairForm from "./Forms/RepairForm.vue";
-import RepairDetail from "./RepairDetail.vue";
-import AutopsyForm from './Forms/AutopsyForm.vue';
-import { getTechniciansQuery } from "../../api/apiRequests";
+import Chip from 'primevue/chip';
+import ScrollPanel from "primevue/scrollpanel";
+import Panel from 'primevue/panel';
+
+import InspectionDetail from "../Details/InspectionDetail.vue";
+import InspectionForm from "../Forms/InspectionForm.vue";
+import RepairForm from "../Forms/RepairForm.vue";
+
+import RepairDetail from "../Details/RepairDetail.vue";
+import AutopsyDetail from "../Details/AutopsyDetail.vue";
+import AutopsyForm from '../Forms/AutopsyForm.vue';
+import { getTechniciansQuery } from "../../../api/apiRequests";
 export default {
   name: "IssueDetail",
   components: {
-    Button,
+    ProgressSpinner,
+    Divider,
+    Chip,
+    Accordion,
+    AccordionTab,
+    ScrollPanel,
+    Panel,
     InspectionDetail,
     InspectionForm,
+    AutopsyForm,
+    AutopsyDetail,
     RepairForm,
     RepairDetail,
-    ProgressSpinner,
-    AutopsyForm
   },
   methods: {
     hasDevice: function (value) {
@@ -388,11 +427,17 @@ export default {
     handleClickRepair: function (repair) {
       this.selectedRepair = repair;
     },
+    handleClickAutopsy: function (autopsy) {
+      this.selectedAutopsy = autopsy;
+    },
     handleIsOpenInspectionDetailUpdated: function () {
       this.selectedInspection = null;
     },
     handleIsOpenRepairDetailUpdated: function () {
       this.selectedRepair = null;
+    },
+    handleIsOpenAutopsyDetailUpdated: function () {
+      this.selectedAutopsy = null;
     },
     handleIsOpenInspectionUpdated: function () {
       this.showInspectionForm = false;
@@ -411,6 +456,7 @@ export default {
       selectedTechnician: null,
       selectedInspection: null,
       selectedRepair: null,
+      selectedAutopsy: null,
       showInspectionForm: false,
       showRepairForm: false,
       showAutopsyForm: false,

@@ -24,6 +24,9 @@
                     <template #content>
                       {{ element.comments }}
                     </template>
+                    <template #footer v-if="element.assigned_technician">
+                      <Avatar :label="element.assigned_technician.name.charAt(0)" class="p-mr-2" size="large" style="background-color:#2196F3; color: #ffffff" shape="circle"  />
+                    </template>
                   </Card>
                 </div>
               </template>
@@ -37,12 +40,21 @@
 <script>
 import draggable from "vuedraggable";
 import ProgressSpinner from "primevue/progressspinner";
+import ScrollPanel from "primevue/scrollpanel";
+import Panel from 'primevue/panel';
+import Avatar from 'primevue/avatar';
+
+import Card from "primevue/card";
 
 export default {
   name: 'DraggableList',
   components: {
     draggable,
-    ProgressSpinner
+    ProgressSpinner,
+    Card,
+    ScrollPanel,
+    Panel,
+    Avatar,
   },
   props: ['title', 'list', 'log', 'clickElement', 'loading'],
 }

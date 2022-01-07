@@ -86,10 +86,14 @@
 </template>
 
 <script>
+import ScrollPanel from 'primevue/scrollpanel';
 
 export default {
   name: 'RepairDetail',
   props: ['repair', 'isOpen'],
+  components: {
+    ScrollPanel,
+  },
   computed: {
       computedisOpen: {
           get() {return this.isOpen},

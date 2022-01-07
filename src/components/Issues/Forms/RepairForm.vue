@@ -205,6 +205,7 @@
 import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
 import InlineMessage from "primevue/inlinemessage";
+import Calendar from "primevue/calendar";
 import Message from "primevue/message";
 import FileUpload from "primevue/fileupload";
 import SelectButton from "primevue/selectbutton";
@@ -257,7 +258,8 @@ export default {
     Message,
     Toast,
     SelectButton,
-    WorkOrderForm
+    WorkOrderForm,
+    Calendar,
   },
   data() {
     return initialData();

@@ -109,10 +109,14 @@
 </template>
 
 <script>
+import ScrollPanel from "primevue/scrollpanel";
 
 export default {
   name: 'InspectionDetail',
   props: ['inspection', 'isOpen'],
+  components: {
+    ScrollPanel,
+  },
   computed: {
       computedisOpen: {
           get() {return this.isOpen},

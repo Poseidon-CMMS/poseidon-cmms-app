@@ -3,22 +3,9 @@ import App from './App.vue'
 
 import PrimeVue from 'primevue/config';
 //Prime components
-import Button from 'primevue/button';
-import Card from 'primevue/card';
 import Dialog from 'primevue/dialog';
-import InputText from 'primevue/inputtext';
-import Avatar from 'primevue/avatar';
-import Splitter from 'primevue/splitter';
-import Panel from 'primevue/panel';
-import ScrollPanel from 'primevue/scrollpanel'; 
-import Badge from 'primevue/badge'; 
-import Accordion from 'primevue/accordion'; 
-import AccordionTab from 'primevue/accordiontab'; 
+import Button from 'primevue/button';
 import Dropdown from 'primevue/dropdown'; 
-import Autocomplete from 'primevue/autocomplete'; 
-import Chip from 'primevue/chip';
-import Divider from 'primevue/divider';
-import Calendar from 'primevue/calendar'; 
 import "primevue/resources/themes/saga-blue/theme.css";       //theme
 import "primevue/resources/primevue.min.css";                 //core css
 import "primeicons/primeicons.css";
@@ -29,23 +16,9 @@ import ToastService from 'primevue/toastservice';
 
 const app = createApp(App).use(router).use(PrimeVue).use(ToastService);
 
-app.component('Button', Button);
-app.component('Card', Card);
-app.component('InputText', InputText);
-app.component('Avatar', Avatar);
 app.component('Dialog', Dialog);
-app.component('Splitter', Splitter);
-app.component('ScrollPanel', ScrollPanel);
-app.component('Panel', Panel);
-app.component('Accordion', Accordion);
-app.component('AccordionTab', AccordionTab);
-app.component('Badge', Badge);
 app.component('Dropdown', Dropdown);
-app.component('Autocomplete', Autocomplete);
-app.component('Chip', Chip);
-app.component('Divider', Divider);
-app.component('Calendar', Calendar);
-
+app.component('Button', Button);
 app.directive('tooltip', Tooltip);
 
 app.mount('#app');

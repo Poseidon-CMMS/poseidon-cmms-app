@@ -69,6 +69,7 @@
 <script>
 import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
+import Calendar from "primevue/calendar";
 import Message from "primevue/message";
 import InputNumber from "primevue/inputnumber";
 import {
@@ -93,7 +94,8 @@ export default {
     Textarea,
     Message,
     Toast,
-    InputNumber
+    InputNumber,
+    Calendar
   },
   data() {
     return initialData();

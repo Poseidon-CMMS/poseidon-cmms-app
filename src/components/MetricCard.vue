@@ -29,9 +29,12 @@
 
 <script>
 
+import Card from 'primevue/card';
+
 export default {
-  name: 'LoginForm',
+  name: 'MetricCard',
   components: {
+    Card
   },
   props: ['titleCard', 'color', 'contentCard', 'comments','colorComments', 'icon'],
 }

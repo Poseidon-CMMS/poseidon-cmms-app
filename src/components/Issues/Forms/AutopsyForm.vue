@@ -6,7 +6,154 @@
     :modal="true"
   >
     <div class="card">
-       TODO:campos aqui
+      <div class="field">
+        <label for="date">Fecha de autopsia</label>
+        <Calendar
+          id="date"
+          :show-icon="true"
+          v-model="date"
+          dateFormat="yy-mm-dd"
+          class="inputfield w-full"
+        />
+      </div>
+      <div class="field">
+        <label for="comments">Comentarios</label>
+        <Textarea
+          id="comments"
+          placeholder="Observaciones acerca de la autopsia"
+          v-model="comments"
+          :autoResize="true"
+          class="inputfield w-full"
+          rows="2"
+          cols="70"
+        />
+      </div>
+
+      <div class="field">
+        <label for="gtw">Tipo de autopsia</label>
+        <Dropdown
+          v-model="autopsyType"
+          :options="autopsyTypes"
+          optionLabel="name"
+          :filter="true"
+          class="inputfield w-full"
+          placeholder="Tipo de autopsia"
+        />
+      </div>
+
+      <div class="field flex">
+        <div
+          class="
+            flex-1 flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <p class="text-left font-bold text-blue-500">Archivo autodiagnóstico</p>
+        </div>
+        <div
+          class="
+            flex-none flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <FileUpload
+            name="image_upload"
+            :customUpload="true"
+            @uploader="selfDiagnosticFileUploadHandler"
+            mode="basic"
+            :auto="true"
+          />
+        </div>
+        <div
+          class="
+            flex-1 flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <InlineMessage v-if="!!this.selfDiagnosticFile" severity="success"
+            >Cargado {{ this.selfDiagnosticFile.name }}</InlineMessage
+          >
+        </div>
+      </div>
+      <div class="field flex">
+        <div
+          class="
+            flex-1 flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <p class="w-12 text-left font-bold text-blue-500">
+            Log de presión
+          </p>
+        </div>
+        <div
+          class="
+            flex-none flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <FileUpload
+            name="log_upload"
+            :customUpload="true"
+            @uploader="pressureLogUploadHandler"
+            mode="basic"
+            :auto="true"
+          />
+        </div>
+        <div
+          class="
+            flex-1 flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <InlineMessage v-if="!!this.pressureLog" severity="success"
+            >Cargado {{ this.pressureLog.name }}</InlineMessage
+          >
+        </div>
+      </div>
+
     </div>
     <template #footer>
       <Message v-if="!!error" severity="error" @close="onErrorClose">
@@ -38,12 +185,24 @@
 <script>
 import Toast from "primevue/toast";
 import Message from "primevue/message";
+import Textarea from "primevue/textarea";
+import Calendar from 'primevue/calendar';
+import FileUpload from 'primevue/fileupload';
+import InlineMessage from 'primevue/inlinemessage';
+
 import WorkOrderForm from './WorkOrderForm.vue';
+import { createAutopsyMutation, getAutopsyTypesQuery } from '../../../api/apiRequests';
 
 function initialData() {
   return {
     loading: false,
     error: null,
+    date: null,
+    comments: null,
+    pressureLog: null,
+    selfDiagnosticFile: null,
+    autopsyType: null,
+    autopsyTypes: [],
   };
 }
 
@@ -54,7 +213,11 @@ export default {
   components: {
     Message,
     Toast,
-    WorkOrderForm
+    Textarea,
+    Calendar,
+    FileUpload,
+    InlineMessage,
+    WorkOrderForm,
   },
   data() {
     return initialData();
@@ -63,7 +226,25 @@ export default {
   methods: {
     async onSubmit() {
       this.loading = true;
-      //TODO: submit
+      const user_id = sessionStorage.getItem("id");
+      const autopsyResult = await createAutopsyMutation(
+        //TODO: validar q todos los campso esten completos
+        this.date,
+        user_id,
+        this.selectedIssue.id,
+        this.comments,
+        this.pressureLog,
+        this.selfDiagnosticFile,
+        this.autopsyType.id,
+      );
+
+      if (autopsyResult.data.createautopsy.id) {
+        this.showSuccess();
+        this.computedIsOpen = false;
+        this.resetWindow();
+      } else {
+        this.showError();
+      }
       this.loading = false;
     },
     resetWindow: function () {
@@ -89,10 +270,12 @@ export default {
       this.resetWindow();
       this.computedIsOpen = false;
     },
-    logUploadHandler(event) {
-      console.log(event);
-      this.log_file = event.files[0];
-    }
+    selfDiagnosticFileUploadHandler(event) {
+      this.selfDiagnosticFile = event.files[0];
+    },
+    pressureLogUploadHandler(event) {
+      this.pressureLog = event.files[0];
+    },
   },
   computed: {
     computedIsOpen: {
@@ -105,7 +288,12 @@ export default {
     },
   },
   async beforeMount() {
-      //todo: fetching de cosas necesarias
+    this.loading = true;
+
+    this.autopsyTypes = (
+      await getAutopsyTypesQuery()
+    ).data.autopsyTypes;
+
     this.loading = false;
   },
 };

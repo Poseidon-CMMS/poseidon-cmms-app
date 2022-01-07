@@ -122,17 +122,20 @@
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Message from "primevue/message";
+import Badge from 'primevue/badge';
+
 import { FilterMatchMode } from "primevue/api";
 import IrrigatorDetailsDialog from './IrrigatorDetailsDialog.vue';
-import { getIrrigatorsQuery } from '../api/apiRequests';
+import { getIrrigatorsQuery } from '../../api/apiRequests';
 
 export default {
   name: "TableIrrigators",
   components: {
     DataTable,
     Column,
+    Message,
     IrrigatorDetailsDialog,
-    Message
+    Badge,
   },
   data() {
     return {

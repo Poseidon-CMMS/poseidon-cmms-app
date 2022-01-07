@@ -556,6 +556,63 @@ const createRepairMutation = async function (
   });
 };
 
+const createAutopsyMutation = async function (
+  date,
+  user_id,
+  hdw_issue_id,
+  comments,
+  pressure_log,
+  self_diagnostic_file,
+  autopsy_type_id
+
+) {
+  const _variables = {
+    data: {
+      date,
+      user: {
+        connect: {
+          id: user_id,
+        },
+      },
+      hdw_issue: {
+        connect: {
+          id: hdw_issue_id,
+        },
+      },
+      autopsy_type: {
+        connect: {
+          id: autopsy_type_id
+        }
+      },
+      comments,
+      self_diagnostic_file: self_diagnostic_file
+        ? {
+            upload: self_diagnostic_file,
+          }
+        : null,
+        pressure_log: pressure_log
+        ? {
+            upload: pressure_log,
+          }
+        : null,
+    },
+  };
+
+  return await client.mutate({
+    mutation: gql`
+      mutation ($data: autopsyCreateInput!) {
+        createautopsy: createautopsy(data: $data) {
+          id
+        }
+      }
+    `,
+    variables: _variables,
+    context: {
+      hasUpload: !!(self_diagnostic_file || pressure_log),
+    },
+  });
+}
+
 const createInspectionMutation = async function (
   date,
   led_gtw,
@@ -654,6 +711,19 @@ const getInspectionTypesQuery = async function () {
           gateway_battery_voltage
           gps_node_battery_voltage
           pressure_sensor_signal
+          name
+        }
+      }
+    `,
+  });
+};
+
+const getAutopsyTypesQuery = async function () {
+  return await client.query({
+    query: gql`
+      query getAutopsyTypes {
+        autopsyTypes{
+          id
           name
         }
       }
@@ -907,21 +977,34 @@ const getHdwIssueDetailsQuery = async function (hdw_issue_id) {
 export {
   loginQuery,
   getIrrigatorsQuery,
-  getHdwIssuesSummaryQuery,
-  getHdwIssueDetailsQuery,
   getTechniciansQuery,
   getGatewaysQuery,
+  getAssetTypesQuery,
+  
+
+  //hdw issue
+  getHdwIssuesSummaryQuery,
+  getHdwIssueDetailsQuery,
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
   assignHdwIssueMutation,
-  getAssetTypesQuery,
-  getInspectionTypesQuery,
+
+  //inspection
   createInspectionMutation,
+  getInspectionTypesQuery,
+  
+  //repair
   createRepairMutation,
-  createWorkOrderMutation,
-  getWorkOrdersQuery,
   getRepairTypesQuery,
   getSolutionTypesQuery,
+  
+  //autopsy
+  createAutopsyMutation,
+  getAutopsyTypesQuery,
+  
+  //work order
+  createWorkOrderMutation,
+  getWorkOrdersQuery,
   getTechniciansGatewaysQuery,
   getTechniciansPressureSensorsQuery,
   getTechniciansGpsNodesQuery,

@@ -265,6 +265,8 @@
 <script>
 import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
+import InputText from 'primevue/inputtext';
+import Calendar from 'primevue/calendar';
 import Toast from "primevue/toast";
 import InlineMessage from "primevue/inlinemessage";
 import Message from "primevue/message";
@@ -283,7 +285,7 @@ function initialData() {
     error: null,
     comments: "",
     creationDate: null,
-    inspectioTypes: [],
+    inspectionTypes: [],
     inspectionType: null,
     assetType: null,
     jumper_wifi: false,
@@ -310,6 +312,8 @@ export default {
     InlineMessage,
     Message,
     Toast,
+    Calendar,
+    InputText,
   },
   data() {
     return initialData();

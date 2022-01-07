@@ -33,8 +33,8 @@
 <script>
 import DraggableList from '../components/Issues/DraggableList';
 import HdwIssueCreationDialog from '../components/Issues/Forms/HdwIssueCreationForm.vue';
-import IrrigatorDetailsDialog from '../components/IrrigatorDetailsDialog.vue';
-import IssueDetail from '../components/Issues/IssueDetail.vue';
+import IrrigatorDetailsDialog from '../components/Irrigators/IrrigatorDetailsDialog.vue';
+import IssueDetail from '../components/Issues/Details/IssueDetail.vue';
 import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
 import { getHdwIssuesSummaryQuery, getHdwIssueDetailsQuery } from '../api/apiRequests';
 
@@ -45,7 +45,7 @@ export default {
     HdwIssueCreationDialog,
     IrrigatorDetailsDialog,
     IssueDetail,
-    AssignationForm
+    AssignationForm,
   },
   methods: {
     hasDevice: function(value) {

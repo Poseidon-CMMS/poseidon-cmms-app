@@ -38,7 +38,8 @@
 import Password from 'primevue/password';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
-import {loginQuery} from '../api/apiRequests';
+import Card from 'primevue/card';
+import {loginQuery} from '../../api/apiRequests';
 
 
 export default {
@@ -46,7 +47,8 @@ export default {
   components: {
     InputText,
     Password,
-    Message
+    Message,
+    Card
   },
   props: {
     msg: String
