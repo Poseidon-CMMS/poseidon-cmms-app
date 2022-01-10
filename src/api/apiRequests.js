@@ -486,7 +486,7 @@ const createRepairMutation = async function (
   work_order_id,
   comments,
   log,
-  technician_id
+  selected_solution_type_id
 ) {
   const _variables = {
     data: {
@@ -501,11 +501,13 @@ const createRepairMutation = async function (
           id: repair_type_id,
         },
       },
-      replaced_asset_type: {
-        connect: {
-          id: replaced_asset_type_id,
-        },
-      },
+      replaced_asset_type: replaced_asset_type_id
+        ? {
+            connect: {
+              id: replaced_asset_type_id,
+            },
+          }
+        : null,
       work_order: {
         connect: {
           id: work_order_id,
@@ -539,11 +541,11 @@ const createRepairMutation = async function (
             upload: log,
           }
         : null,
-      technician: {
-        connect: {
-          id: technician_id
-        }
-      }
+      solution_type: selected_solution_type_id
+        ? {
+            connect: { id: selected_solution_type_id },
+          }
+        : null,
     },
   };
 
@@ -552,6 +554,43 @@ const createRepairMutation = async function (
       mutation ($data: repairCreateInput!) {
         createrepair: createrepair(data: $data) {
           id
+          date
+          work_order {
+            technician {
+              name
+              email
+            }
+          }
+          repair_type {
+            id
+            name
+            value
+          }
+          solution_type {
+            id
+            name
+          }
+          replaced_asset_type {
+            id
+            name
+          }
+          new_gateway {
+            id
+            integration_id
+          }
+          new_gps_node {
+            id
+            integration_id
+          }
+          new_pressure_sensor {
+            id
+            integration_id
+          }
+          comments
+          log {
+            url
+            filename
+          }
         }
       }
     `,
@@ -570,7 +609,6 @@ const createAutopsyMutation = async function (
   pressure_log,
   self_diagnostic_file,
   autopsy_type_id
-
 ) {
   const _variables = {
     data: {
@@ -587,8 +625,8 @@ const createAutopsyMutation = async function (
       },
       autopsy_type: {
         connect: {
-          id: autopsy_type_id
-        }
+          id: autopsy_type_id,
+        },
       },
       comments,
       self_diagnostic_file: self_diagnostic_file
@@ -596,7 +634,7 @@ const createAutopsyMutation = async function (
             upload: self_diagnostic_file,
           }
         : null,
-        pressure_log: pressure_log
+      pressure_log: pressure_log
         ? {
             upload: pressure_log,
           }
@@ -617,7 +655,7 @@ const createAutopsyMutation = async function (
       hasUpload: !!(self_diagnostic_file || pressure_log),
     },
   });
-}
+};
 
 const createInspectionMutation = async function (
   date,
@@ -728,7 +766,7 @@ const getAutopsyTypesQuery = async function () {
   return await client.query({
     query: gql`
       query getAutopsyTypes {
-        autopsyTypes{
+        autopsyTypes {
           id
           name
         }
@@ -986,28 +1024,22 @@ export {
   getTechniciansQuery,
   getGatewaysQuery,
   getAssetTypesQuery,
-  
-
   //hdw issue
   getHdwIssuesSummaryQuery,
   getHdwIssueDetailsQuery,
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
   assignHdwIssueMutation,
-
   //inspection
   createInspectionMutation,
   getInspectionTypesQuery,
-  
   //repair
   createRepairMutation,
   getRepairTypesQuery,
   getSolutionTypesQuery,
-  
   //autopsy
   createAutopsyMutation,
   getAutopsyTypesQuery,
-  
   //work order
   createWorkOrderMutation,
   getWorkOrdersQuery,

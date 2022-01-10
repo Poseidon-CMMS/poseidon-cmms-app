@@ -178,7 +178,6 @@
     </template>
   </Dialog>
   <Toast position="bottom-right" />
-  <work-order-form :isOpen="isWorkOrderFormOpen" @workOrderCreated="handleNewWorkOrder" @updateIsWorkOrderFormOpen="setIsWorkOrderFormOpen"></work-order-form>
 
 </template>
 
@@ -190,7 +189,6 @@ import Calendar from 'primevue/calendar';
 import FileUpload from 'primevue/fileupload';
 import InlineMessage from 'primevue/inlinemessage';
 
-import WorkOrderForm from './WorkOrderForm.vue';
 import { createAutopsyMutation, getAutopsyTypesQuery } from '../../../api/apiRequests';
 
 function initialData() {
@@ -217,7 +215,6 @@ export default {
     Calendar,
     FileUpload,
     InlineMessage,
-    WorkOrderForm,
   },
   data() {
     return initialData();

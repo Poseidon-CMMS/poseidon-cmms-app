@@ -6,28 +6,28 @@
       <div class="col-12">
         <div class="grid text-sm">
           <div class="col-6 lg:col-3">
-            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='clickElement' :loading='loading'/>
+            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='setSelectedIssue' :loading='loading'/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='clickElement' :loading='loading'/>
+            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='setSelectedIssue' :loading='loading'/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='clickElement' :loading='loading'/>
+            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading'/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='clickElement' :loading='loading'/>
+            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue' :loading='loading'/>
           </div>
         </div>
       </div>
       <div class="col-12">
-        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated'/>
+        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated'/>
       </div>
     </div>
       
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
-    <assignation-form :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueHasBeenUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
+    <assignation-form :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
 
-    <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
+    <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -62,11 +62,12 @@ export default {
     handleIsOpenAssignation: function(value) {
       this.showAssignedDialog = value;
     },
-    handleIssueHasBeenUpdated: function(updatedIssue) {
+    handleIssueUpdated: function(updatedIssue) {
+      console.log('pase por aca');
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
       this.issues = [...allOtherIssues, updatedIssue];
       if(this.selectedIssue.id === updatedIssue.id){
-        this.selectedIssue = {...this.selectedIssue, assigned_technician: updatedIssue.assigned_technician};
+        this.selectedIssue = updatedIssue;
       }
 
       // this.selectedIssue = this.issues.find(issue => issue.id === this.selectedIssue.id);
@@ -81,12 +82,12 @@ export default {
     assignedLog: function(evt) {
       if(evt?.added?.element && !evt.added.element.user && evt?.added?.element.status === 'in-field') {
         this.showAssignedDialog = true;
-        this.clickElement(evt.added.element);
+        this.setSelectedIssue(evt.added.element);
       }
     },
     repairedLog: function(evt) {
       if(evt?.added?.element && evt?.added?.element.status === 'assigned') {
-        this.selectedIssue = evt?.added?.element;
+        this.setSelectedIssue(evt.added.element);
         this.showRepairForm = true;
       }
       console.log('Repaired: ' + evt);
@@ -94,11 +95,13 @@ export default {
     outOfFieldLog: function(evt) {
       console.log('Out of field: ' + evt);
     },
-    clickElement: async function(evt) {
-      this.loading_details = true;
-      const detailedIssue = (await getHdwIssueDetailsQuery(evt.id)).data.hdw_issue; //todo caso error
-      this.selectedIssue = detailedIssue;
-      this.loading_details = false;
+    setSelectedIssue: async function(evt) {
+      if(evt?.id !== this?.selectedIssue?.id){ //fix rapido porque a veces apollo cachea las queries a estados pre-update y genera problemas. ej. asignar tecnico => clickear el mismo issue
+        this.loading_details = true;
+        const detailedIssue = (await getHdwIssueDetailsQuery(evt.id)).data.hdw_issue; //todo caso error
+        this.selectedIssue = detailedIssue;
+        this.loading_details = false;
+      }
     },
     setIsCreationModalOpen(val) {
       this.isCreationModalOpen = val;

@@ -7,24 +7,31 @@
   >
     <div class="card">
       <div class="field">
-        
         <div class="flex justify-content-around flex-wrap card-container">
           <div class="flex align-items-center w-11 justify-content-start">
-            <label for="work_order">Orden de trabajo</label> 
+            <label for="work_order">Orden de trabajo</label>
           </div>
           <div class="flex">
-            <Button class="p-button-sm" icon="pi pi-plus" @click="setIsWorkOrderFormOpen(true)"></Button>
+            <Button
+              class="p-button-sm"
+              icon="pi pi-plus"
+              @click="setIsWorkOrderFormOpen(true)"
+            ></Button>
           </div>
         </div>
         <Dropdown
           id="work_order"
           v-model="selectedWorkOrder"
           :options="workOrders"
-          :optionLabel="(work_order) => {
+          :optionLabel="
+            (work_order) => {
               const date = work_order.work_date;
               const dateObject = new Date(date);
-              return `${dateObject.getFullYear()}/${dateObject.getMonth() + 1}/${dateObject.getDate()} | ${work_order.comment}`
-            }"
+              return `${dateObject.getFullYear()}/${
+                dateObject.getMonth() + 1
+              }/${dateObject.getDate()} | ${work_order.comment}`;
+            }
+          "
           class="inputfield w-full"
           placeholder="Orden de trabajo"
         />
@@ -60,7 +67,12 @@
           optionLabel="name"
         />
       </div>
-      <div class="field" v-if="repairType?.value === 'device_change' && assetType?.name=='Gateway'">
+      <div
+        class="field"
+        v-if="
+          repairType?.value === 'device_change' && assetType?.name == 'Gateway'
+        "
+      >
         <label for="asset_type">Nuevo gateway instalado</label>
         <Dropdown
           id="solution"
@@ -71,7 +83,12 @@
           placeholder="Gateway"
         />
       </div>
-      <div class="field" v-if="repairType?.value === 'device_change' && assetType?.name=='Nodo GPS'">
+      <div
+        class="field"
+        v-if="
+          repairType?.value === 'device_change' && assetType?.name == 'Nodo GPS'
+        "
+      >
         <label for="asset_type">Nuevo nodo instalado</label>
         <Dropdown
           id="solution"
@@ -82,7 +99,13 @@
           placeholder="Nodo"
         />
       </div>
-      <div class="field" v-if="repairType?.value === 'device_change' && assetType?.name=='Sensor de Presión'">
+      <div
+        class="field"
+        v-if="
+          repairType?.value === 'device_change' &&
+          assetType?.name == 'Sensor de Presión'
+        "
+      >
         <label for="asset_type">Nuevo sensor de presión instalado</label>
         <Dropdown
           id="solution"
@@ -97,7 +120,7 @@
         <label for="solution">Solución</label>
         <Dropdown
           id="solution"
-          v-model="selectedSolution"
+          v-model="selectedSolutionType"
           :options="solutionTypes"
           optionLabel="name"
           class="inputfield w-full"
@@ -130,9 +153,7 @@
             border-round
           "
         >
-          <p class="w-12 text-left font-bold text-blue-500">
-            Log
-          </p>
+          <p class="w-12 text-left font-bold text-blue-500">Log</p>
         </div>
         <div
           class="
@@ -176,7 +197,7 @@
     </div>
     <template #footer>
       <Message v-if="!!error" severity="error" @close="onErrorClose">
-        {{error}}
+        {{ error }}
       </Message>
       <div class="mt-2">
         <Button
@@ -197,8 +218,11 @@
     </template>
   </Dialog>
   <Toast position="bottom-right" />
-  <work-order-form :isOpen="isWorkOrderFormOpen" @workOrderCreated="handleNewWorkOrder" @updateIsWorkOrderFormOpen="setIsWorkOrderFormOpen"></work-order-form>
-
+  <work-order-form
+    :isOpen="isWorkOrderFormOpen"
+    @workOrderCreated="handleNewWorkOrder"
+    @updateIsWorkOrderFormOpen="setIsWorkOrderFormOpen"
+  ></work-order-form>
 </template>
 
 <script>
@@ -209,7 +233,7 @@ import Calendar from "primevue/calendar";
 import Message from "primevue/message";
 import FileUpload from "primevue/fileupload";
 import SelectButton from "primevue/selectbutton";
-import WorkOrderForm from './WorkOrderForm.vue';
+import WorkOrderForm from "./WorkOrderForm.vue";
 import {
   getAssetTypesQuery,
   getRepairTypesQuery,
@@ -221,36 +245,41 @@ import {
   getTechniciansPressureSensorsQuery,
 } from "../../../api/apiRequests";
 
-function initialData() {
-  return {
+function initialData(avoidDeletingDropdowns = false) {
+  let initialData = {
     repair: null,
     loading: false,
     error: null,
     comments: "",
     creationDate: null,
-    repairTypes: [],
     repairType: null,
     assetType: null,
-    assetTypes: [],
     log_file: null,
-    workOrders: [],
     selectedWorkOrder: null,
-    pressureSensors: [],
     selectedPressureSensor: null,
-    gpsNodes: [],
     selectedGpsNode: null,
-    gateways: [],
     selectedGateway: null,
-    selectedSolution: null,
-    solutionTypes: [],
+    selectedSolutionType: null,
     isWorkOrderFormOpen: false,
   };
+  if (!avoidDeletingDropdowns)
+    initialData = {
+      ...initialData,
+      repairTypes: [],
+      assetTypes: [],
+      workOrders: [],
+      pressureSensors: [],
+      gpsNodes: [],
+      gateways: [],
+      solutionTypes: [],
+    };
+  return initialData;
 }
 
 export default {
   name: "RepairForm",
   props: ["isOpen", "selectedIssue"],
-  emits: ["updateIsOpen"],
+  emits: ["updateIsOpen", "issueUpdated"],
   components: {
     Textarea,
     FileUpload,
@@ -267,33 +296,46 @@ export default {
 
   methods: {
     async onSubmit() {
-      this.loading = true;
-      const repairResult = await createRepairMutation(
-        //TODO: validar q todos los campso esten completos
-        this.creationDate,
-        this.selectedIssue.id,
-        this.repairType.id,
-        this.assetType?.id,
-        this.selectedGateway?.id,
-        this.selectedGpsNode?.id,
-        this.selectedPressureSensor?.id,
-        this.selectedWorkOrder?.id,
-        this.comments,
-        this.log_file,
-        this.selectedIssue.assigned_technician.id,
-      );
+      try {
+        this.loading = true;
+        const repairResult = await createRepairMutation(
+          //TODO: validar q todos los campso esten completos
+          this.creationDate,
+          this.selectedIssue.id,
+          this.repairType.id,
+          this.assetType?.id,
+          this.selectedGateway?.id,
+          this.selectedGpsNode?.id,
+          this.selectedPressureSensor?.id,
+          this.selectedWorkOrder?.id,
+          this.comments,
+          this.log_file,
+          this.selectedSolutionType.id
+        );
 
-      if (repairResult.data.createrepair.id) {
-        this.showSuccess();
-        this.computedIsOpen = false;
-        this.resetWindow();
-      } else {
-        this.showError();
+        if (repairResult.data.createrepair.id) {
+          this.showSuccess();
+          const newIssue = {
+            ...this.selectedIssue,
+            status: "repaired",
+            repair: this.selectedIssue?.repair
+              ? [...this.selectedIssue.repair, repairResult.data.createrepair]
+              : [repairResult.data.createrepair],
+          };
+          this.$emit("issueUpdated", newIssue);
+          this.computedIsOpen = false;
+          this.resetWindow();
+        } else {
+          this.showError();
+        }
+        this.loading = false;
+      } catch (e) {
+        this.loading = false;
+        this.error = e;
       }
-      this.loading = false;
     },
     resetWindow: function () {
-      Object.assign(this.$data, initialData());
+      Object.assign(this.$data, initialData(true));
     },
     showSuccess() {
       this.$toast.add({
@@ -324,7 +366,7 @@ export default {
     },
     handleNewWorkOrder(newWorkOrder) {
       this.workOrders = [...this.workOrders, newWorkOrder];
-    }
+    },
   },
   computed: {
     computedIsOpen: {
@@ -343,7 +385,9 @@ export default {
     const user_id = sessionStorage.getItem("id");
     this.workOrders = (await getWorkOrdersQuery(user_id)).data.workOrders; //todo: error handling
     this.gateways = (await getTechniciansGatewaysQuery()).data.gateways; //todo: error handling y traer solo las del tecnico
-    this.pressureSensors = (await getTechniciansPressureSensorsQuery()).data.pressureSensors; //todo: error handling y traer solo las del tecnico
+    this.pressureSensors = (
+      await getTechniciansPressureSensorsQuery()
+    ).data.pressureSensors; //todo: error handling y traer solo las del tecnico
     this.gpsNodes = (await getTechniciansGpsNodesQuery()).data.gpsNodes; //todo: error handling y traer solo las del tecnico
 
     this.loading = false;

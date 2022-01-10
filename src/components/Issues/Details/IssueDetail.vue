@@ -237,6 +237,13 @@
                     <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic?.pressure_difference }}</div>
                   </div>
                 </div>
+
+                <div class="col-12 md:col-6" v-if='selectedIssue?.comments'>
+                  <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+                    <div class="col-2 text-500 w-6 md:w-2 font-medium">Comentarios</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.comments }}</div>
+                  </div>
+                </div>
               </div>
             </ScrollPanel>
           </AccordionTab>
@@ -438,7 +445,7 @@ export default {
     }
   },
   props: ["selectedIssue", "clickIrrigator", "loading"],
-  emits: ["openAssignationDialog"],
+  emits: ["openAssignationDialog", "openRepairDialog"],
   data() {
     return {
       displayIrrigatorDialog: false,
