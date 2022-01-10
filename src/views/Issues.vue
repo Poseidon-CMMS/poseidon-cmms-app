@@ -20,12 +20,14 @@
         </div>
       </div>
       <div class="col-12">
-        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation"/>
+        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :technicianChange="technicianChange" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated'/>
       </div>
     </div>
       
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
     <assignation-form :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueHasBeenUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
+
+    <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -37,6 +39,7 @@ import IrrigatorDetailsDialog from '../components/Irrigators/IrrigatorDetailsDia
 import IssueDetail from '../components/Issues/Details/IssueDetail.vue';
 import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
 import { getHdwIssuesSummaryQuery, getHdwIssueDetailsQuery } from '../api/apiRequests';
+import RepairForm from "../components/Issues/Forms/RepairForm.vue";
 
 export default {
   name: 'Issues',
@@ -46,6 +49,7 @@ export default {
     IrrigatorDetailsDialog,
     IssueDetail,
     AssignationForm,
+    RepairForm,
   },
   methods: {
     hasDevice: function(value) {
@@ -75,12 +79,16 @@ export default {
       console.log('In field: ' + evt);
     },
     assignedLog: function(evt) {
-      if(evt?.added?.element && !evt.added.element.user) {
+      if(evt?.added?.element && !evt.added.element.user && evt?.added?.element.status === 'in-field') {
         this.showAssignedDialog = true;
         this.clickElement(evt.added.element);
       }
     },
     repairedLog: function(evt) {
+      if(evt?.added?.element && evt?.added?.element.status === 'assigned') {
+        this.selectedIssue = evt?.added?.element;
+        this.showRepairForm = true;
+      }
       console.log('Repaired: ' + evt);
     },
     outOfFieldLog: function(evt) {
@@ -96,6 +104,9 @@ export default {
       this.isCreationModalOpen = val;
       if(!val) this.selectedCreateIssueIrrigatorId = null; //reset select on modal close
     },
+    handleIsOpenRepairUpdated(val) {
+      this.showRepairForm = val;
+    }
   },
   data() {
     return {
@@ -109,6 +120,7 @@ export default {
       issues: [],
       selectedIssue: null,
       selectedCreateIssueIrrigatorId: null,
+      showRepairForm: false,
     }
   },
   computed: {

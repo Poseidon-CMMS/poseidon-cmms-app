@@ -353,8 +353,7 @@
   </div>
   <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenInspectionUpdated"></inspection-form>
   <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenInspectionDetailUpdated"></inspection-detail>
-  
-  <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
+
   <repair-detail :repair="selectedRepair" :isOpen="selectedRepair != null" @updateIsOpen="handleIsOpenRepairDetailUpdated"></repair-detail>
 
   <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsyUpdated"></autopsy-form>
@@ -372,12 +371,11 @@ import Panel from 'primevue/panel';
 
 import InspectionDetail from "../Details/InspectionDetail.vue";
 import InspectionForm from "../Forms/InspectionForm.vue";
-import RepairForm from "../Forms/RepairForm.vue";
-
-import RepairDetail from "../Details/RepairDetail.vue";
 import AutopsyDetail from "../Details/AutopsyDetail.vue";
 import AutopsyForm from '../Forms/AutopsyForm.vue';
 import { getTechniciansQuery } from "../../../api/apiRequests";
+import RepairDetail from "../Details/RepairDetail.vue";
+
 export default {
   name: "IssueDetail",
   components: {
@@ -392,8 +390,7 @@ export default {
     InspectionForm,
     AutopsyForm,
     AutopsyDetail,
-    RepairForm,
-    RepairDetail,
+    RepairDetail
   },
   methods: {
     hasDevice: function (value) {
@@ -407,7 +404,7 @@ export default {
       this.showInspectionForm = true;
     },
     handleOpenRepairForm: function () {
-      this.showRepairForm = true;
+      this.$emit("openRepairDialog", true);
     },
     handleOpenAutopsyForm: function () {
       this.showAutopsyForm = true;
@@ -433,9 +430,6 @@ export default {
     handleIsOpenInspectionUpdated: function () {
       this.showInspectionForm = false;
     },
-    handleIsOpenRepairUpdated: function () {
-      this.showRepairForm = false;
-    },
     handleIsOpenAutopsyUpdated: function () {
       this.showAutopsyForm = false;
     },
@@ -453,7 +447,6 @@ export default {
       selectedRepair: null,
       selectedAutopsy: null,
       showInspectionForm: false,
-      showRepairForm: false,
       showAutopsyForm: false,
       technicianOptions: [],
       technicians_loading: true,

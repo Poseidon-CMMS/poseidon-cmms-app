@@ -279,7 +279,8 @@ export default {
         this.selectedPressureSensor?.id,
         this.selectedWorkOrder?.id,
         this.comments,
-        this.log_file
+        this.log_file,
+        this.selectedIssue.assigned_technician.id,
       );
 
       if (repairResult.data.createrepair.id) {

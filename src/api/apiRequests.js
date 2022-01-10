@@ -485,7 +485,8 @@ const createRepairMutation = async function (
   new_pressure_sensor_id,
   work_order_id,
   comments,
-  log
+  log,
+  technician_id
 ) {
   const _variables = {
     data: {
@@ -538,6 +539,11 @@ const createRepairMutation = async function (
             upload: log,
           }
         : null,
+      technician: {
+        connect: {
+          id: technician_id
+        }
+      }
     },
   };
 
