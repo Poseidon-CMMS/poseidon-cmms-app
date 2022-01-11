@@ -68,7 +68,6 @@ export default {
       this.showAssignedDialog = value;
     },
     handleIssueUpdated: function(updatedIssue) {
-      console.log('pase por aca');
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
       this.issues = [...allOtherIssues, updatedIssue];
       if(this.selectedIssue.id === updatedIssue.id){

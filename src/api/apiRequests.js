@@ -339,6 +339,31 @@ const assignHdwIssueMutation = async function (hdwIssueId, technicianId) {
   });
 };
 
+const clearAssignHdwIssueMutation = async function (hdwIssueId) {
+  return await client.mutate({
+    mutation: gql`
+      mutation (
+        $where: hdw_issueWhereUniqueInput!
+        $data: hdw_issueUpdateInput!
+      ) {
+        updatehdw_issue: updatehdw_issue(where: $where, data: $data) {
+          id
+        }
+      }
+    `,
+    variables: {
+      where: {
+        id: hdwIssueId,
+      },
+      data: {
+        assigned_technician: {
+          disconnect: true,
+        },
+      },
+    },
+  });
+};
+
 const createHdwIssueMutation = async function (
   creationDate,
   diagnosticDate,
@@ -1046,4 +1071,5 @@ export {
   getTechniciansGatewaysQuery,
   getTechniciansPressureSensorsQuery,
   getTechniciansGpsNodesQuery,
+  clearAssignHdwIssueMutation,
 };

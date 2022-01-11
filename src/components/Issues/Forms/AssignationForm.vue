@@ -22,7 +22,16 @@
       </div>
       <div class="col-12 mt-2">
         <div class="grid">
-          <div class="col-2 col-offset-8">
+          <div class="col-2">
+            <Button
+              class="p-button-danger"
+              icon="pi pi-trash"
+              label="Desasignar"
+              @click="onDeleteAssignation"
+              :loading="loading"
+            />
+          </div>
+          <div class="col-2 col-offset-6">
             <Button
               class="p-button-success"
               icon="pi pi-check"
@@ -52,7 +61,7 @@
 </template>
 
 <script>
-import { getTechniciansQuery, assignHdwIssueMutation } from "../../../api/apiRequests";
+import { getTechniciansQuery, assignHdwIssueMutation, clearAssignHdwIssueMutation } from "../../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
 
@@ -71,7 +80,7 @@ export default {
   methods: {
     async onSubmitAssignation() {
       if (!this.selectedTechnician) {
-        this.error = "Debe seleccionar algún técnico";
+        this.error = "Debe seleccionar algún técnico, o seleccione la opción eliminar asignación";
         setTimeout(() => {
           this.error = null;
         }, 5000);
@@ -96,6 +105,18 @@ export default {
     onCancelAssignation() {
       this.computedIsOpen = false;
     },
+    async onDeleteAssignation() {
+      this.loading = true;
+      await clearAssignHdwIssueMutation(this.selectedIssue.id);
+      this.loading = false;
+      const newIssue = {
+        ...this.selectedIssue,
+        status: 'in-field'
+      };
+      delete newIssue.assigned_technician;
+      this.$emit("issueUpdated", newIssue);
+      this.computedIsOpen = false;
+    }
   },
   computed: {
     computedIsOpen: {
