@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="col-12">
-        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated'/>
+        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated' @openAutopsyDialog='handleIsOpenAutopsy'/>
       </div>
     </div>
       
@@ -28,6 +28,9 @@
     <assignation-form :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
 
     <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
+
+    
+  <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsy"></autopsy-form>
 
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -40,6 +43,7 @@ import IssueDetail from '../components/Issues/Details/IssueDetail.vue';
 import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
 import { getHdwIssuesSummaryQuery, getHdwIssueDetailsQuery } from '../api/apiRequests';
 import RepairForm from "../components/Issues/Forms/RepairForm.vue";
+import AutopsyForm from '../components/Issues/Forms/AutopsyForm.vue';
 
 export default {
   name: 'Issues',
@@ -50,6 +54,7 @@ export default {
     IssueDetail,
     AssignationForm,
     RepairForm,
+    AutopsyForm,
   },
   methods: {
     hasDevice: function(value) {
@@ -109,6 +114,9 @@ export default {
     },
     handleIsOpenRepairUpdated(val) {
       this.showRepairForm = val;
+    },
+    handleIsOpenAutopsy(val) {
+      this.showAutopsyForm = val;
     }
   },
   data() {
@@ -124,6 +132,7 @@ export default {
       selectedIssue: null,
       selectedCreateIssueIrrigatorId: null,
       showRepairForm: false,
+      showAutopsyForm: false,
     }
   },
   computed: {

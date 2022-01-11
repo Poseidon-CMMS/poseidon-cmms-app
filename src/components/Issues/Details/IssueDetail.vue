@@ -363,7 +363,6 @@
 
   <repair-detail :repair="selectedRepair" :isOpen="selectedRepair != null" @updateIsOpen="handleIsOpenRepairDetailUpdated"></repair-detail>
 
-  <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsyUpdated"></autopsy-form>
   <autopsy-detail :autopsy="selectedAutopsy" :isOpen="selectedAutopsy != null" @updateIsOpen="handleIsOpenAutopsyDetailUpdated"></autopsy-detail>
 </template>
 
@@ -379,7 +378,6 @@ import Panel from 'primevue/panel';
 import InspectionDetail from "../Details/InspectionDetail.vue";
 import InspectionForm from "../Forms/InspectionForm.vue";
 import AutopsyDetail from "../Details/AutopsyDetail.vue";
-import AutopsyForm from '../Forms/AutopsyForm.vue';
 import { getTechniciansQuery } from "../../../api/apiRequests";
 import RepairDetail from "../Details/RepairDetail.vue";
 
@@ -395,7 +393,6 @@ export default {
     Panel,
     InspectionDetail,
     InspectionForm,
-    AutopsyForm,
     AutopsyDetail,
     RepairDetail
   },
@@ -414,7 +411,7 @@ export default {
       this.$emit("openRepairDialog", true);
     },
     handleOpenAutopsyForm: function () {
-      this.showAutopsyForm = true;
+      this.$emit("openAutopsyDialog", true);
     },
     handleClickInspection: function (inspection) {
       this.selectedInspection = inspection;
@@ -437,15 +434,12 @@ export default {
     handleIsOpenInspectionUpdated: function () {
       this.showInspectionForm = false;
     },
-    handleIsOpenAutopsyUpdated: function () {
-      this.showAutopsyForm = false;
-    },
     handleTechnicianEdit: function() {
       this.$emit("openAssignationDialog", true);
     }
   },
   props: ["selectedIssue", "clickIrrigator", "loading"],
-  emits: ["openAssignationDialog", "openRepairDialog"],
+  emits: ["openAssignationDialog", "openRepairDialog", "openAutopsyDialog"],
   data() {
     return {
       displayIrrigatorDialog: false,
@@ -454,7 +448,6 @@ export default {
       selectedRepair: null,
       selectedAutopsy: null,
       showInspectionForm: false,
-      showAutopsyForm: false,
       technicianOptions: [],
       technicians_loading: true,
     };
