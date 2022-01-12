@@ -177,12 +177,10 @@
       </div>
     </template>
   </Dialog>
-  <Toast position="bottom-right" />
 
 </template>
 
 <script>
-import Toast from "primevue/toast";
 import Message from "primevue/message";
 import Textarea from "primevue/textarea";
 import Calendar from 'primevue/calendar';
@@ -210,7 +208,6 @@ export default {
   emits: ["updateIsOpen"],
   components: {
     Message,
-    Toast,
     Textarea,
     Calendar,
     FileUpload,

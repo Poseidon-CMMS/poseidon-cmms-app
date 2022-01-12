@@ -12,9 +12,10 @@ import "primeicons/primeicons.css";
 import router from './router'
 import Tooltip from 'primevue/tooltip';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
 
-const app = createApp(App).use(router).use(PrimeVue).use(ToastService);
+const app = createApp(App).use(router).use(PrimeVue).use(ToastService).use(ConfirmationService);
 
 app.component('Dialog', Dialog);
 app.component('Dropdown', Dropdown);

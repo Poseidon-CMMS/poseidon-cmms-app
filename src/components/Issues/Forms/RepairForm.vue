@@ -217,7 +217,6 @@
       </div>
     </template>
   </Dialog>
-  <Toast position="bottom-right" />
   <work-order-form
     :isOpen="isWorkOrderFormOpen"
     @workOrderCreated="handleNewWorkOrder"
@@ -227,7 +226,6 @@
 
 <script>
 import Textarea from "primevue/textarea";
-import Toast from "primevue/toast";
 import InlineMessage from "primevue/inlinemessage";
 import Calendar from "primevue/calendar";
 import Message from "primevue/message";
@@ -285,7 +283,6 @@ export default {
     FileUpload,
     InlineMessage,
     Message,
-    Toast,
     SelectButton,
     WorkOrderForm,
     Calendar,
@@ -310,7 +307,7 @@ export default {
           this.selectedWorkOrder?.id,
           this.comments,
           this.log_file,
-          this.selectedSolutionType.id
+          this.selectedSolutionType?.id
         );
 
         if (repairResult.data.createrepair.id) {

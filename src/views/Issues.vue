@@ -6,16 +6,16 @@
       <div class="col-12">
         <div class="grid text-sm">
           <div class="col-6 lg:col-3">
-            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='setSelectedIssue' :loading='loading'/>
+            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='setSelectedIssue' :loading='loading'/>
+            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading'/>
+            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue' :loading='loading'/>
+            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@ export default {
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
       this.issues = [...allOtherIssues, updatedIssue];
       if(this.selectedIssue.id === updatedIssue.id){
-        this.selectedIssue = updatedIssue;
+        this.setSelectedIssue(updatedIssue);
       }
 
       // this.selectedIssue = this.issues.find(issue => issue.id === this.selectedIssue.id);

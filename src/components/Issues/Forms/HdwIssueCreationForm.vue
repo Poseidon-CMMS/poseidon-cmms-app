@@ -310,7 +310,7 @@ export default {
           this.packet_202_count,
           this.packet_203_count,
           this.battery_2to3,
-          this.positions,
+          this.positions?.value,
           this.lost_packets,
           this.node_to_gateway_distance_in_meters,
           this.gateway_first_data_transmission_date,

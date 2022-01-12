@@ -9,7 +9,7 @@
       <div class="col-12">
         <div class="p-field">    
         <span class="p-float-label">
-          <InputText id="email" type="text" v-model="email" />
+          <InputText id="email" type="text" v-model="email" @keypress="keyPressed"/>
           <label for="email">Email</label>
         </span>
       </div>
@@ -17,7 +17,7 @@
       <div class="col-12 mt-4">
         <div class="p-field p-m-4 p-p-6">    
           <span class="p-float-label">
-            <password id="password" toggleMask :feedback="false" v-model="password"/>
+            <password id="password" toggleMask :feedback="false" v-model="password" @keypress="keyPressed"/>
             <label for="password">Password</label>
           </span>
         </div>
@@ -81,6 +81,11 @@ export default {
     },
     onErrorClose(){
       this.error = ''
+    },
+    keyPressed(event) {
+      if (event.keyCode == 13) {
+        this.onSubmit();
+      }
     }
   }
 }

@@ -1043,6 +1043,29 @@ const getHdwIssueDetailsQuery = async function (hdw_issue_id) {
   });
 };
 
+const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
+  return await client.mutate({
+    mutation: gql`
+      mutation (
+        $where: hdw_issueWhereUniqueInput!
+        $data: hdw_issueUpdateInput!
+      ) {
+        updatehdw_issue: updatehdw_issue(where: $where, data: $data) {
+          id
+        }
+      }
+    `,
+    variables: {
+      where: {
+        id: hdwIssueId,
+      },
+      data: {
+        status
+      },
+    },
+  });
+};
+
 export {
   loginQuery,
   getIrrigatorsQuery,
@@ -1055,6 +1078,8 @@ export {
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
   assignHdwIssueMutation,
+  clearAssignHdwIssueMutation,
+  updateHdwIssueStatusMutation,
   //inspection
   createInspectionMutation,
   getInspectionTypesQuery,
@@ -1071,5 +1096,4 @@ export {
   getTechniciansGatewaysQuery,
   getTechniciansPressureSensorsQuery,
   getTechniciansGpsNodesQuery,
-  clearAssignHdwIssueMutation,
 };

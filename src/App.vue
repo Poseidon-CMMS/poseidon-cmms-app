@@ -10,7 +10,8 @@
       />
     </template>
   </Menubar>
-
+  <ConfirmDialog></ConfirmDialog>
+  <Toast></Toast>
   <div class="mx-8">
     <router-view />
   </div>
@@ -19,11 +20,15 @@
 <script>
 import Menubar from "primevue/menubar";
 import { logout } from "./utils/logout";
+import ConfirmDialog from "primevue/confirmdialog";
+import Toast from "primevue/toast";
 
 export default {
   name: "App",
   components: {
     Menubar,
+    ConfirmDialog,
+    Toast
   },
   methods: {
     onLogout() {

@@ -227,7 +227,13 @@
                 <div class="col-12 md:col-6 " v-if='selectedIssue?.diagnostic?.diagnostic_type?.positions'>
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Posiciones</div>
-                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic?.positions }}</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                      {{ 
+                        selectedIssue?.diagnostic?.positions == 'null' ? "Nulas" : 
+                        selectedIssue?.diagnostic?.positions == 'non-null' ? "No nulas" : 
+                        selectedIssue?.diagnostic?.positions
+                      }}
+                      </div>
                   </div>
                 </div>
 
@@ -258,7 +264,6 @@
                 </div>
               </div>
             </template>
-            <ScrollPanel style="width: 100%; height: 100px" class="custom">
               <ul>
                 <div class="itemList hover:surface-300 m-1" @click="handleClickInspection(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.inspection">
                   <div class="grid mx-5">
@@ -279,8 +284,6 @@
                   <Divider />
                 </div>
               </ul>
-
-            </ScrollPanel>
           </AccordionTab>
           <AccordionTab>
             <template #header>
@@ -293,7 +296,6 @@
                 </div>
               </div>
             </template>
-            <ScrollPanel style="width: 100%; height: 100px" class="custom">
               <ul>
                 <div class="itemList hover:surface-300 m-1" @click="handleClickRepair(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.repair">
                   <div class="grid mx-5">
@@ -315,8 +317,6 @@
                   <Divider />
                 </div>
               </ul>
-
-            </ScrollPanel>
           </AccordionTab>
           <AccordionTab>
             <template #header>
@@ -329,7 +329,6 @@
                 </div>
               </div>
             </template>
-             <ScrollPanel style="width: 100%; height: 100px" class="custom">
               <ul>
                 <div class="itemList hover:surface-300 m-1" @click="handleClickAutopsy(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.autopsy">
                   <div class="grid mx-5">
@@ -351,8 +350,6 @@
                   <Divider />
                 </div>
               </ul>
-
-            </ScrollPanel>
           </AccordionTab>
         </Accordion>
       </div>

@@ -259,7 +259,6 @@
       </div>
     </template>
   </Dialog>
-  <Toast position="bottom-right" />
 </template>
 
 <script>
@@ -267,7 +266,6 @@ import Textarea from "primevue/textarea";
 import Checkbox from "primevue/checkbox";
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
-import Toast from "primevue/toast";
 import InlineMessage from "primevue/inlinemessage";
 import Message from "primevue/message";
 import FileUpload from "primevue/fileupload";
@@ -311,7 +309,6 @@ export default {
     FileUpload,
     InlineMessage,
     Message,
-    Toast,
     Calendar,
     InputText,
   },

@@ -32,7 +32,7 @@
         <label for="comments">Descripción</label>
         <Textarea
           id="comments"
-          placeholder="Observaciones acerca de la reparación"
+          placeholder="Observaciones acerca de la órden de trabajo"
           v-model="comments"
           :autoResize="true"
           class="inputfield w-full"
@@ -63,12 +63,10 @@
       </div>
     </template>
   </Dialog>
-  <Toast position="bottom-right" />
 </template>
 
 <script>
 import Textarea from "primevue/textarea";
-import Toast from "primevue/toast";
 import Calendar from "primevue/calendar";
 import Message from "primevue/message";
 import InputNumber from "primevue/inputnumber";
@@ -93,7 +91,6 @@ export default {
   components: {
     Textarea,
     Message,
-    Toast,
     InputNumber,
     Calendar
   },
