@@ -14,19 +14,19 @@
     @rowSelect="onRowSelect"
   >
     <template #header>
-      <p class="text-2xl font-semibold m-0">Irrigators</p>
+      <p class="text-2xl font-semibold m-0">Equipos de riego</p>
     </template>
     <template #empty> 
       <div class="flex align-items-center border-bottom-1 surface-border surface-overlay w-full">
-        <p class="text-2xl w-">Empty data.</p>
+        <p class="text-2xl w-">Sin datos de equipos.</p>
       </div>
     </template>
     <template #loading> 
       <div class="flex align-items-center border-bottom-1 surface-border surface-overlay w-full">
-        <p class="text-2xl w-10">Loading data...</p>
+        <p class="text-2xl w-10">Cargando datos...</p>
       </div>  
     </template>
-    <column field="integrationID" header="Id Equipo" :sortable="true"></column>
+    <column field="integration_id" header="Id equipo" :sortable="true"></column>
     <column field="name" header="Name" :sortable="true">
       <template #body="{data}">
           <Badge :value="data.hdwIssueCount?data.hdwIssueCount:'OK'" :severity="data.hdwIssueCount?'danger':'success'" class="p-mr-2"></Badge><span class="p-ml-2">{{data.name}}</span>
@@ -35,21 +35,21 @@
     <column field="field.client.name" header="Client" :sortable="true"></column>
     <column field="status" header="Status" :sortable="true"></column>
     <column field="sla" header="SLA" :sortable="true"></column>
-    <column field="gateway.integrationId" header="GTW ID" :sortable="true"></column>
-    <column field="gpsNode.integrationId" header="Node ID" :sortable="true"></column>
-    <column field="pressureSensor.integration_id" header="Pressure Sensor ID" :sortable="true"></column>
-    <column field="gateway.satelliteModem.integration_id" header="Modem ID" :sortable="true"></column>
-    <column field="isMapped" header="Mapped" :sortable="true"></column>
+    <column field="gateway.integration_id" header="GTW" :sortable="true"></column>
+    <column field="gps_node.integration_id" header="Nodo" :sortable="true"></column>
+    <column field="pressure_sensor.integration_id" header="Sensor de presión" :sortable="true"></column>
+    <column field="gateway.satelliteModem.integration_id" header="Modem" :sortable="true"></column>
+    <column field="isMapped" header="Mapeado" :sortable="true"></column>
     <column field="field.zone.name" header="Zone" :sortable="true"></column>
-    <column field="field.province.name" header="Province" :sortable="true"></column>
-    <column field="field.city.name" header="City" :sortable="true"></column>
-    <column field="field.name" header="Field" :sortable="true"></column>
-    <column field="transmissionStatus" header="Transmission Status" :sortable="true">
+    <column field="field.province.name" header="Provincia" :sortable="true"></column>
+    <column field="field.city.name" header="Ciudad" :sortable="true"></column>
+    <column field="field.name" header="Campo" :sortable="true"></column>
+    <column field="transmission_status" header="Estado de transmisión" :sortable="true">
       <template #body="{data}">
         <span :class="'status-badge status-' + data.transmissionStatus">{{data.transmissionStatus}}</span>
       </template>
     </column>
-    <column field="lastTransmissionDate" header="Last Tx" :sortable="true"></column>
+    <column field="lastTransmissionDate" header="Última Tx" :sortable="true"></column>
     <column
       field="actions"
       header="Actions"
@@ -68,7 +68,7 @@
             p-button-success
             p-mr-2
           "
-          v-tooltip="'Open Grafana'"
+          v-tooltip="'Abrir Grafana'"
           style="margin-right: 0.5em"
           @click="openGrafana(slotProps.data)"
         />
@@ -82,7 +82,7 @@
             p-button-danger
             p-mr-2
           "
-          v-tooltip="'Create Hdw Issue'"
+          v-tooltip="'Crear Hdw Issue'"
           style="margin-right: 0.5em"
           @click="createHdwIssue(slotProps.data)"
         />
@@ -96,7 +96,7 @@
             p-button-success
             p-mr-2
           "
-          v-tooltip="'Create Install Request'"
+          v-tooltip="'Crear solicitud de instalación'"
           style="margin-right: 0.5em"
           @click="createInstallRequest(slotProps.data)"
         />
@@ -110,7 +110,7 @@
             p-button-danger
             p-mr-2
           "
-          v-tooltip="'Create Uninstall Request'"
+          v-tooltip="'Crear solicitud de desintalación'"
           @click="createUninstallRequest(slotProps.data)"
         />
       </template>
