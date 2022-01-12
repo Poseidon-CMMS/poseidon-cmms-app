@@ -14,6 +14,8 @@
           v-model="date"
           dateFormat="yy-mm-dd"
           class="inputfield w-full"
+          :showTime="true"
+          :showSeconds="true"
         />
       </div>
       <div class="field">

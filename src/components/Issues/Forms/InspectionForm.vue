@@ -11,6 +11,8 @@
         <Calendar
           :show-icon="true"
           v-model="creationDate"
+          :showTime="true"
+          :showSeconds="true"
           dateFormat="yy-mm-dd"
           class="inputfield w-full"
         />
@@ -87,27 +89,6 @@
           v-model="pressure_sensor_signal"
           mode="decimal"
           :minFractionDigits="2"
-          class="inputfield w-full"
-        />
-      </div>
-      <div class="field">
-        <div class="p-field-checkbox">
-          <Checkbox
-            id="jumper_wifi"
-            name="jumper_wifi"
-            value="Jumper WiFi conectado"
-            :binary="true"
-            v-model="jumper_wifi"
-          />
-          <label class="ml-2" for="jumper_wifi">Jumper WiFi conectado</label>
-        </div>
-      </div>
-      <div class="field">
-        <label for="led_gtw">Color led Gateway</label>
-        <InputText
-          id="led_gtw"
-          v-model="led_gtw"
-          type="text"
           class="inputfield w-full"
         />
       </div>
@@ -263,8 +244,6 @@
 
 <script>
 import Textarea from "primevue/textarea";
-import Checkbox from "primevue/checkbox";
-import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import InlineMessage from "primevue/inlinemessage";
 import Message from "primevue/message";
@@ -286,8 +265,6 @@ function initialData() {
     inspectionTypes: [],
     inspectionType: null,
     assetType: null,
-    jumper_wifi: false,
-    led_gtw: "",
     log_file: null,
     image_file: null,
     pot_sat: null,
@@ -305,12 +282,10 @@ export default {
   components: {
     Textarea,
     InputNumber,
-    Checkbox,
     FileUpload,
     InlineMessage,
     Message,
     Calendar,
-    InputText,
   },
   data() {
     return initialData();
@@ -323,8 +298,6 @@ export default {
       const inspectionResult = await createInspectionMutation(
         //TODO: validar q todos los campso esten completos
         this.creationDate,
-        this.led_gtw,
-        this.jumper_wifi,
         user_id,
         this.selectedIssue.id,
         this.inspectionType.id,

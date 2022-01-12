@@ -76,24 +76,6 @@
               <div class="text-900 col-12">{{ inspection.pressure_sensor_signal }}</div>
             </div>
           </div>
-          <div class="col-6 pl-5">
-            <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
-              <div class="col-10 text-500 font-medium hidden md:inline-flex">Color led gateway</div>
-              <div div class="col-2 text-500">
-                <i class="pi pi-circle-fill" style="fontSize: 2rem"></i>
-              </div>
-              <div class="text-900 col-12">{{ inspection.led_gtw }}</div>
-            </div>
-          </div>
-          <div class="col-6 pl-5">
-            <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
-              <div class="col-10 text-500 font-medium hidden md:inline-flex">Jumper wifi</div>
-              <div div class="col-2 text-500">
-                <i v-if="inspection.jumper_wifi" class="pi pi-check-circle" style="fontSize: 2rem"></i>
-                <i v-else class="pi pi-times-circle" style="fontSize: 2rem"></i>
-              </div>
-            </div>
-          </div>
           <div class="col-12 pl-5">
             <div v-if='inspection.comments' class="grid py-3 px-1 border-top-1 surface-border">
               <div class="col-10 text-500 font-medium">Comentarios</div>

@@ -43,6 +43,8 @@
           :show-icon="true"
           v-model="creationDate"
           dateFormat="yy-mm-dd"
+          :showTime="true"
+          :showSeconds="true"
           class="inputfield w-full"
         />
       </div>

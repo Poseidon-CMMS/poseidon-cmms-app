@@ -7,21 +7,14 @@
   >
     <div class="card">
       <div class="field">
-        <label for="creationDate">Fecha de creación</label>
-        <Calendar
-          class="inputfield w-full"
-          id="creationDate"
-          v-model="creationDate"
-          :showIcon="true"
-        />
-      </div>
-      <div class="field">
         <label for="diagnosticDate">Fecha de comienzo de la falla</label>
         <Calendar
           class="inputfield w-full"
           id="diagnosticDate"
           v-model="diagnosticDate"
           :showIcon="true"
+          :showTime="true"
+          :showSeconds="true"
         />
       </div>
       <div class="field">
@@ -126,6 +119,8 @@
           class="inputfield w-full"
           id="gateway_first_data_transmission_date"
           v-model="gateway_first_data_transmission_date"
+          :showTime="true"
+          :showSeconds="true"
           :showIcon="true"
         />
       </div>
@@ -261,7 +256,6 @@ export default {
       loading: false,
       error: null,
       //dates
-      creationDate: new Date(),
       diagnosticDate: new Date(),
 
       //selectables
@@ -299,7 +293,7 @@ export default {
       try {
         this.loading = true;
         const result = await createHdwIssueMutation(
-          this.creationDate,
+          new Date(),
           this.diagnosticDate,
           this.selectedIrrigator,
           this.selectedDiagnosticType.id,

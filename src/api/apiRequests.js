@@ -684,8 +684,6 @@ const createAutopsyMutation = async function (
 
 const createInspectionMutation = async function (
   date,
-  led_gtw,
-  jumper_wifi,
   user_id,
   hdw_issue_id,
   inspection_type_id,
@@ -701,8 +699,6 @@ const createInspectionMutation = async function (
   const _variables = {
     data: {
       date,
-      led_gtw,
-      jumper_wifi,
       user: {
         connect: {
           id: user_id,

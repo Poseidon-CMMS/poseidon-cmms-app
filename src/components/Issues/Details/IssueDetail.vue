@@ -99,7 +99,6 @@
       <div class='mx-4 mt-4'>
         <Accordion :multiple="true">
           <AccordionTab header="Diagnóstico">
-            <ScrollPanel style="width: 100%; height: 300px">
               <div class="grid">
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
@@ -251,13 +250,12 @@
                   </div>
                 </div>
               </div>
-            </ScrollPanel>
           </AccordionTab>
           <AccordionTab>
             <template #header>
               <div class="flex align-items-start" style="width: 100%">
                 <div class="flex align-items-center h-full w-11 my-2 align-start">
-                  Pericias
+                  Pericias <Badge class="ml-2" :value="selectedIssue?.inspection?.length || '0'" severity="success"/>
                 </div>
                 <div class="mt-1">
                   <Button @click="handleOpenInspectionForm" icon="pi pi-plus-circle" class="p-button-raised"/>
@@ -289,7 +287,7 @@
             <template #header>
               <div class="flex align-items-start" style="width: 100%">
                 <div class="flex align-items-center h-full w-11 my-2 align-start">
-                  Reparaciones
+                  Reparaciones <Badge class="ml-2" :value="selectedIssue?.repair?.length || '0'" severity="success"/>
                 </div>
                 <div class="mt-1">
                   <Button @click="handleOpenRepairForm" icon="pi pi-plus-circle" class="p-button-raised"/>
@@ -322,7 +320,7 @@
             <template #header>
               <div class="flex align-items-start" style="width: 100%">
                 <div class="flex align-items-center h-full w-11 my-2 align-start">
-                  Autopsias
+                  Autopsias <Badge class="ml-2" :value="selectedIssue?.autopsy?.length || '0'" severity="success"/>
                 </div>
                 <div class="mt-1">
                   <Button @click="handleOpenAutopsyForm" icon="pi pi-plus-circle" class="p-button-raised"/>
@@ -369,8 +367,8 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab'; 
 import ProgressSpinner from "primevue/progressspinner";
 import Chip from 'primevue/chip';
-import ScrollPanel from "primevue/scrollpanel";
 import Panel from 'primevue/panel';
+import Badge from 'primevue/badge';
 
 import InspectionDetail from "../Details/InspectionDetail.vue";
 import InspectionForm from "../Forms/InspectionForm.vue";
@@ -386,12 +384,12 @@ export default {
     Chip,
     Accordion,
     AccordionTab,
-    ScrollPanel,
     Panel,
     InspectionDetail,
     InspectionForm,
     AutopsyDetail,
-    RepairDetail
+    RepairDetail,
+    Badge
   },
   methods: {
     hasDevice: function (value) {
