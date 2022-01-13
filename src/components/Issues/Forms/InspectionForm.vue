@@ -294,11 +294,11 @@ export default {
   methods: {
     async onSubmit() {
       this.loading = true;
-      const user_id = sessionStorage.getItem("id");
+      const technician_id = this.selectedIssue.assigned_technician.id;
       const inspectionResult = await createInspectionMutation(
         //TODO: validar q todos los campso esten completos
         this.creationDate,
-        user_id,
+        technician_id,
         this.selectedIssue.id,
         this.inspectionType.id,
         this.comments,

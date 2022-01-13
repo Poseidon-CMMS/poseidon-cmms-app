@@ -221,6 +221,7 @@
   </Dialog>
   <work-order-form
     :isOpen="isWorkOrderFormOpen"
+    :selectedIssue="selectedIssue"
     @workOrderCreated="handleNewWorkOrder"
     @updateIsWorkOrderFormOpen="setIsWorkOrderFormOpen"
   ></work-order-form>
