@@ -28,6 +28,11 @@ const routes = [
     path: '/issues/create/:irrigatorId',
     name: 'Issues Creation',
     component: () => import('../views/Issues.vue')
+  },
+  {
+    path:'/requests',
+    name: 'InstallUninstallRequests',
+    component: () => import('../views/InstallUninstallRequests')
   }
 ]
 

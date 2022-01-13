@@ -9,7 +9,7 @@
                 <i class="pi pi-calendar" style="fontSize: 2rem"></i>
               </div>
               <div class="col-12 text-900">
-                  {{ `${(new Date(autopsy.date)).getFullYear()}/${( new Date(autopsy.date)).getMonth() + 1}/${( new Date(autopsy.date)).getDate()}` }}
+                  {{ dateFormatter(autopsy.date) }}
               </div>
             </div>
           </div>
@@ -66,12 +66,16 @@
 
 <script>
 import ScrollPanel from 'primevue/scrollpanel';
+import {dateFormatter} from '../../../utils/dateFormatter';
 
 export default {
   name: 'AutopsyDetail',
   props: ['autopsy', 'isOpen'],
   components: {
     ScrollPanel,
+  },
+  methods: {
+    dateFormatter
   },
   computed: {
       computedisOpen: {

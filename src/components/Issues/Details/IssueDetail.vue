@@ -102,7 +102,7 @@
                     <div class="col-2 text-500 font-medium">Fecha</div>
                     <div  v-if='selectedIssue?.diagnostic' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                       {{
-                         `${(new Date(selectedIssue?.diagnostic?.date)).getFullYear()}/${(new Date(selectedIssue?.diagnostic.date)).getMonth() + 1}/${(new Date(selectedIssue?.diagnostic.date)).getDate()}` 
+                         dateFormatter(selectedIssue?.diagnostic?.date) 
                       }}
                     </div>
                   </div>
@@ -264,7 +264,7 @@
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
-                      {{ `${(new Date(item.date)).getFullYear()}/${( new Date(item.date)).getMonth() + 1}/${( new Date(item.date)).getDate()}` }}
+                      {{ dateFormatter(item.date) }}
                     </div>
                     <div class="col-12 md:col-4 mt-3">
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> {{ item?.inspection_type?.name }}
@@ -296,7 +296,7 @@
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
-                      {{ `${(new Date(item.date)).getFullYear()}/${( new Date(item.date)).getMonth() + 1}/${( new Date(item.date)).getDate()}` }}
+                      {{ dateFormatter(item.date) }}
                     </div>
                     <div class="col-12 md:col-4 mt-3">
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> 
@@ -329,7 +329,7 @@
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
-                      {{ `${(new Date(item.date)).getFullYear()}/${( new Date(item.date)).getMonth() + 1}/${( new Date(item.date)).getDate()}` }}
+                      {{ dateFormatter(item.date) }}
                     </div>
                     <div class="col-12 md:col-4 mt-3">
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> 
@@ -371,6 +371,7 @@ import InspectionForm from "../Forms/InspectionForm.vue";
 import AutopsyDetail from "../Details/AutopsyDetail.vue";
 import { getTechniciansQuery } from "../../../api/apiRequests";
 import RepairDetail from "../Details/RepairDetail.vue";
+import {dateFormatter} from "../../../utils/dateFormatter";
 
 export default {
   name: "IssueDetail",
@@ -387,6 +388,7 @@ export default {
     Badge
   },
   methods: {
+    dateFormatter,
     hasDevice: function (value) {
       return (
         typeof value.gateway !== undefined ||

@@ -53,6 +53,11 @@ export default {
           icon: "pi pi-fw pi-th-large",
           command: () => this.$router.push("/dashboard"),
         },
+        {
+          label: "Requests",
+          icon: "pi pi-fw pi-briefcase",
+          command: () => this.$router.push("/requests"),
+        },
       ],
     };
   },

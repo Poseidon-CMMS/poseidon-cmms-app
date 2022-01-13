@@ -906,8 +906,6 @@ const getHdwIssuesQuery = async function (status) {
               email
             }
             comments
-            led_gtw
-            jumper_wifi
             satellite_power
             gateway_battery_voltage
             lora_power
@@ -989,7 +987,15 @@ const getHdwIssuesQuery = async function (status) {
             autopsy_type {
               id
               name
-              type {
+              asset_type {
+                id
+                name
+              }
+              component {
+                id
+                name
+              }
+              root {
                 id
                 name
               }
@@ -1005,6 +1011,67 @@ const getHdwIssuesQuery = async function (status) {
     variables: {
       status,
     },
+  });
+};
+
+const getInstallUninstallRequestsQuery = async function( ) {
+  return await client.query({
+    query: gql`
+      query getInstallUninstallRequests {
+        installUninstallRequests{
+          id
+          creation_date
+          completion_date
+          close_date
+          irrigator {
+            integration_id
+            name
+            field {
+              name
+            }
+          }
+          gateway {
+            id
+            integration_id
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          pressure_sensor {
+            id
+            integration_id
+          }
+          request_type
+          status
+          work_order {
+            id
+            work_date
+            km_traveled
+            comment
+            technician {
+              id
+              name
+            }
+          }
+          gtw_image {
+            id
+            url
+          }
+          node_gps_image{
+            id
+            url
+          }
+          pressure_sensor_image{
+            id
+            url
+          }
+          log{
+            url
+          }
+        }
+      }
+    `
   });
 };
 
@@ -1060,4 +1127,6 @@ export {
   getTechniciansGatewaysQuery,
   getTechniciansPressureSensorsQuery,
   getTechniciansGpsNodesQuery,
+  //install uninstall request
+  getInstallUninstallRequestsQuery
 };

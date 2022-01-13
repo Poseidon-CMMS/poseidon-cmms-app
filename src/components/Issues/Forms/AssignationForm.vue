@@ -67,7 +67,7 @@ import Message from "primevue/message";
 
 export default {
   name: "AssignationForm",
-  props: ["isOpen", "selectedIssue"],
+  props: ["isOpen", "selectedIssue", "selectedInstallUninstallRequest"],
   components: { Dropdown, Message },
   data() {
     return {

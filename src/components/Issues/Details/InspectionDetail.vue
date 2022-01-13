@@ -9,7 +9,7 @@
                 <i class="pi pi-calendar" style="fontSize: 2rem"></i>
               </div>
               <div class="col-12 text-900">
-                {{ `${(new Date(inspection.date)).getFullYear()}/${( new Date(inspection.date)).getMonth() + 1}/${( new Date(inspection.date)).getDate()}` }}
+                {{ dateFormatter(inspection.date) }}
               </div>
             </div>
           </div>
@@ -92,10 +92,14 @@
 
 <script>
 import ScrollPanel from "primevue/scrollpanel";
+import {dateFormatter} from "../../../utils/dateFormatter";
 
 export default {
   name: 'InspectionDetail',
   props: ['inspection', 'isOpen'],
+  methods: {
+    dateFormatter
+  },
   components: {
     ScrollPanel,
   },

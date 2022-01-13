@@ -23,15 +23,7 @@
           id="work_order"
           v-model="selectedWorkOrder"
           :options="workOrders"
-          :optionLabel="
-            (work_order) => {
-              const date = work_order.work_date;
-              const dateObject = new Date(date);
-              return `${dateObject.getFullYear()}/${
-                dateObject.getMonth() + 1
-              }/${dateObject.getDate()} | ${work_order.comment}`;
-            }
-          "
+          :optionLabel="`${dateFormatter(work_order.work_date)} | ${work_order.comment}`"
           class="inputfield w-full"
           placeholder="Orden de trabajo"
         />
@@ -245,6 +237,7 @@ import {
   getTechniciansGpsNodesQuery,
   getTechniciansPressureSensorsQuery,
 } from "../../../api/apiRequests";
+import { dateFormatter } from "../../../utils/dateFormatter.js";
 
 function initialData(avoidDeletingDropdowns = false) {
   let initialData = {
@@ -295,6 +288,7 @@ export default {
   },
 
   methods: {
+    dateFormatter,
     async onSubmit() {
       try {
         this.loading = true;
