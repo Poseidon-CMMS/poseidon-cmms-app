@@ -281,37 +281,6 @@ const getDiagnosticTypesQuery = async function () {
   });
 };
 
-const getHdwIssuesSummaryQuery = async function () {
-  return await client.query({
-    query: gql`
-      query getIssues {
-        hdwIssues {
-          id
-          creation_date
-          comments
-          status
-          assigned_technician {
-            id
-            name
-          }
-          irrigator {
-            integration_id
-            name
-            field {
-              name
-            }
-          }
-          diagnostic {
-            diagnostic_type {
-              name
-            }
-          }
-        }
-      }
-    `,
-  });
-};
-
 const assignHdwIssueMutation = async function (hdwIssueId, technicianId) {
   return await client.mutate({
     mutation: gql`
@@ -862,11 +831,11 @@ const getTechniciansGpsNodesQuery = async function () {
   });
 };
 
-const getHdwIssueDetailsQuery = async function (hdw_issue_id) {
+const getHdwIssuesQuery = async function (status) {
   return await client.query({
     query: gql`
-      query getHdwIssueDetails($hdw_issue_id: ID!) {
-        hdw_issue(where: { id: $hdw_issue_id }) {
+      query getHdwIssues($status: String) {
+        hdwIssues(where: { status: { equals: $status } }) {
           id
           creation_date
           close_date
@@ -1034,7 +1003,7 @@ const getHdwIssueDetailsQuery = async function (hdw_issue_id) {
       }
     `,
     variables: {
-      hdw_issue_id: hdw_issue_id,
+      status,
     },
   });
 };
@@ -1056,7 +1025,7 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
         id: hdwIssueId,
       },
       data: {
-        status
+        status,
       },
     },
   });
@@ -1069,8 +1038,7 @@ export {
   getGatewaysQuery,
   getAssetTypesQuery,
   //hdw issue
-  getHdwIssuesSummaryQuery,
-  getHdwIssueDetailsQuery,
+  getHdwIssuesQuery,
   getDiagnosticTypesQuery,
   createHdwIssueMutation,
   assignHdwIssueMutation,

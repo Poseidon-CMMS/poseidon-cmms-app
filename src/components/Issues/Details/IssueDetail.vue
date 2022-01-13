@@ -1,11 +1,8 @@
 <template>
-  <Panel v-if='loading'>
-    <ProgressSpinner />
-  </Panel>
-  <div class='fadein animation-duration-1000' v-else-if="selectedIssue">
+  <div class='fadein animation-duration-1000'>
     <Panel>
       <template #header>
-        <p class="text-lg font-bold text-left w-10">{{ selectedIssue.comment }}</p>
+        <p class="text-lg font-bold text-left w-10">{{ selectedIssue?.comment }}</p>
       </template>
       <!-- Lista de atributos -->
       <div class="grid mt-3">
@@ -24,12 +21,12 @@
               </div>
           </div>
         </div>
-        <div v-if="selectedIssue.TTR"  class="col-12 md:col-6 hover:surface-300">
+        <div v-if="selectedIssue?.TTR"  class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border surface-hover w-full">
               <p class="w-2 text-left font-bold text-blue-500 mr-3">TTR</p>
               <div class="grid justify-content-center w-full">
                 <div class="col-8">
-                  <p class="text-lg">{{ selectedIssue.TTR }}</p>
+                  <p class="text-lg">{{ selectedIssue?.TTR }}</p>
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
@@ -39,12 +36,12 @@
               </div>
           </div>
         </div>
-        <div v-if="selectedIssue.downtime" class="col-12 md:col-6 hover:surface-300">
+        <div v-if="selectedIssue?.downtime" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
               <p class="w-4 text-left font-bold text-blue-500 mr-3">Downtime</p>
                 <div class="grid justify-content-center w-full">
                 <div class="col-8">
-                  <p class="text-lg">{{ selectedIssue.downtime + ' h'}}</p>
+                  <p class="text-lg">{{ selectedIssue?.downtime + ' h'}}</p>
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
@@ -54,32 +51,32 @@
               </div>
           </div>
         </div>
-        <div v-if="selectedIssue.gateway" class="col-12 md:col-6 hover:surface-300">
+        <div v-if="selectedIssue?.gateway" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
               <p class="w-4 text-left font-bold text-blue-500 mr-3">Dispositivo</p>
 
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
-                <p class="text-lg w-8">{{ selectedIssue.gateway?.id}}</p>
-                <Chip :label="selectedIssue.gateway?.pcbGateway.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <p class="text-lg w-8">{{ selectedIssue?.gateway?.id}}</p>
+                <Chip :label="selectedIssue?.gateway?.pcbGateway.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
-        <div v-else-if="selectedIssue.gpsNode" class="col-12 md:col-6 hover:surface-300">
+        <div v-else-if="selectedIssue?.gpsNode" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
               <p class="w-2 text-left font-bold text-blue-500 mr-3">Dispositivo</p>
 
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
-                <p class="text-lg w-8">{{ selectedIssue.gpsNode?.id}}</p>
-                <Chip :label="selectedIssue.gpsNode?.pcbNode.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <p class="text-lg w-8">{{ selectedIssue?.gpsNode?.id}}</p>
+                <Chip :label="selectedIssue?.gpsNode?.pcbNode.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
-        <div v-else-if="selectedIssue.pressureSensor"  class="col-12 md:col-6 hover:surface-300">
+        <div v-else-if="selectedIssue?.pressureSensor"  class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
               <p class="w-2 text-left font-bold text-blue-500 mr-3">Dispositivo</p>    
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
-                <p class="text-lg w-8">{{ selectedIssue.pressureSensor?.id}}</p>
-                <Chip :label="selectedIssue.pressureSensor?.pressureSensorType?.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <p class="text-lg w-8">{{ selectedIssue?.pressureSensor?.id}}</p>
+                <Chip :label="selectedIssue?.pressureSensor?.pressureSensorType?.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
@@ -88,7 +85,7 @@
           <div class="flex align-items-center mx-2 pr-2 w-full">
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
-              {{selectedIssue.assigned_technician? selectedIssue.assigned_technician.name : 'Ningún técnico asignado'}}
+              {{selectedIssue?.assigned_technician? selectedIssue?.assigned_technician.name : 'Ningún técnico asignado'}}
             <Button class="mr-1 p-button-warning" icon="pi pi-pencil" @click="handleTechnicianEdit" />
             </p>
           </div>
@@ -103,7 +100,7 @@
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 font-medium">Fecha</div>
-                    <div  v-if='selectedIssue.diagnostic' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                    <div  v-if='selectedIssue?.diagnostic' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                       {{
                          `${(new Date(selectedIssue?.diagnostic?.date)).getFullYear()}/${(new Date(selectedIssue?.diagnostic.date)).getMonth() + 1}/${(new Date(selectedIssue?.diagnostic.date)).getDate()}` 
                       }}
@@ -113,7 +110,7 @@
 
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
-                    <div v-if='selectedIssue.diagnostic && selectedIssue.diagnostic.user' class="col-2 text-500 w-6 md:w-2 font-medium">Usuario</div>
+                    <div v-if='selectedIssue?.diagnostic && selectedIssue?.diagnostic.user' class="col-2 text-500 w-6 md:w-2 font-medium">Usuario</div>
                     <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic?.user?.name }}</div>
                   </div>
                 </div>
@@ -121,7 +118,7 @@
                 <div class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Equipo</div>
-                    <div v-if='selectedIssue.irrigator' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.irrigator?.name + ' - ' + selectedIssue?.irrigator?.integration_id }}</div>
+                    <div v-if='selectedIssue?.irrigator' class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.irrigator?.name + ' - ' + selectedIssue?.irrigator?.integration_id }}</div>
                   </div>
                 </div>
 
@@ -139,10 +136,10 @@
                   </div>
                 </div>
 
-                <div v-if='selectedIssue.diagnostic' class="col-12 md:col-6 ">
+                <div v-if='selectedIssue?.diagnostic' class="col-12 md:col-6 ">
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
                     <div class="col-2 text-500 w-6 md:w-2 font-medium">Grafana Link</div>
-                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue.diagnostic.grafana_link }}</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic.grafana_link }}</div>
                   </div>
                 </div>
 
@@ -263,7 +260,7 @@
               </div>
             </template>
               <ul>
-                <div class="itemList hover:surface-300 m-1" @click="handleClickInspection(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.inspection">
+                <div class="itemList hover:surface-300 m-1" @click="handleClickInspection(item)" v-bind:key='index' v-for="(item, index) in selectedIssue?.inspection">
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
@@ -295,7 +292,7 @@
               </div>
             </template>
               <ul>
-                <div class="itemList hover:surface-300 m-1" @click="handleClickRepair(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.repair">
+                <div class="itemList hover:surface-300 m-1" @click="handleClickRepair(item)" v-bind:key='index' v-for="(item, index) in selectedIssue?.repair">
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
@@ -322,13 +319,13 @@
                 <div class="flex align-items-center h-full w-11 my-2 align-start">
                   Autopsias <Badge class="ml-2" :value="selectedIssue?.autopsy?.length || '0'" severity="success"/>
                 </div>
-                <div class="mt-1">
+                <div class="mt-1" v-if="selectedIssue?.status === 'out-of-field'">
                   <Button @click="handleOpenAutopsyForm" icon="pi pi-plus-circle" class="p-button-raised"/>
                 </div>
               </div>
             </template>
               <ul>
-                <div class="itemList hover:surface-300 m-1" @click="handleClickAutopsy(item)" v-bind:key='index' v-for="(item, index) in selectedIssue.autopsy">
+                <div class="itemList hover:surface-300 m-1" @click="handleClickAutopsy(item)" v-bind:key='index' v-for="(item, index) in selectedIssue?.autopsy">
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
@@ -365,7 +362,6 @@
 import Divider from 'primevue/divider';
 import Accordion from 'primevue/accordion'; 
 import AccordionTab from 'primevue/accordiontab'; 
-import ProgressSpinner from "primevue/progressspinner";
 import Chip from 'primevue/chip';
 import Panel from 'primevue/panel';
 import Badge from 'primevue/badge';
@@ -379,7 +375,6 @@ import RepairDetail from "../Details/RepairDetail.vue";
 export default {
   name: "IssueDetail",
   components: {
-    ProgressSpinner,
     Divider,
     Chip,
     Accordion,
@@ -433,7 +428,7 @@ export default {
       this.$emit("openAssignationDialog", true);
     }
   },
-  props: ["selectedIssue", "clickIrrigator", "loading"],
+  props: ["selectedIssue", "clickIrrigator"],
   emits: ["openAssignationDialog", "openRepairDialog", "openAutopsyDialog"],
   data() {
     return {

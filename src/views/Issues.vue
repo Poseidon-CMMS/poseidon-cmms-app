@@ -1,7 +1,9 @@
 <template>
     <div class="grid mt-3">
-      <div class="col-12 flex flex-row">
+      <div class="col-12 flex flex-row justify-content-between">
         <Button label="Nuevo" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen" />
+        
+        <Button label="Ver Issues Cerrados" icon="pi pi-eye" class="p-button-warning align-self-start" @click="showClosedIssues = true" />
       </div>
       <div class="col-12">
         <div class="grid text-sm">
@@ -20,7 +22,7 @@
         </div>
       </div>
       <div class="col-12">
-        <issue-detail v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" :loading='loading_details' @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated' @openAutopsyDialog='handleIsOpenAutopsy'/>
+        <issue-detail  v-if="selectedIssue" v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated' @openAutopsyDialog='handleIsOpenAutopsy'/>
       </div>
     </div>
       
@@ -32,18 +34,24 @@
     
   <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsy"></autopsy-form>
 
-    <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
+  <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
+  <Sidebar v-model:visible="showClosedIssues" :baseZIndex="1000" position="right">
+    <h2>Issues cerrados</h2>
+    <closed-issues-list :fetchData="showClosedIssues" :clickElement="setSelectedIssue"></closed-issues-list>
+  </Sidebar>
 </template>
 
 <script>
 import DraggableList from '../components/Issues/DraggableList';
 import HdwIssueCreationDialog from '../components/Issues/Forms/HdwIssueCreationForm.vue';
 import IrrigatorDetailsDialog from '../components/Irrigators/IrrigatorDetailsDialog.vue';
+import ClosedIssuesList from '../components/Issues/ClosedIssuesList.vue';
 import IssueDetail from '../components/Issues/Details/IssueDetail.vue';
 import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
-import { getHdwIssuesSummaryQuery, getHdwIssueDetailsQuery } from '../api/apiRequests';
+import { getHdwIssuesQuery } from '../api/apiRequests';
 import RepairForm from "../components/Issues/Forms/RepairForm.vue";
 import AutopsyForm from '../components/Issues/Forms/AutopsyForm.vue';
+import Sidebar from 'primevue/sidebar';
 
 export default {
   name: 'Issues',
@@ -55,6 +63,8 @@ export default {
     AssignationForm,
     RepairForm,
     AutopsyForm,
+    Sidebar,
+    ClosedIssuesList
   },
   methods: {
     hasDevice: function(value) {
@@ -101,10 +111,8 @@ export default {
     },
     setSelectedIssue: async function(evt) {
       if(evt?.id !== this?.selectedIssue?.id){ //fix rapido porque a veces apollo cachea las queries a estados pre-update y genera problemas. ej. asignar tecnico => clickear el mismo issue
-        this.loading_details = true;
-        const detailedIssue = (await getHdwIssueDetailsQuery(evt.id)).data.hdw_issue; //todo caso error
-        this.selectedIssue = detailedIssue;
-        this.loading_details = false;
+        this.selectedIssue = evt;
+        this.showClosedIssues = false;
       }
     },
     setIsCreationModalOpen(val) {
@@ -121,7 +129,6 @@ export default {
   data() {
     return {
       loading: true,
-      loading_details: false,
       displayIrrigatorDialog: false,
       showAssignedDialog: false,
       selectedTechnician: null,
@@ -132,6 +139,7 @@ export default {
       selectedCreateIssueIrrigatorId: null,
       showRepairForm: false,
       showAutopsyForm: false,
+      showClosedIssues: false,
     }
   },
   computed: {
@@ -158,7 +166,7 @@ export default {
   },
   async beforeMount() {
     //traer hdw issues todo: manejo de errores
-    const result = await getHdwIssuesSummaryQuery();
+    const result = await getHdwIssuesQuery();
     this.issues = result.data.hdwIssues;
 
     const irrigatorId = this.$route.params.irrigatorId;
