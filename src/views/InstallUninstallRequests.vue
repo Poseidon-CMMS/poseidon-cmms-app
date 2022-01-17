@@ -1,8 +1,5 @@
 <template>
     <div class="grid mt-3">
-      <div class="col-12 flex flex-row justify-content-between">
-        <Button label="Nuevo" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen" />
-      </div>
       <div class="col-12">
         <div class="grid text-sm">
           <div class="col-6 lg:col-3">
@@ -24,7 +21,6 @@
       </div>
     </div>
     
-    <request-form :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateRequestIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
     <assignation-form :isOpen="showAssignedDialog" :selectedInstallUninstallRequest="selectedRequest" @requestUpdated="handleRequestUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
 </template>
@@ -32,7 +28,6 @@
 <script>
 import RequestDraggableList from '../components/InstallUninstallRequests/RequestDraggableList';
 import IrrigatorDetailsDialog from '../components/Irrigators/IrrigatorDetailsDialog.vue';
-import RequestForm from '../components/InstallUninstallRequests/RequestForm.vue';
 import RequestDetail from '../components/InstallUninstallRequests/RequestDetail.vue';
 import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
 import { getInstallUninstallRequestsQuery } from '../api/apiRequests';
@@ -41,7 +36,6 @@ export default {
   name: 'InstallUninstallRequests',
   components: {
     RequestDraggableList,
-    RequestForm,
     IrrigatorDetailsDialog,
     RequestDetail,
     AssignationForm
@@ -128,19 +122,15 @@ export default {
       }
     },
   },
-  async beforeMount() {
+  async mounted() {
     //traer install uninstall requests
+    console.log('MOUNTED')
     const result = await getInstallUninstallRequestsQuery();
+    console.log('Y EL DE MOUNTED');
+    console.error(result);
     this.requests = result.data.installUninstallRequests;
-
-    const irrigatorId = this.$route.params.irrigatorId;// todo ver si esto anda
     this.loading = false;
-    if(irrigatorId){
-      this.selectedCreateRequestIrrigatorId = irrigatorId;
-      this.setIsCreationModalOpen(true);
-    }
-
-  }
+  },
 }
 </script>
 

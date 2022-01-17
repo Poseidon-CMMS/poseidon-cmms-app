@@ -96,6 +96,12 @@ const client = new ApolloClient({
     detectSessionTimeout,
     httpLink,
   ]),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'all',
+    },
+  }
 });
 
 const loginQuery = async function (email, password) {
@@ -1014,11 +1020,11 @@ const getHdwIssuesQuery = async function (status) {
   });
 };
 
-const getInstallUninstallRequestsQuery = async function( ) {
+const getInstallUninstallRequestsQuery = async function () {
   return await client.query({
     query: gql`
       query getInstallUninstallRequests {
-        installUninstallRequests{
+        installUninstallRequests {
           id
           creation_date
           completion_date
@@ -1058,20 +1064,20 @@ const getInstallUninstallRequestsQuery = async function( ) {
             id
             url
           }
-          node_gps_image{
+          node_gps_image {
             id
             url
           }
-          pressure_sensor_image{
+          pressure_sensor_image {
             id
             url
           }
-          log{
+          log {
             url
           }
         }
       }
-    `
+    `,
   });
 };
 
@@ -1093,6 +1099,44 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
       },
       data: {
         status,
+      },
+    },
+  });
+};
+
+const createInstallUninstallRequestMutation = async function (
+  creationDate,
+  irrigatorId,
+  requestType
+) {
+  return await client.mutate({
+    mutation: gql`
+      mutation ($data: install_uninstall_requestCreateInput!) {
+        createinstall_uninstall_request: createinstall_uninstall_request(
+          data: $data
+        ) {
+          id
+          creation_date
+          irrigator {
+            id
+            integration_id
+            name
+          }
+          request_type
+          status
+        }
+      }
+    `,
+    variables: {
+      data: {
+        creation_date: creationDate.toISOString(),
+        irrigator: {
+          connect: {
+            id: irrigatorId,
+          },
+        },
+        request_type: requestType,
+        status: "open",
       },
     },
   });
@@ -1128,5 +1172,6 @@ export {
   getTechniciansPressureSensorsQuery,
   getTechniciansGpsNodesQuery,
   //install uninstall request
-  getInstallUninstallRequestsQuery
+  getInstallUninstallRequestsQuery,
+  createInstallUninstallRequestMutation,
 };

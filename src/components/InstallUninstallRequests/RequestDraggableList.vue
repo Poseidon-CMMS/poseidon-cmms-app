@@ -23,7 +23,7 @@
                     </template>
                     <template #content>
                       {{ element.request_type === 'install'? "Instalación" 
-                        : element.request.type ==='uninstall' ? "Desinstalación" 
+                        : element.request_type ==='uninstall' ? "Desinstalación" 
                         : element.request_type || "Desconocido" }}
                     </template>
                     <template #footer v-if="element?.work_order?.assigned_technician">

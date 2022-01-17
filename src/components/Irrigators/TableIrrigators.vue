@@ -126,7 +126,7 @@ import Badge from 'primevue/badge';
 
 import { FilterMatchMode } from "primevue/api";
 import IrrigatorDetailsDialog from './IrrigatorDetailsDialog.vue';
-import { getIrrigatorsQuery } from '../../api/apiRequests';
+import { getIrrigatorsQuery, createInstallUninstallRequestMutation } from '../../api/apiRequests';
 
 export default {
   name: "TableIrrigators",
@@ -146,59 +146,7 @@ export default {
       filters: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
-      irrigators: [
-        // {
-        //   integrationID: "EQ123",
-        //   name: "El aleman",
-        //   client: "Humus SRL",
-        //   sla: "2",
-        //   gtwID: "GTW 231",
-        //   nodeID: "Node 124",
-        //   modemID: "Modem 1230",
-        //   isMapped: true,
-        //   zone: "Norte semiarido",
-        //   province: "San juan",
-        //   city: "City Bell",
-        //   field: "El campo 1",
-        //   urlGrafana: "http://google.com",
-        //   transmissionStatus: 'transmitting',
-        //   lastTransmissionDate: '2021-07-10'
-        // },
-        // {
-        //   integrationID: "EQ456",
-        //   name: "El zapallo",
-        //   client: "Miguel SA",
-        //   sla: "2",
-        //   gtwID: "GTW 531",
-        //   nodeID: "Node 124",
-        //   modemID: "Modem asdasdoqw",
-        //   isMapped: true,
-        //   zone: "Norte semiarido",
-        //   province: "Salta",
-        //   city: "City Bell",
-        //   field: "El campo 2",
-        //   urlGrafana: "http://youtube.com",
-        //   transmissionStatus: 'error',
-        //   lastTransmissionDate: '2021-10-10'
-        // },
-        // {
-        //   integrationID: "EQ789",
-        //   name: "Tia Norma",
-        //   client: "Lucas SRL",
-        //   sla: "1 (48hs)",
-        //   gtwID: "GTW 332",
-        //   nodeID: "Node 225",
-        //   modemID: "SKY238742378432642",
-        //   isMapped: true,
-        //   zone: "Patagonia",
-        //   province: "Chubut",
-        //   city: "City Bell",
-        //   field: "El campo 1",
-        //   urlGrafana: "http://fi.mdp.edu.ar",
-        //   transmissionStatus: 'noTelemetry',
-        //   lastTransmissionDate: '2021-10-10'
-        // },
-      ],
+      irrigators: [],
     };
   },
   methods: {
@@ -214,12 +162,60 @@ export default {
     createHdwIssue(data) {
       this.$router.push(`/issues/create/${data.id}`)
     },
-    createInstallRequest(data) {
-      alert('Funcionalidad pendiente!', data);
+    confirmDialog(message, toastMessage, onAccept) {
+          this.$confirm.require({
+                message: message,
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                accept: async () => {
+                    await onAccept();
+                },
+                reject: () => {
+                    this.$toast.add({severity:'warn', summary:'Cancelada', detail:'Acción cancelada', life: 3000});
+                }
+            });
+        },
+    createInstallRequest(irrigator) {
+      this.confirmDialog(
+        `¿Desea crear una solicitud de instalación para el equipo ${irrigator.integration_id}?`,
+        `Solicitud de instalación creada para el ${irrigator.integration_id}`,
+        () => this.onRequestInstallCreation(irrigator));
     },
-    createUninstallRequest(data) {
-      alert('Funcionalidad pendiente!', data);
+    async onRequestInstallCreation(irrigator) {
+      this.loading = true;
+      await this.createRequest(irrigator, 'install');
+      this.loading = false;
     },
+    createUninstallRequest(irrigator) {
+      this.confirmDialog(
+        `¿Desea crear una solicitud de desinstalación para el equipo ${irrigator.integration_id}?`,
+        `Solicitud de desinstalación creada para el ${irrigator.integration_id}`,
+        () => this.onRequestUninstallCreation(irrigator));
+    },
+    async onRequestUninstallCreation(irrigator) {
+      this.loading = true;
+      await this.createRequest(irrigator, 'uninstall');
+      this.loading = false;
+    },
+    async createRequest(irrigator, type) {
+        const result = await createInstallUninstallRequestMutation(new Date(), irrigator.id, type);
+
+        const createdRequest = result.data.createinstall_uninstall_request;
+
+        if (createdRequest.id) {
+          this.$toast.add(
+            {
+              severity:'success',
+              summary:'Solicitud creada',
+              detail: `Se creó una solicitud de ${type === 'install' ? 'instalación' : 'desinstalación' } para el equipo ${createdRequest.irrigator.integration_id}`,
+              life: 3000
+            });
+          this.$router.push('/requests');
+        }
+        else {
+          this.$toast.add({severity:'error', summary:'Fallo al crear la solicitud', detail: `Ocurrió un error al crear una solicitud para el equipo ${createdRequest.irrigator.integration_id}`, life: 3000});
+        }
+    }
   },
   async mounted(){
     try{
