@@ -98,10 +98,10 @@ const client = new ApolloClient({
   ]),
   defaultOptions: {
     query: {
-      fetchPolicy: 'no-cache',
-      errorPolicy: 'all',
+      fetchPolicy: "no-cache",
+      errorPolicy: "all",
     },
-  }
+  },
 });
 
 const loginQuery = async function (email, password) {
@@ -1075,6 +1075,10 @@ const getInstallUninstallRequestsQuery = async function () {
           log {
             url
           }
+          assigned_technician {
+            id
+            name
+          }
         }
       }
     `,
@@ -1142,6 +1146,109 @@ const createInstallUninstallRequestMutation = async function (
   });
 };
 
+const doInstallUninstallRequestMutation = async function (
+  completionDate,
+  requestId,
+  gatewayId,
+  gpsNodeId,
+  pressureSensorId,
+  workOrderId,
+  log_file,
+  gtw_image,
+  gps_node_image,
+  pressure_sensor_image
+) {
+  return await client.mutate({
+    mutation: gql`
+      mutation(
+  $where: install_uninstall_requestWhereUniqueInput!
+  $data: install_uninstall_requestUpdateInput!
+) {
+  updateinstall_uninstall_request: updateinstall_uninstall_request(
+    where: $where
+    data: $data
+  ) {
+    id
+    completion_date
+    gateway {
+      id
+      integration_id
+    }
+    gps_node {
+      id
+      integration_id
+    }
+    pressure_sensor {
+      id
+      integration_id
+    }
+    gtw_image {
+      id
+      url
+    }
+    node_gps_image {
+      id
+      url
+    }
+    pressure_sensor_image {
+      id
+      url
+    }
+  }
+}
+
+    `,
+    variables: {
+      where: {
+        id: requestId,
+      },
+      data: {
+        completion_date: completionDate.toISOString(),
+        gateway: {
+          connect: {
+            id: gatewayId,
+          },
+        },
+        gps_node: {
+          connect: {
+            id: gpsNodeId,
+          },
+        },
+        pressure_sensor: {
+          connect: {
+            id: pressureSensorId,
+          },
+        },
+        work_order: {
+          connect: {
+            id: workOrderId,
+          },
+        },
+        log: log_file
+          ? {
+              upload: log_file,
+            }
+          : null,
+        gtw_image: gtw_image
+          ? {
+              upload: gtw_image,
+            }
+          : null,
+        node_gps_image: gps_node_image
+        ? {
+            upload: gps_node_image,
+          }
+        : null,
+        pressure_sensor_image: pressure_sensor_image
+        ? {
+            upload: pressure_sensor_image,
+          }
+        : null,
+      },
+    },
+  });
+};
+
 export {
   loginQuery,
   getIrrigatorsQuery,
@@ -1174,4 +1281,5 @@ export {
   //install uninstall request
   getInstallUninstallRequestsQuery,
   createInstallUninstallRequestMutation,
+  doInstallUninstallRequestMutation,
 };

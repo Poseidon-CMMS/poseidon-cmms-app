@@ -72,7 +72,7 @@ import Message from "primevue/message";
 import InputNumber from "primevue/inputnumber";
 import {
   createWorkOrderMutation,
-} from "../../../api/apiRequests";
+} from "../api/apiRequests";
 
 function initialData() {
   return {
@@ -86,7 +86,7 @@ function initialData() {
 
 export default {
   name: "WorkOrderForm",
-  props: ["isOpen", "selectedIssue"],
+  props: ["isOpen", "technician"],
   emits: ["updateIsWorkOrderFormOpen", "workOrderCreated"],
   components: {
     Textarea,
@@ -101,7 +101,7 @@ export default {
   methods: {
     async onSubmit() {
       this.loading = true;
-      const technician_id = this.selectedIssue.assigned_technician.id;
+      const technician_id = this.technician.id;
       const workOrderResult = await createWorkOrderMutation(
         //TODO: validar q todos los campso esten completos
         this.creationDate,

@@ -103,7 +103,7 @@ export default {
       this.confirmDialog(messageStillBroken, 'Issue devuelto al estado: In Field', this.onReturnToInFieldAccept);
     },
     async onFieldSolutionAccept() {
-      await updateHdwIssueStatusMutation(this.selectedIssue.id, 'closed');
+      await updateHdwIssueStatusMutation(this.selectedIssue.id, 'closed'); //todo reactivo
     },
     async onDeviceChangeAccept() {
       await updateHdwIssueStatusMutation(this.selectedIssue.id, 'out-of-field');

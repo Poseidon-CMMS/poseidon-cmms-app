@@ -6,7 +6,7 @@
             <request-draggable-list title="Abiertas" :list='openList' :log='openLog' :clickElement='setSelectedRequest' :loading='loading' :selectedRequest="selectedRequest"/>
           </div>
           <div class="col-6 lg:col-3">
-            <request-draggable-list title="Asignadas" :list='assignedList' :log='assignedLog' :clickElement='setSelectedRequest' :loading='loading' :selectedRequest="selectedRequest"/>
+            <request-draggable-list title="Asignadas" :list='assignedList' :log='assignedLog' :clickElement='setSelectedRequest' :loading='loading' :selectedRequest="selectedRequest" @updateRequestFormOpen="setIsRequestFormOpen"/>
           </div>
           <div class="col-6 lg:col-3">
             <request-draggable-list title="Realizadas" :list='doneList' :log='doneLog' :clickElement='setSelectedRequest' :loading='loading' :selectedRequest="selectedRequest"/>
@@ -17,28 +17,31 @@
         </div>
       </div>
       <div class="col-12">
-        <request-detail  v-if="selectedRequest" v-model:selectedRequest="selectedRequest" :clickRequest="clickRequest" @openAssignationDialog="handleIsOpenAssignation"/>
+        <!-- <request-detail  v-if="selectedRequest" v-model:selectedRequest="selectedRequest" :clickRequest="clickRequest" @openAssignationDialog="handleIsOpenAssignation"/> -->
       </div>
     </div>
     
     <assignation-form :isOpen="showAssignedDialog" :selectedInstallUninstallRequest="selectedRequest" @requestUpdated="handleRequestUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
     <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
+    <install-request-form :isOpen="showRequestForm" :selectedRequest="selectedRequest" @updateIsOpen="setIsRequestFormOpen" />
 </template>
 
 <script>
 import RequestDraggableList from '../components/InstallUninstallRequests/RequestDraggableList';
 import IrrigatorDetailsDialog from '../components/Irrigators/IrrigatorDetailsDialog.vue';
-import RequestDetail from '../components/InstallUninstallRequests/RequestDetail.vue';
+// import RequestDetail from '../components/InstallUninstallRequests/RequestDetail.vue';
 import AssignationForm from '../components/Issues/Forms/AssignationForm.vue';
 import { getInstallUninstallRequestsQuery } from '../api/apiRequests';
+import InstallRequestForm from "../components/InstallUninstallRequests/InstallRequestForm.vue";
 
 export default {
   name: 'InstallUninstallRequests',
   components: {
     RequestDraggableList,
     IrrigatorDetailsDialog,
-    RequestDetail,
-    AssignationForm
+    // RequestDetail,
+    AssignationForm,
+    InstallRequestForm,
   },
   methods: {
     handleIsOpenChange: function(value) {
@@ -86,6 +89,9 @@ export default {
       this.isCreationModalOpen = val;
       if(!val) this.selectedCreateRequestIrrigatorId = null; //reset select on modal close
     },
+    setIsRequestFormOpen(val) {
+      this.showRequestForm = val;
+    },
   },
   data() {
     return {
@@ -98,6 +104,7 @@ export default {
       requests: [],
       selectedRequest: null,
       selectedCreateRequestIrrigatorId: null,
+      showRequestForm: false,
     }
   },
   computed: {
