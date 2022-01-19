@@ -437,7 +437,7 @@ export default {
       this.$toast.add({
         severity: "success",
         summary: "Solicitud de instalación actualizada correctamente",
-        detail: "Fecha de trabajo realizado: " + dateFormatter(this.completion_date, false),
+        detail: "Fecha de trabajo realizado: " + dateFormatter(this.completionDate, false),
         life: 3000,
       });
     },

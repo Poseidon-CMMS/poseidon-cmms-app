@@ -326,10 +326,15 @@ const assignRequestMutation = async function (requestId, technicianId) {
           data: $data
         ) {
           id
+          creation_date
           completion_date
-          assigned_technician {
-            id
+          close_date
+          irrigator {
+            integration_id
             name
+            field {
+              name
+            }
           }
           gateway {
             id
@@ -343,6 +348,18 @@ const assignRequestMutation = async function (requestId, technicianId) {
             id
             integration_id
           }
+          request_type
+          status
+          work_order {
+            id
+            work_date
+            km_traveled
+            comment
+            technician {
+              id
+              name
+            }
+          }
           gtw_image {
             id
             url
@@ -354,6 +371,13 @@ const assignRequestMutation = async function (requestId, technicianId) {
           pressure_sensor_image {
             id
             url
+          }
+          log {
+            url
+          }
+          assigned_technician {
+            id
+            name
           }
         }
       }
@@ -410,10 +434,15 @@ const clearAssignRequestMutation = async function (requestId) {
           data: $data
         ) {
           id
+          creation_date
           completion_date
-          assigned_technician {
-            id
+          close_date
+          irrigator {
+            integration_id
             name
+            field {
+              name
+            }
           }
           gateway {
             id
@@ -427,6 +456,18 @@ const clearAssignRequestMutation = async function (requestId) {
             id
             integration_id
           }
+          request_type
+          status
+          work_order {
+            id
+            work_date
+            km_traveled
+            comment
+            technician {
+              id
+              name
+            }
+          }
           gtw_image {
             id
             url
@@ -438,6 +479,13 @@ const clearAssignRequestMutation = async function (requestId) {
           pressure_sensor_image {
             id
             url
+          }
+          log {
+            url
+          }
+          assigned_technician {
+            id
+            name
           }
         }
       }
@@ -1285,7 +1333,16 @@ const doInstallRequestMutation = async function (
           data: $data
         ) {
           id
+          creation_date
           completion_date
+          close_date
+          irrigator {
+            integration_id
+            name
+            field {
+              name
+            }
+          }
           gateway {
             id
             integration_id
@@ -1297,6 +1354,18 @@ const doInstallRequestMutation = async function (
           pressure_sensor {
             id
             integration_id
+          }
+          request_type
+          status
+          work_order {
+            id
+            work_date
+            km_traveled
+            comment
+            technician {
+              id
+              name
+            }
           }
           gtw_image {
             id
@@ -1310,7 +1379,13 @@ const doInstallRequestMutation = async function (
             id
             url
           }
-          status
+          log {
+            url
+          }
+          assigned_technician {
+            id
+            name
+          }
         }
       }
     `,
@@ -1387,8 +1462,59 @@ const doUninstallRequestMutation = async function (
           data: $data
         ) {
           id
+          creation_date
           completion_date
+          close_date
+          irrigator {
+            integration_id
+            name
+            field {
+              name
+            }
+          }
+          gateway {
+            id
+            integration_id
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          pressure_sensor {
+            id
+            integration_id
+          }
+          request_type
           status
+          work_order {
+            id
+            work_date
+            km_traveled
+            comment
+            technician {
+              id
+              name
+            }
+          }
+          gtw_image {
+            id
+            url
+          }
+          node_gps_image {
+            id
+            url
+          }
+          pressure_sensor_image {
+            id
+            url
+          }
+          log {
+            url
+          }
+          assigned_technician {
+            id
+            name
+          }
         }
       }
     `,
