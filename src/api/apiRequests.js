@@ -314,6 +314,66 @@ const assignHdwIssueMutation = async function (hdwIssueId, technicianId) {
   });
 };
 
+const assignRequestMutation = async function (requestId, technicianId) {
+  return await client.mutate({
+    mutation: gql`
+      mutation(
+  $where: install_uninstall_requestWhereUniqueInput!
+  $data: install_uninstall_requestUpdateInput!
+) {
+  updateinstall_uninstall_request: updateinstall_uninstall_request(
+    where: $where
+    data: $data
+  ) {
+    id
+    completion_date
+    assigned_technician {
+      id
+      name
+    }
+    gateway {
+      id
+      integration_id
+    }
+    gps_node {
+      id
+      integration_id
+    }
+    pressure_sensor {
+      id
+      integration_id
+    }
+    gtw_image {
+      id
+      url
+    }
+    node_gps_image {
+      id
+      url
+    }
+    pressure_sensor_image {
+      id
+      url
+    }
+  }
+}
+
+    `,
+    variables: {
+      where: {
+        id: requestId,
+      },
+      data: {
+        assigned_technician: {
+          connect: {
+            id: technicianId,
+          },
+        },
+      },
+    },
+  });
+};
+
 const clearAssignHdwIssueMutation = async function (hdwIssueId) {
   return await client.mutate({
     mutation: gql`
@@ -1146,7 +1206,7 @@ const createInstallUninstallRequestMutation = async function (
   });
 };
 
-const doInstallUninstallRequestMutation = async function (
+const doInstallRequestMutation = async function (
   completionDate,
   requestId,
   gatewayId,
@@ -1194,6 +1254,7 @@ const doInstallUninstallRequestMutation = async function (
       id
       url
     }
+    status
   }
 }
 
@@ -1246,6 +1307,47 @@ const doInstallUninstallRequestMutation = async function (
         : null,
       },
     },
+    context: {
+      hasUpload: !!log_file || !!pressure_sensor_image || !!gps_node_image || !!gtw_image,
+    },
+    
+  });
+};
+const doUninstallRequestMutation = async function (
+  completionDate,
+  requestId,
+  workOrderId,
+) {
+  return await client.mutate({
+    mutation: gql`
+      mutation(
+  $where: install_uninstall_requestWhereUniqueInput!
+  $data: install_uninstall_requestUpdateInput!
+) {
+  updateinstall_uninstall_request: updateinstall_uninstall_request(
+    where: $where
+    data: $data
+  ) {
+    id
+    completion_date
+    status
+  }
+}
+
+    `,
+    variables: {
+      where: {
+        id: requestId,
+      },
+      data: {
+        completion_date: completionDate.toISOString(),
+        },
+        work_order: {
+          connect: {
+            id: workOrderId,
+          },
+      },
+    },
   });
 };
 
@@ -1281,5 +1383,7 @@ export {
   //install uninstall request
   getInstallUninstallRequestsQuery,
   createInstallUninstallRequestMutation,
-  doInstallUninstallRequestMutation,
+  doInstallRequestMutation,
+  doUninstallRequestMutation,
+  assignRequestMutation
 };

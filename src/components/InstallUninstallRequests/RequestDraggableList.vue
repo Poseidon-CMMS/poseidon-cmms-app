@@ -73,14 +73,18 @@ export default {
       selectedRequest: null
     }
   },
-  emits: ["updateRequestFormOpen"],
+  emits: ["updateRequestFormOpen", "updateUninstallFormOpen"],
   props: ['title', 'list', 'log', 'clickElement', 'loading'],
   methods: {
     dateFormatter,
     async clickButtonAddInstallData(request) {
       await this.clickElement(request);
-      console.log(request);
-      this.$emit("updateRequestFormOpen", true);
+      if (request.request_type === 'install') {
+        this.$emit("updateRequestFormOpen", true);
+      } else {
+        this.$emit("updateUninstallFormOpen", true);
+      }
+      
     }
   }
 }

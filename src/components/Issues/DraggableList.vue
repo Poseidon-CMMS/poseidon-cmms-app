@@ -86,7 +86,6 @@ export default {
       const messageFieldSolution = "¿Está seguro de que desea marcar este HDW Issue como solucionado? El issue fue solucionado en campo, por lo que el issue pasará al estado Closed";
 
       let currentIssueRepairs = [...this.selectedIssue.repair];
-      console.log(currentIssueRepairs);
       const lastRepair = currentIssueRepairs.sort((a,b) => (a.date<b.date?1:-1))[0];
 
       if(lastRepair.repair_type.value === 'device_change') {

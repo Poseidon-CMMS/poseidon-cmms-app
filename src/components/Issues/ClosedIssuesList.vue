@@ -63,7 +63,6 @@ export default {
   async beforeMount() {
     //traer cerrados
     this.loading = true;
-    console.log('asdusahdfiusadfhuiwhf89237423879ru32r')
     const result = await getHdwIssuesQuery('closed');
     this.closedIssues = result.data.hdwIssues;
 

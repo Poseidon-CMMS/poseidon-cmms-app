@@ -23,7 +23,7 @@
           id="work_order"
           v-model="selectedWorkOrder"
           :options="workOrders"
-          :optionLabel="`${dateFormatter(work_order?.work_date)} | ${work_order?.comment}`"
+          :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)} | ${work_order?.comment}`"
           class="inputfield w-full"
           placeholder="Orden de trabajo"
         />
@@ -348,7 +348,7 @@ import {
   getTechniciansGatewaysQuery,
   getTechniciansGpsNodesQuery,
   getTechniciansPressureSensorsQuery,
-  doInstallUninstallRequestMutation
+  doInstallRequestMutation
 } from "../../api/apiRequests";
 import { dateFormatter } from "../../utils/dateFormatter.js";
 
@@ -398,7 +398,7 @@ export default {
     async onSubmit() {
       try {
         this.loading = true;
-        const requestResult = await doInstallUninstallRequestMutation(
+        const requestResult = await doInstallRequestMutation(
           this.completionDate,
           this.selectedRequest.id,
           this.selectedGateway?.id,
@@ -417,7 +417,6 @@ export default {
           const newRequest = {
             ...this.selectedRequest,
             ...requestResult.data.updateinstall_uninstall_request,
-            status: "done"
           };
           this.$emit("requestUpdated", newRequest);
           this.computedIsOpen = false;
@@ -438,7 +437,7 @@ export default {
       this.$toast.add({
         severity: "success",
         summary: "Solicitud de instalación actualizada correctamente",
-        detail: "creacion: " + this.creationDate,
+        detail: "Fecha de trabajo realizado: " + dateFormatter(this.completion_date, false),
         life: 3000,
       });
     },
@@ -474,9 +473,9 @@ export default {
       },
     },
   },
-  async mounted() {
-    console.log('mounted del install requjest form')
-    const user_id = this.selectedRequest.assigned_technician.id;
+  async beforeUpdate() {
+    console.log(' corrio beforeupdate del ir form')
+    const user_id = this.selectedRequest?.assigned_technician?.id;
     if(user_id){
       this.workOrders = (await getWorkOrdersQuery(user_id)).data.workOrders; //todo: error handling
       this.gateways = (await getTechniciansGatewaysQuery()).data.gateways; //todo: error handling y traer solo las del tecnico

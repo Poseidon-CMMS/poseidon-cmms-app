@@ -61,13 +61,18 @@
 </template>
 
 <script>
-import { getTechniciansQuery, assignHdwIssueMutation, clearAssignHdwIssueMutation } from "../../../api/apiRequests";
+import { 
+  getTechniciansQuery,
+  assignHdwIssueMutation,
+  clearAssignHdwIssueMutation,
+  assignRequestMutation 
+  } from "../../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
 
 export default {
   name: "AssignationForm",
-  props: ["isOpen", "selectedIssue", "selectedInstallUninstallRequest"],
+  props: ["isOpen", "selectedIssue", "selectedRequest"],
   components: { Dropdown, Message },
   data() {
     return {
@@ -86,7 +91,14 @@ export default {
         }, 5000);
         return;
       }
-
+      if (this.selectedRequest) { //modo asignar request
+        await this.assignRequest();
+      }  else { //modo asignar hw issue
+        await this.assignHdwIssue();
+      }
+      this.computedIsOpen = false;
+    },
+    async assignHdwIssue(){
       this.loading = true; //todo control de errores
       await assignHdwIssueMutation(
         this.selectedIssue.id,
@@ -100,7 +112,16 @@ export default {
         assigned_technician: technicianObject,
       };
       this.$emit("issueUpdated", newIssue);
-      this.computedIsOpen = false;
+    },
+    async assignRequest() {
+      this.loading = true; //todo control de errores
+      const assignedRequestData = await assignRequestMutation(
+        this.selectedRequest.id,
+        this.selectedTechnician
+      );
+      this.loading = false;
+      const newRequest = assignedRequestData.data.updateinstall_uninstall_request;
+      this.$emit("requestUpdated", newRequest);
     },
     onCancelAssignation() {
       this.computedIsOpen = false;
