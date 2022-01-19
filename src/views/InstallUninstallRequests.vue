@@ -22,6 +22,7 @@
             :selectedRequest="selectedRequest"
             @updateRequestFormOpen="handleIsOpenInstall"
             @updateUninstallFormOpen="handleIsOpenUninstall"
+            @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
         <div class="col-6 lg:col-3">

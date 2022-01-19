@@ -86,7 +86,7 @@
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
               {{selectedIssue?.assigned_technician? selectedIssue?.assigned_technician.name : 'Ningún técnico asignado'}}
-            <Button class="mr-1 p-button-warning" icon="pi pi-pencil" @click="handleTechnicianEdit" />
+            <Button class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
             </p>
           </div>
         </div>

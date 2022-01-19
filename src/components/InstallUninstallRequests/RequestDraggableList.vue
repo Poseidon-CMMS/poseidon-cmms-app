@@ -34,6 +34,7 @@
                       </span>
                       <span class="m-2"  v-if="element.status === 'assigned'">
                         <Button icon="pi pi-cloud-upload" class="p-button-success" @click="clickButtonAddInstallData(element)"/>
+                        <Button class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
                       </span>
                     </template>
                   </Card>
@@ -73,7 +74,7 @@ export default {
       selectedRequest: null
     }
   },
-  emits: ["updateRequestFormOpen", "updateUninstallFormOpen"],
+  emits: ["updateRequestFormOpen", "updateUninstallFormOpen", "updateAssignationFormOpen"],
   props: ['title', 'list', 'log', 'clickElement', 'loading'],
   methods: {
     dateFormatter,
@@ -85,6 +86,9 @@ export default {
         this.$emit("updateUninstallFormOpen", true);
       }
       
+    },
+    handleTechnicianEdit() {
+      this.$emit('updateAssignationFormOpen', true);
     }
   }
 }

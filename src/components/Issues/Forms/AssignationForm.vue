@@ -65,7 +65,8 @@ import {
   getTechniciansQuery,
   assignHdwIssueMutation,
   clearAssignHdwIssueMutation,
-  assignRequestMutation 
+  assignRequestMutation,
+  clearAssignRequestMutation
   } from "../../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
@@ -127,6 +128,15 @@ export default {
       this.computedIsOpen = false;
     },
     async onDeleteAssignation() {
+      if (this.selectedRequest) { //modo asignar request
+        await this.unassignRequest();
+      }  else { //modo asignar hw issue
+        await this.unassignHdwIssue();
+      }
+      this.computedIsOpen = false;
+      
+    },
+    async unassignHdwIssue() {
       this.loading = true;
       await clearAssignHdwIssueMutation(this.selectedIssue.id);
       this.loading = false;
@@ -137,7 +147,16 @@ export default {
       delete newIssue.assigned_technician;
       this.$emit("issueUpdated", newIssue);
       this.computedIsOpen = false;
-    }
+    },
+    async unassignRequest() {
+      this.loading = true;
+      const unassignedRequestData = await clearAssignRequestMutation(this.selectedRequest.id);
+      this.loading = false;
+      const newRequest =  unassignedRequestData.data.updateinstall_uninstall_request;
+      this.$emit("requestUpdated", newRequest);
+      this.computedIsOpen = false;
+    },
+
   },
   computed: {
     computedIsOpen: {
@@ -162,6 +181,9 @@ export default {
 
     this.loading = false;
   },
+  async beforeUpdate() {
+    this.selectedTechnician = this.selectedIssue?.assigned_technician?.id || this.selectedRequest?.assigned_technician?.id || null;
+  }
 };
 </script>
 

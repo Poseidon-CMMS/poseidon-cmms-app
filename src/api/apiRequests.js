@@ -317,47 +317,46 @@ const assignHdwIssueMutation = async function (hdwIssueId, technicianId) {
 const assignRequestMutation = async function (requestId, technicianId) {
   return await client.mutate({
     mutation: gql`
-      mutation(
-  $where: install_uninstall_requestWhereUniqueInput!
-  $data: install_uninstall_requestUpdateInput!
-) {
-  updateinstall_uninstall_request: updateinstall_uninstall_request(
-    where: $where
-    data: $data
-  ) {
-    id
-    completion_date
-    assigned_technician {
-      id
-      name
-    }
-    gateway {
-      id
-      integration_id
-    }
-    gps_node {
-      id
-      integration_id
-    }
-    pressure_sensor {
-      id
-      integration_id
-    }
-    gtw_image {
-      id
-      url
-    }
-    node_gps_image {
-      id
-      url
-    }
-    pressure_sensor_image {
-      id
-      url
-    }
-  }
-}
-
+      mutation (
+        $where: install_uninstall_requestWhereUniqueInput!
+        $data: install_uninstall_requestUpdateInput!
+      ) {
+        updateinstall_uninstall_request: updateinstall_uninstall_request(
+          where: $where
+          data: $data
+        ) {
+          id
+          completion_date
+          assigned_technician {
+            id
+            name
+          }
+          gateway {
+            id
+            integration_id
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          pressure_sensor {
+            id
+            integration_id
+          }
+          gtw_image {
+            id
+            url
+          }
+          node_gps_image {
+            id
+            url
+          }
+          pressure_sensor_image {
+            id
+            url
+          }
+        }
+      }
     `,
     variables: {
       where: {
@@ -389,6 +388,63 @@ const clearAssignHdwIssueMutation = async function (hdwIssueId) {
     variables: {
       where: {
         id: hdwIssueId,
+      },
+      data: {
+        assigned_technician: {
+          disconnect: true,
+        },
+      },
+    },
+  });
+};
+
+const clearAssignRequestMutation = async function (requestId) {
+  return await client.mutate({
+    mutation: gql`
+      mutation (
+        $where: install_uninstall_requestWhereUniqueInput!
+        $data: install_uninstall_requestUpdateInput!
+      ) {
+        updateinstall_uninstall_request: updateinstall_uninstall_request(
+          where: $where
+          data: $data
+        ) {
+          id
+          completion_date
+          assigned_technician {
+            id
+            name
+          }
+          gateway {
+            id
+            integration_id
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          pressure_sensor {
+            id
+            integration_id
+          }
+          gtw_image {
+            id
+            url
+          }
+          node_gps_image {
+            id
+            url
+          }
+          pressure_sensor_image {
+            id
+            url
+          }
+        }
+      }
+    `,
+    variables: {
+      where: {
+        id: requestId,
       },
       data: {
         assigned_technician: {
@@ -1220,44 +1276,43 @@ const doInstallRequestMutation = async function (
 ) {
   return await client.mutate({
     mutation: gql`
-      mutation(
-  $where: install_uninstall_requestWhereUniqueInput!
-  $data: install_uninstall_requestUpdateInput!
-) {
-  updateinstall_uninstall_request: updateinstall_uninstall_request(
-    where: $where
-    data: $data
-  ) {
-    id
-    completion_date
-    gateway {
-      id
-      integration_id
-    }
-    gps_node {
-      id
-      integration_id
-    }
-    pressure_sensor {
-      id
-      integration_id
-    }
-    gtw_image {
-      id
-      url
-    }
-    node_gps_image {
-      id
-      url
-    }
-    pressure_sensor_image {
-      id
-      url
-    }
-    status
-  }
-}
-
+      mutation (
+        $where: install_uninstall_requestWhereUniqueInput!
+        $data: install_uninstall_requestUpdateInput!
+      ) {
+        updateinstall_uninstall_request: updateinstall_uninstall_request(
+          where: $where
+          data: $data
+        ) {
+          id
+          completion_date
+          gateway {
+            id
+            integration_id
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          pressure_sensor {
+            id
+            integration_id
+          }
+          gtw_image {
+            id
+            url
+          }
+          node_gps_image {
+            id
+            url
+          }
+          pressure_sensor_image {
+            id
+            url
+          }
+          status
+        }
+      }
     `,
     variables: {
       where: {
@@ -1296,44 +1351,46 @@ const doInstallRequestMutation = async function (
             }
           : null,
         node_gps_image: gps_node_image
-        ? {
-            upload: gps_node_image,
-          }
-        : null,
+          ? {
+              upload: gps_node_image,
+            }
+          : null,
         pressure_sensor_image: pressure_sensor_image
-        ? {
-            upload: pressure_sensor_image,
-          }
-        : null,
+          ? {
+              upload: pressure_sensor_image,
+            }
+          : null,
       },
     },
     context: {
-      hasUpload: !!log_file || !!pressure_sensor_image || !!gps_node_image || !!gtw_image,
+      hasUpload:
+        !!log_file ||
+        !!pressure_sensor_image ||
+        !!gps_node_image ||
+        !!gtw_image,
     },
-    
   });
 };
 const doUninstallRequestMutation = async function (
   completionDate,
   requestId,
-  workOrderId,
+  workOrderId
 ) {
   return await client.mutate({
     mutation: gql`
-      mutation(
-  $where: install_uninstall_requestWhereUniqueInput!
-  $data: install_uninstall_requestUpdateInput!
-) {
-  updateinstall_uninstall_request: updateinstall_uninstall_request(
-    where: $where
-    data: $data
-  ) {
-    id
-    completion_date
-    status
-  }
-}
-
+      mutation (
+        $where: install_uninstall_requestWhereUniqueInput!
+        $data: install_uninstall_requestUpdateInput!
+      ) {
+        updateinstall_uninstall_request: updateinstall_uninstall_request(
+          where: $where
+          data: $data
+        ) {
+          id
+          completion_date
+          status
+        }
+      }
     `,
     variables: {
       where: {
@@ -1341,11 +1398,11 @@ const doUninstallRequestMutation = async function (
       },
       data: {
         completion_date: completionDate.toISOString(),
+      },
+      work_order: {
+        connect: {
+          id: workOrderId,
         },
-        work_order: {
-          connect: {
-            id: workOrderId,
-          },
       },
     },
   });
@@ -1385,5 +1442,6 @@ export {
   createInstallUninstallRequestMutation,
   doInstallRequestMutation,
   doUninstallRequestMutation,
-  assignRequestMutation
+  assignRequestMutation,
+  clearAssignRequestMutation,
 };
