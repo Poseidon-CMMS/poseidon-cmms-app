@@ -106,6 +106,7 @@ export default {
 .p-button-success {
   background: #107510e3 !important;
   border-color: #107510e3 !important;
+  color: #FFFF !important;
 }
 
 .p-button-warning:hover {
