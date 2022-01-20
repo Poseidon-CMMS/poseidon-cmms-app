@@ -1272,6 +1272,82 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
   });
 };
 
+const updateRequestStatusMutation = async function (requestId, status) {
+  return await client.mutate({
+    mutation: gql`
+      mutation (
+        $where: install_uninstall_requestWhereUniqueInput!
+        $data: install_uninstall_requestUpdateInput!
+      ) {
+        updateinstall_uninstall_request: updateinstall_uninstall_request(where: $where, data: $data) {
+          id
+          creation_date
+          completion_date
+          close_date
+          irrigator {
+            integration_id
+            name
+            field {
+              name
+            }
+          }
+          gateway {
+            id
+            integration_id
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          pressure_sensor {
+            id
+            integration_id
+          }
+          request_type
+          status
+          work_order {
+            id
+            work_date
+            km_traveled
+            comment
+            technician {
+              id
+              name
+            }
+          }
+          gtw_image {
+            id
+            url
+          }
+          node_gps_image {
+            id
+            url
+          }
+          pressure_sensor_image {
+            id
+            url
+          }
+          log {
+            url
+          }
+          assigned_technician {
+            id
+            name
+          }
+        }
+      }
+    `,
+    variables: {
+      where: {
+        id: requestId,
+      },
+      data: {
+        status,
+      },
+    },
+  });
+};
+
 const createInstallUninstallRequestMutation = async function (
   creationDate,
   irrigatorId,
@@ -1570,4 +1646,5 @@ export {
   doUninstallRequestMutation,
   assignRequestMutation,
   clearAssignRequestMutation,
+  updateRequestStatusMutation
 };

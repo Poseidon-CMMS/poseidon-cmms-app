@@ -1,6 +1,9 @@
 <template>
   <div class="grid mt-3">
     <div class="col-12">
+    <p class="text-4xl w-full surface-200 p-4 m-0">Solicitudes de instalación y desinstalación</p>
+    </div>
+    <div class="col-12">
       <div class="grid text-sm">
         <div class="col-6 lg:col-3">
           <request-draggable-list
@@ -33,6 +36,7 @@
             :clickElement="setSelectedRequest"
             :loading="loading"
             :selectedRequest="selectedRequest"
+            @requestUpdated="handleRequestUpdated"
           />
         </div>
         <div class="col-6 lg:col-3">
