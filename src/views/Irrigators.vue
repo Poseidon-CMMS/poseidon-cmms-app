@@ -1,5 +1,5 @@
 <template>
-  <div class="grid mt-3 mb-5">
+  <!-- <div class="grid mt-3 mb-5">
     <div class="col">
       <metric-card 
         titleCard="Issues no asignados"
@@ -30,18 +30,18 @@
         icon="pi pi-hashtag"
       />
     </div>  
+  </div> -->
+  <div class="mt-5">
+    <table-irrigators />
   </div>
-  <table-irrigators />
 </template>
 
 <script>
-import MetricCard from '../components/MetricCard.vue';
 import TableIrrigators from '../components/Irrigators/TableIrrigators.vue'; 
 
 export default {
   name: 'Dashboard',
   components: {
-    MetricCard,
     TableIrrigators
   },
 }
@@ -49,5 +49,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

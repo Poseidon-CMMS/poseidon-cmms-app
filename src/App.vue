@@ -1,13 +1,22 @@
 <template>
   <Menubar :model="items">
     <template #end>
-      <Button
-        v-if="isNotOnLoginPage"
-        class="p-button-danger"
-        label="Salir"
-        @click="onLogout"
-        icon="pi pi-fw pi-power-off"
-      />
+      <div class="flex w-8">
+        <div class="flex-1 flex align-items-center justify-content-center mx-6 my-0">
+          <p class="text-xl font-semibold text-white text-right" style="width: 20vw">
+            POSEIDON CMMS
+          </p>
+        </div>
+        <div class="flex-1 flex align-items-center justify-content-center">
+          <Button
+            v-if="isNotOnLoginPage"
+            class="p-button-danger"
+            label="Salir"
+            @click="onLogout"
+            icon="pi pi-fw pi-power-off"
+          />
+        </div>
+      </div>
     </template>
   </Menubar>
   <ConfirmDialog></ConfirmDialog>
@@ -28,7 +37,7 @@ export default {
   components: {
     Menubar,
     ConfirmDialog,
-    Toast
+    Toast,
   },
   methods: {
     onLogout() {
@@ -39,19 +48,19 @@ export default {
     return {
       items: [
         {
+          label: "Dashboard",
+          icon: "pi pi-fw pi-th-large",
+          command: () => this.$router.push("/dashboard"),
+        },
+        {
           label: "Irrigators",
-          icon: "pi pi-fw pi-list",
+          icon: "pi pi-fw pi-mobile",
           command: () => this.$router.push("/"),
         },
         {
           label: "Issues",
-          icon: "pi pi-fw pi-hashtag",
+          icon: "pi pi-fw pi-exclamation-triangle",
           command: () => this.$router.push("/issues"),
-        },
-        {
-          label: "Dashboard",
-          icon: "pi pi-fw pi-th-large",
-          command: () => this.$router.push("/dashboard"),
         },
         {
           label: "Requests",
@@ -63,24 +72,58 @@ export default {
   },
   computed: {
     isNotOnLoginPage() {
-      return this.$route.name !== 'Login'
+      return this.$route.name !== "Login";
     },
   },
 };
 </script>
 
 <style>
+.p-menubar {
+  background: #384444 !important;
+  border-color: #384444 !important;
+}
+
+.p-menuitem {
+  font-size: 20px !important;
+  color: #ffffff !important;
+}
+
+.p-menuitem-text {
+  color: #ffffff !important;
+}
+
+.p-menuitem-icon {
+  color: #ffffff !important;
+}
+
+.p-button-warning {
+  background: #ffdf2be3 !important;
+  color: #070707 !important;
+  border-color: #ffdf2be3 !important;
+}
+
 .p-button-success {
-  background: #19dd19 !important;
-  border-color: #19dd19 !important;
+  background: #107510e3 !important;
+  border-color: #107510e3 !important;
+}
+
+.p-button-warning:hover {
+  background: #ffd900e3 !important;
+  border-color: #ffd900e3 !important;
 }
 
 .p-button-success:hover {
-  background: #18c518e3 !important;
-  border-color: #18c518e3 !important;
+  background: #149b14e3 !important;
+  border-color: #149b14e3 !important;
 }
+
+.p-menuitem-link:hover {
+  background: #48a4da !important;
+}
+
 #body {
-  background: linear-gradient(135deg, #6ca3d6, 70%, #073f7b);
+  background: linear-gradient(135deg, #7b99b4, 70%, #666f75);
 }
 
 #app {
