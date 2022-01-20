@@ -118,45 +118,72 @@
 
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
                 <p class="text-lg w-8">{{ selectedRequest?.gateway?.integration_id}}</p>
-                <Chip :label="selectedRequest?.gateway?.pcbGateway.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <Chip :label="selectedRequest?.gateway?.pcbGateway?.firmwareVersion?.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
-        <div v-if="selectedRequest?.gpsNode" class="col-12 md:col-6 hover:surface-300">
+        <div v-if="selectedRequest?.gtw_image" class="col-12 md:col-6 hover:surface-300">
+          <div class="flex align-items-center mx-2 w-full">
+              <p class="w-4 text-left font-bold text-blue-500 mr-3">Imagen del Gateway</p>
+
+              <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                <Image :src="imageUrlGenerator(selectedRequest?.gtw_image?.url)" alt="Imagen del Gateway" width="250" preview />
+              </div>
+          </div>
+        </div>
+        <div v-if="selectedRequest?.gps_node" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
               <p class="w-2 text-left font-bold text-blue-500 mr-3">Nodo GPS instalado</p>
 
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
-                <p class="text-lg w-8">{{ selectedRequest?.gpsNode?.integration_id}}</p>
-                <Chip :label="selectedRequest?.gpsNode?.pcbNode.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <p class="text-lg w-8">{{ selectedRequest?.gps_node?.integration_id}}</p>
+                <Chip :label="selectedRequest?.gps_node?.pcb_node?.firmware_version?.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
-        <div v-if="selectedRequest?.pressureSensor"  class="col-12 md:col-6 hover:surface-300">
+        <div v-if="selectedRequest?.node_gps_image" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
-              <p class="w-2 text-left font-bold text-blue-500 mr-3">Sensor de Presión instalado</p>    
+              <p class="w-4 text-left font-bold text-blue-500 mr-3">Imagen del Nodo GPS</p>
+
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
-                <p class="text-lg w-8">{{ selectedRequest?.pressureSensor?.integration_id}}</p>
-                <Chip :label="selectedRequest?.pressureSensor?.pressureSensorType?.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <Image :src="imageUrlGenerator(selectedRequest?.node_gps_image?.url)" alt="Imagen del Nodo GPS" width="250" preview />
               </div>
           </div>
         </div>
         
+        <div v-if="selectedRequest?.pressure_sensor"  class="col-12 md:col-6 hover:surface-300">
+          <div class="flex align-items-center mx-2 w-full">
+              <p class="w-2 text-left font-bold text-blue-500 mr-3">Sensor de Presión instalado</p>    
+              <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                <p class="text-lg w-8">{{ selectedRequest?.pressure_sensor?.integration_id}}</p>
+                <Chip :label="selectedRequest?.pressure_sensor?.pressure_sensor_type?.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+              </div>
+          </div>
+        </div>
+        <div v-if="selectedRequest?.pressure_sensor_image" class="col-12 md:col-6 hover:surface-300">
+          <div class="flex align-items-center mx-2 w-full">
+              <p class="w-4 text-left font-bold text-blue-500 mr-3">Imagen del sensor de presión</p>
+
+              <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                <Image :src="imageUrlGenerator(selectedRequest?.pressure_sensor_image?.url)" alt="Imagen del Sensor de Presión" width="250" preview />
+              </div>
+          </div>
+        </div>
         <div class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 pr-2 w-full">
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
-              {{selectedRequest?.assigned_technician? selectedRequest?.assigned_technician.name : 'Ningún técnico asignado'}}
+              {{selectedRequest?.assigned_technician? selectedRequest?.assigned_technician?.name : 'Ningún técnico asignado'}}
             <Button class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
             </p>
           </div>
         </div>
-        <div @click="() => alert('aca falta algo todo')" class="col-12 md:col-6 hover:surface-300">
+        <div @click="() => alert('TODO: visor de orden de trabajo')" class="col-12 md:col-6 hover:surface-300">
           <div class="flex pointer align-items-center mx-2 w-full">
               <p class="text-left font-bold text-blue-500 mr-3">Órden de trabajo</p>
               <div class="grid justify-content-center w-full">
                 <div class="col-8">
-                  <p class="text-lg">{{ selectedRequest?.work_order?.work_date +' - ' + selectedRequest?.work_order?.comment }}</p>
+                  <p class="text-lg">{{selectedRequest?.work_order? dateFormatter(selectedRequest?.work_order?.work_date, false) +' - ' + selectedRequest?.work_order?.comment :"N/A"}}</p>
                 </div>
                 <div class="col-4">
                   <div class="h-full flex align-items-center">
@@ -176,15 +203,19 @@ import Chip from "primevue/chip";
 import Panel from "primevue/panel";
 
 import { dateFormatter } from "../../utils/dateFormatter";
+import { imageUrlGenerator } from "../../utils/imageUrlGenerator";
+import Image from "primevue/image";
 
 export default {
   name: "RequestDetail",
   components: {
     Chip,
     Panel,
+    Image
   },
   methods: {
     dateFormatter,
+    imageUrlGenerator,
     hasDevice: function (value) {
       return (
         typeof value.gateway !== undefined ||

@@ -61,22 +61,22 @@
               </div>
           </div>
         </div>
-        <div v-else-if="selectedIssue?.gpsNode" class="col-12 md:col-6 hover:surface-300">
+        <div v-else-if="selectedIssue?.gps_node" class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 surface-border w-full">
               <p class="w-2 text-left font-bold text-blue-500 mr-3">Dispositivo</p>
 
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
-                <p class="text-lg w-8">{{ selectedIssue?.gpsNode?.id}}</p>
-                <Chip :label="selectedIssue?.gpsNode?.pcbNode.firmwareVersion.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <p class="text-lg w-8">{{ selectedIssue?.gps_node?.id}}</p>
+                <Chip :label="selectedIssue?.gps_node?.pcb_node?.firmware_version?.version" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
-        <div v-else-if="selectedIssue?.pressureSensor"  class="col-12 md:col-6 hover:surface-300">
+        <div v-else-if="selectedIssue?.pressure_sensor"  class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 w-full">
               <p class="w-2 text-left font-bold text-blue-500 mr-3">Dispositivo</p>    
               <div class="flex align-items-center justify-content-evently mx-auto w-full">
-                <p class="text-lg w-8">{{ selectedIssue?.pressureSensor?.id}}</p>
-                <Chip :label="selectedIssue?.pressureSensor?.pressureSensorType?.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
+                <p class="text-lg w-8">{{ selectedIssue?.pressure_sensor?.id}}</p>
+                <Chip :label="selectedIssue?.pressure_sensor?.pressure_sensor_type?.name" class="p-mr-2 p-mb-2 bg-green-500 text-white" />
               </div>
           </div>
         </div>
@@ -85,7 +85,7 @@
           <div class="flex align-items-center mx-2 pr-2 w-full">
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
-              {{selectedIssue?.assigned_technician? selectedIssue?.assigned_technician.name : 'Ningún técnico asignado'}}
+              {{selectedIssue?.assigned_technician? selectedIssue?.assigned_technician?.name : 'Ningún técnico asignado'}}
             <Button class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
             </p>
           </div>
