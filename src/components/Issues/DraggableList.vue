@@ -49,7 +49,7 @@ import Panel from 'primevue/panel';
 import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
 import Card from "primevue/card";
-import { updateHdwIssueStatusMutation } from '../../api/apiRequests';
+import { updateHdwIssueStatusMutation, rejectRepairedHdwIssueMutation } from '../../api/apiRequests';
 
 export default {
   name: 'DraggableList',
@@ -63,6 +63,7 @@ export default {
     Button
     
   },
+  emits: ["issueUpdated"],
   props: ['title', 'list', 'log', 'selectedIssue', 'clickElement', 'loading'],
   methods: {
     confirmDialog(message, toastMessage, onAccept) {
@@ -102,13 +103,16 @@ export default {
       this.confirmDialog(messageStillBroken, 'Issue devuelto al estado: In Field', this.onReturnToInFieldAccept);
     },
     async onFieldSolutionAccept() {
-      await updateHdwIssueStatusMutation(this.selectedIssue.id, 'closed'); //todo reactivo
+      const result = await updateHdwIssueStatusMutation(this.selectedIssue.id, 'closed'); //todo reactivo
+      this.$emit("issueUpdated", result.data.updatehdw_issue);
     },
     async onDeviceChangeAccept() {
-      await updateHdwIssueStatusMutation(this.selectedIssue.id, 'out-of-field');
+      const result = await updateHdwIssueStatusMutation(this.selectedIssue.id, 'out-of-field');
+      this.$emit("issueUpdated", result.data.updatehdw_issue);
     },
     async onReturnToInFieldAccept() {
-      await updateHdwIssueStatusMutation(this.selectedIssue.id, 'in-field');
+      const result = await rejectRepairedHdwIssueMutation(this.selectedIssue.id);
+      this.$emit("issueUpdated", result.data.updatehdw_issue);
     }
   }
 }

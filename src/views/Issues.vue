@@ -14,7 +14,7 @@
             <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
           <div class="col-6 lg:col-3">
-            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
+            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
           </div>
           <div class="col-6 lg:col-3">
             <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
