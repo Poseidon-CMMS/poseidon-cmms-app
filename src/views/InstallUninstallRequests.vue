@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="col-12">
-      <!-- <request-detail  v-if="selectedRequest" v-model:selectedRequest="selectedRequest" :clickRequest="clickRequest" @openAssignationDialog="handleIsOpenAssignation"/> -->
+      <request-detail  v-if="selectedRequest" v-model:selectedRequest="selectedRequest" :clickRequest="clickRequest" @openAssignationDialog="handleIsOpenAssignation"/>
     </div>
   </div>
 
@@ -85,7 +85,7 @@
 <script>
 import RequestDraggableList from "../components/InstallUninstallRequests/RequestDraggableList";
 import IrrigatorDetailsDialog from "../components/Irrigators/IrrigatorDetailsDialog.vue";
-// import RequestDetail from '../components/InstallUninstallRequests/RequestDetail.vue';
+import RequestDetail from '../components/InstallUninstallRequests/RequestDetail.vue';
 import AssignationForm from "../components/Issues/Forms/AssignationForm.vue";
 import { getInstallUninstallRequestsQuery } from "../api/apiRequests";
 import InstallRequestForm from "../components/InstallUninstallRequests/InstallRequestForm.vue";
@@ -96,7 +96,7 @@ export default {
   components: {
     RequestDraggableList,
     IrrigatorDetailsDialog,
-    // RequestDetail,
+    RequestDetail,
     AssignationForm,
     InstallRequestForm,
     UninstallRequestForm

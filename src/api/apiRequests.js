@@ -1348,6 +1348,103 @@ const updateRequestStatusMutation = async function (requestId, status) {
   });
 };
 
+const rejectDoneRequestMutation =async function (requestId) {
+  return await client.mutate({
+    mutation: gql`
+      mutation (
+        $where: install_uninstall_requestWhereUniqueInput!
+        $data: install_uninstall_requestUpdateInput!
+      ) {
+        updateinstall_uninstall_request: updateinstall_uninstall_request(where: $where, data: $data) {
+          id
+          creation_date
+          completion_date
+          close_date
+          irrigator {
+            integration_id
+            name
+            field {
+              name
+            }
+          }
+          gateway {
+            id
+            integration_id
+          }
+          gps_node {
+            id
+            integration_id
+          }
+          pressure_sensor {
+            id
+            integration_id
+          }
+          request_type
+          status
+          work_order {
+            id
+            work_date
+            km_traveled
+            comment
+            technician {
+              id
+              name
+            }
+          }
+          gtw_image {
+            id
+            url
+          }
+          node_gps_image {
+            id
+            url
+          }
+          pressure_sensor_image {
+            id
+            url
+          }
+          log {
+            url
+          }
+          assigned_technician {
+            id
+            name
+          }
+        }
+      }
+    `,
+    variables: {
+      where: {
+        id: requestId,
+      },
+      data: {
+        status: "open",
+        assigned_technician: {
+          disconnect: true,
+        },
+        completion_date: null,
+        close_date: null,
+        gateway: {
+          disconnect: true,
+        },
+        gps_node: {
+          disconnect: true,
+        },
+        pressure_sensor: {
+          disconnect: true,
+        },
+        work_order : {
+          disconnect: true,
+        },
+        gtw_image : null,
+        node_gps_image : null,
+        pressure_sensor_image: null,
+        log : null
+      },
+    },
+  });
+};
+
 const createInstallUninstallRequestMutation = async function (
   creationDate,
   irrigatorId,
@@ -1646,5 +1743,6 @@ export {
   doUninstallRequestMutation,
   assignRequestMutation,
   clearAssignRequestMutation,
-  updateRequestStatusMutation
+  updateRequestStatusMutation,
+  rejectDoneRequestMutation
 };

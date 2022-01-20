@@ -23,7 +23,7 @@
           id="work_order"
           v-model="selectedWorkOrder"
           :options="workOrders"
-          :optionLabel="`${dateFormatter(work_order.work_date)} | ${work_order.comment}`"
+          :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)} | ${work_order?.comment}`"
           class="inputfield w-full"
           placeholder="Orden de trabajo"
         />
@@ -375,7 +375,7 @@ export default {
     this.assetTypes = (await getAssetTypesQuery()).data.assetTypes;
     this.repairTypes = (await getRepairTypesQuery()).data.repairTypes; //todo: error handling
     this.solutionTypes = (await getSolutionTypesQuery()).data.solutionTypes; //todo: error handling
-    const user_id = sessionStorage.getItem("id");
+    const user_id = this.selectedIssue?.assigned_technician?.id;
     this.workOrders = (await getWorkOrdersQuery(user_id)).data.workOrders; //todo: error handling
     this.gateways = (await getTechniciansGatewaysQuery()).data.gateways; //todo: error handling y traer solo las del tecnico
     this.pressureSensors = (

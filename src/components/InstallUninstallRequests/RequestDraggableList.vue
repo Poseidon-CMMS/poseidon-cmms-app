@@ -94,7 +94,7 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 // import { updateHdwIssueStatusMutation } from '../../api/apiRequests';
 import { dateFormatter } from "../../utils/dateFormatter";
-import { updateRequestStatusMutation } from "../../api/apiRequests";
+import { updateRequestStatusMutation, rejectDoneRequestMutation } from "../../api/apiRequests";
 
 export default {
   name: "RequestDraggableList",
@@ -173,9 +173,8 @@ export default {
       this.$emit("requestUpdated", newRequest);
     },
     async onRequestDeclined() {
-      const resultData = await updateRequestStatusMutation(
-        this.selectedRequest.id,
-        "open"
+      const resultData = await rejectDoneRequestMutation(
+        this.selectedRequest.id
       );
       const newRequest = resultData.data.updateinstall_uninstall_request;
       this.$emit("requestUpdated", newRequest);
