@@ -29,7 +29,7 @@
         />
       </div>
       <div class="field">
-        <label for="creationDate">Fecha de reparación en campo</label>
+        <label for="creationDate">Fecha de reparación en campo: </label>
         <Calendar
           id="creationDate"
           :show-icon="true"
@@ -37,7 +37,7 @@
           dateFormat="yy-mm-dd"
           :showTime="true"
           :showSeconds="true"
-          class="inputfield w-full"
+          class="inputfield ml-2"
         />
       </div>
       <div class="field">

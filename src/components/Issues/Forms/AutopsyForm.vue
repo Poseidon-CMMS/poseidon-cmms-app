@@ -7,13 +7,13 @@
   >
     <div class="card">
       <div class="field">
-        <label for="date">Fecha de autopsia</label>
+        <label for="date">Fecha de autopsia: </label>
         <Calendar
           id="date"
           :show-icon="true"
           v-model="date"
           dateFormat="yy-mm-dd"
-          class="inputfield w-full"
+          class="inputfield ml-2"
           :showTime="true"
           :showSeconds="true"
         />

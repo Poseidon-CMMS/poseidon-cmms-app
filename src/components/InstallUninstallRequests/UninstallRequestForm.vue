@@ -29,7 +29,7 @@
         />
       </div>
       <div class="field">
-        <label for="completionDate">Fecha de desinstalación en el equipo</label>
+        <label for="completionDate">Fecha de desinstalación en el equipo: </label>
         <Calendar
           id="completionDate"
           :show-icon="true"
@@ -37,7 +37,7 @@
           dateFormat="yy-mm-dd"
           :showTime="true"
           :showSeconds="true"
-          class="inputfield w-full"
+          class="inputfield ml-2"
         />
       </div>
     </div>

@@ -7,9 +7,9 @@
   >
     <div class="card">
       <div class="field">
-        <label for="diagnosticDate">Fecha de comienzo de la falla</label>
+        <label for="diagnosticDate">Fecha de comienzo de la falla: </label>
         <Calendar
-          class="inputfield w-full"
+          class="inputfield ml-2"
           id="diagnosticDate"
           v-model="diagnosticDate"
           :showIcon="true"
@@ -113,10 +113,10 @@
         v-if="selectedDiagnosticType?.gateway_first_data_transmission_date"
       >
         <label for="gateway_first_data_transmission_date"
-          >Fecha de primer transmisión del gateway</label
+          >Fecha de primer transmisión del gateway: </label
         >
         <Calendar
-          class="inputfield w-full"
+          class="inputfield ml-2"
           id="gateway_first_data_transmission_date"
           v-model="gateway_first_data_transmission_date"
           :showTime="true"
@@ -142,10 +142,10 @@
       </div>
 
       <div class="field" v-if="selectedDiagnosticType?.from_hour">
-        <label for="from_hour">Hora de inicio de la falla</label>
+        <label for="from_hour">Hora de inicio de la falla: </label>
         <Calendar
           id="from_hour"
-          class="inputfield w-full"
+          class="inputfield ml-2"
           v-model="from_hour"
           :timeOnly="true"
           hourFormat="24"
@@ -153,10 +153,10 @@
       </div>
 
       <div class="field" v-if="selectedDiagnosticType?.to_hour">
-        <label for="to_hour">Hora de finalización de la falla</label>
+        <label for="to_hour">Hora de finalización de la falla: </label>
         <Calendar
           id="to_hour"
-          class="inputfield w-full"
+          class="inputfield ml-2"
           v-model="to_hour"
           :timeOnly="true"
           hourFormat="24"

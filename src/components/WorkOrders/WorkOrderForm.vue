@@ -7,13 +7,13 @@
   >
     <div class="card">
       <div class="field">
-        <label for="creationDate">Fecha</label>
+        <label for="creationDate">Fecha: </label>
         <Calendar
             id="creationDate"
             :show-icon="true"
             v-model="creationDate"
             dateFormat="yy-mm-dd"
-            class="inputfield w-full"
+            class="inputfield ml-2"
             />
       </div>
 

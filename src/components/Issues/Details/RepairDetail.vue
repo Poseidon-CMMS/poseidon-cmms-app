@@ -68,7 +68,9 @@
               <div div class="col-2 text-500">
                 <i class="pi pi-file" style="fontSize: 2rem"></i>
               </div>
-              <div class="text-900 col-12">{{ repair?.log.filename }}</div>
+              <div class="text-900 col-12">
+                {{ repair?.log.filename }}
+                <Button icon="pi pi-download" class="p-button-rounded p-button-success" @click="handleLogDownload" /></div>
             </div>
           </div>
           <div class="col-12 pl-5">
@@ -88,15 +90,22 @@
 <script>
 import ScrollPanel from 'primevue/scrollpanel';
 import {dateFormatter} from "../../../utils/dateFormatter";
+import {imageUrlGenerator} from "../../../utils/imageUrlGenerator";
+import Button from "primevue/button";
 
 export default {
   name: 'RepairDetail',
   props: ['repair', 'isOpen'],
   methods: {
-    dateFormatter
+    dateFormatter,
+    imageUrlGenerator,
+    handleLogDownload() {
+      window.open(imageUrlGenerator(this.repair.log.url))
+    },
   },
   components: {
     ScrollPanel,
+    Button,
   },
   computed: {
       computedisOpen: {
