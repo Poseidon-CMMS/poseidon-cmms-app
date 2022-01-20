@@ -1,22 +1,26 @@
 <template>
     <div class="grid mt-3">
-      <div class="col-12 flex flex-row justify-content-between">
-        <Button label="Nuevo" icon="pi pi-plus" class="p-button-success align-self-start" @click="setIsCreationModalOpen" />
-        
-        <Button label="Ver Issues Cerrados" icon="pi pi-eye" class="p-button-warning align-self-start" @click="showClosedIssues = true" />
+      <div class="col-12 flex flex-row justify-content-between flex-wrap">
+        <Button label="Nuevo" icon="pi pi-plus" class="p-button-success align-self-center mt-2" @click="setIsCreationModalOpen" />
+        <div class="hidden md:inline-flex align-items-center justify-content-center bg-green-400 font-bold text-white border-round w-4">
+        <p class="text-2xl w-full m-0">
+            Hardware Issues
+          </p>
+        </div>
+        <Button label="Ver Issues Cerrados" icon="pi pi-eye" class="p-button-warning align-self-center mt-2" @click="showClosedIssues = true" />
       </div>
       <div class="col-12">
         <div class="grid text-sm">
-          <div class="col-6 lg:col-3">
+          <div class="col-12 md:col-6 lg:col-3">
             <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
-          <div class="col-6 lg:col-3">
+          <div class="col-12 md:col-6 lg:col-3">
             <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
-          <div class="col-6 lg:col-3">
+          <div class="col-12 md:col-6 lg:col-3">
             <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
           </div>
-          <div class="col-6 lg:col-3">
+          <div class="col-12 md:col-6 lg:col-3">
             <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
         </div>

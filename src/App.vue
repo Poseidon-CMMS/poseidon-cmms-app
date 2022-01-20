@@ -109,6 +109,16 @@ export default {
   color: #FFFF !important;
 }
 
+.p-badge-success {
+  background: #107510e3 !important;
+  border-color: #107510e3 !important;
+  color: #FFFF !important;
+}
+
+.p-menubar-root-list {
+  background: #384444 !important;
+}
+
 .p-button-warning:hover {
   background: #ffd900e3 !important;
   border-color: #ffd900e3 !important;

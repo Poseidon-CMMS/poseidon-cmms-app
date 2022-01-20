@@ -2,14 +2,14 @@
   <div class="grid mt-3">
     <div class="col-12">
       <div class="flex align-items-center justify-content-center bg-green-400 font-bold text-white border-round">
-      <p class="text-4xl w-full p-4 m-0">
-        Solicitudes de instalación y desinstalación
-      </p>
+        <p class="text-2xl w-full p-2 m-0">
+          Solicitudes de instalación y desinstalación
+        </p>
       </div>
     </div>
     <div class="col-12">
       <div class="grid text-sm">
-        <div class="col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3">
           <request-draggable-list
             title="Abiertas"
             :list="openList"
@@ -20,7 +20,7 @@
             @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
-        <div class="col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3">
           <request-draggable-list
             title="Asignadas"
             :list="assignedList"
@@ -33,7 +33,7 @@
             @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
-        <div class="col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3">
           <request-draggable-list
             title="Realizadas"
             :list="doneList"
@@ -44,7 +44,7 @@
             @requestUpdated="handleRequestUpdated"
           />
         </div>
-        <div class="col-6 lg:col-3">
+        <div class="col-12 md:col-6 lg:col-3">
           <request-draggable-list
             title="Completadas"
             :list="completedList"
