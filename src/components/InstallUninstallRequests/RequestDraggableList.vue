@@ -39,8 +39,9 @@
                         : element.request_type || "Desconocido"
                     }}
                   </template>
-                  <template #footer v-if="element?.assigned_technician">
+                  <template #footer>
                     <Avatar
+                       v-if="element?.assigned_technician"
                       :label="element.assigned_technician.name.charAt(0)"
                       size="large"
                       style="background-color: #2196f3; color: #ffffff"
@@ -61,13 +62,15 @@
                         @click="clickButtonWrong(element)"
                       />
                     </span>
-                    <span class="m-2" v-if="element.status === 'assigned'">
+                    <span class="p-buttonset m-2">
                       <Button
+                        v-if="element.status === 'assigned'"
                         icon="pi pi-cloud-upload"
                         class="p-button-success"
                         @click="clickButtonAddInstallData(element)"
                       />
                       <Button
+                        v-if="element.status === 'assigned' || element.status === 'open'"
                         class="mr-1 p-button-warning"
                         icon="pi pi-user"
                         @click="handleTechnicianEdit"
@@ -190,6 +193,7 @@ export default {
       );
     },
     handleTechnicianEdit() {
+      console.log('aaaa');
       this.$emit("updateAssignationFormOpen", true);
     },
   },

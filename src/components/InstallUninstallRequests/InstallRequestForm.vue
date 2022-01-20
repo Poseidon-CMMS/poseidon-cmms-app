@@ -342,7 +342,7 @@ import InlineMessage from "primevue/inlinemessage";
 import Calendar from "primevue/calendar";
 import Message from "primevue/message";
 import FileUpload from "primevue/fileupload";
-import WorkOrderForm from "../WorkOrderForm.vue";
+import WorkOrderForm from "../WorkOrders/WorkOrderForm.vue";
 import {
   getWorkOrdersQuery,
   getTechniciansGatewaysQuery,

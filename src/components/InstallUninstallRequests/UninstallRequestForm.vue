@@ -74,7 +74,7 @@
 <script>
 import Calendar from "primevue/calendar";
 import Message from "primevue/message";
-import WorkOrderForm from "../WorkOrderForm.vue";
+import WorkOrderForm from "../WorkOrders/WorkOrderForm.vue";
 import {
   getWorkOrdersQuery,
   doUninstallRequestMutation

@@ -72,7 +72,7 @@ import Message from "primevue/message";
 import InputNumber from "primevue/inputnumber";
 import {
   createWorkOrderMutation,
-} from "../api/apiRequests";
+} from "../../api/apiRequests";
 
 function initialData() {
   return {

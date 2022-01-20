@@ -355,6 +355,8 @@ const assignRequestMutation = async function (requestId, technicianId) {
             work_date
             km_traveled
             comment
+            install_uninstall_requestCount
+            repairCount
             technician {
               id
               name
@@ -463,6 +465,8 @@ const clearAssignRequestMutation = async function (requestId) {
             work_date
             km_traveled
             comment
+            install_uninstall_requestCount
+            repairCount
             technician {
               id
               name
@@ -720,6 +724,8 @@ const createRepairMutation = async function (
           id
           date
           work_order {
+            install_uninstall_requestCount
+            repairCount
             technician {
               name
               email
@@ -1219,6 +1225,8 @@ const getInstallUninstallRequestsQuery = async function () {
             work_date
             km_traveled
             comment
+            install_uninstall_requestCount
+            repairCount
             technician {
               id
               name
@@ -1672,6 +1680,8 @@ const updateRequestStatusMutation = async function (requestId, status) {
             work_date
             km_traveled
             comment
+            install_uninstall_requestCount
+            repairCount
             technician {
               id
               name
@@ -1748,6 +1758,8 @@ const rejectDoneRequestMutation =async function (requestId) {
             work_date
             km_traveled
             comment
+            install_uninstall_requestCount
+            repairCount
             technician {
               id
               name
@@ -1897,6 +1909,8 @@ const doInstallRequestMutation = async function (
             work_date
             km_traveled
             comment
+            install_uninstall_requestCount
+            repairCount
             technician {
               id
               name
@@ -2026,6 +2040,8 @@ const doUninstallRequestMutation = async function (
             work_date
             km_traveled
             comment
+            install_uninstall_requestCount
+            repairCount
             technician {
               id
               name

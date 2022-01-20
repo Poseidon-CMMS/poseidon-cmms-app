@@ -1,7 +1,9 @@
 <template>
   <div class="grid mt-3">
     <div class="col-12">
-    <p class="text-4xl w-full surface-200 p-4 m-0">Solicitudes de instalación y desinstalación</p>
+      <p class="text-4xl w-full surface-200 p-4 m-0">
+        Solicitudes de instalación y desinstalación
+      </p>
     </div>
     <div class="col-12">
       <div class="grid text-sm">
@@ -13,6 +15,7 @@
             :clickElement="setSelectedRequest"
             :loading="loading"
             :selectedRequest="selectedRequest"
+            @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
         <div class="col-6 lg:col-3">
@@ -52,7 +55,12 @@
       </div>
     </div>
     <div class="col-12">
-      <request-detail  v-if="selectedRequest" v-model:selectedRequest="selectedRequest" :clickRequest="clickRequest" @openAssignationDialog="handleIsOpenAssignation"/>
+      <request-detail
+        v-if="selectedRequest"
+        v-model:selectedRequest="selectedRequest"
+        :clickRequest="clickRequest"
+        @openAssignationDialog="handleIsOpenAssignation"
+      />
     </div>
   </div>
 
@@ -85,7 +93,7 @@
 <script>
 import RequestDraggableList from "../components/InstallUninstallRequests/RequestDraggableList";
 import IrrigatorDetailsDialog from "../components/Irrigators/IrrigatorDetailsDialog.vue";
-import RequestDetail from '../components/InstallUninstallRequests/RequestDetail.vue';
+import RequestDetail from "../components/InstallUninstallRequests/RequestDetail.vue";
 import AssignationForm from "../components/Issues/Forms/AssignationForm.vue";
 import { getInstallUninstallRequestsQuery } from "../api/apiRequests";
 import InstallRequestForm from "../components/InstallUninstallRequests/InstallRequestForm.vue";
@@ -157,7 +165,7 @@ export default {
     },
     handleIsOpenUninstall(val) {
       this.showUninstallForm = val;
-    }
+    },
   },
   data() {
     return {
@@ -171,7 +179,7 @@ export default {
       selectedRequest: null,
       selectedCreateRequestIrrigatorId: null,
       showRequestForm: false,
-      showUninstallForm: false
+      showUninstallForm: false,
     };
   },
   computed: {
@@ -198,7 +206,7 @@ export default {
   },
   async mounted() {
     //traer install uninstall requests
-    const result = await getInstallUninstallRequestsQuery();   
+    const result = await getInstallUninstallRequestsQuery();
     this.requests = result.data.installUninstallRequests;
     this.loading = false;
   },

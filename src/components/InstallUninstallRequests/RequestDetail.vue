@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
-                    <i class="pi pi-history"></i>
+                    <i class="pi pi-info-circle"></i>
                   </div>
                 </div>
               </div>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
-                    <i class="pi pi-history"></i>
+                    <i class="pi pi-circle-off"></i>
                   </div>
                 </div>
               </div>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
-                    <i class="pi pi-history"></i>
+                    <i class="pi pi-calendar-times"></i>
                   </div>
                 </div>
               </div>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
-                    <i class="pi pi-history"></i>
+                    <i class="pi pi-calendar-times"></i>
                   </div>
                 </div>
               </div>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="col-3">
                   <div class="h-full flex align-items-center">
-                    <i class="pi pi-history"></i>
+                    <i class="pi pi-calendar-times"></i>
                   </div>
                 </div>
               </div>
@@ -178,7 +178,7 @@
             </p>
           </div>
         </div>
-        <div @click="() => alert('TODO: visor de orden de trabajo')" class="col-12 md:col-6 hover:surface-300">
+        <div @click="selectedRequest?.work_order ? this.clickWorkOrder() : null" class="col-12 md:col-6 hover:surface-300">
           <div class="flex pointer align-items-center mx-2 w-full">
               <p class="text-left font-bold text-blue-500 mr-3">Órden de trabajo</p>
               <div class="grid justify-content-center w-full">
@@ -187,7 +187,7 @@
                 </div>
                 <div class="col-4">
                   <div class="h-full flex align-items-center">
-                    <Button icon="pi pi-chevron-right" class="p-button-rounded p-button-primary" />
+                    <Button :disabled="selectedRequest?.work_order ? undefined : 'disabled'" icon="pi pi-chevron-right" class="p-button-rounded p-button-primary" />
                   </div>
                 </div>
               </div>
@@ -196,11 +196,15 @@
       </div>
   </Panel>
   </div>
+
+  <work-order-detail :isOpen="selectedWorkOrder != null" :workOrder="selectedWorkOrder" @updateIsOpen="handleIsOpenWorkOrderDialog"></work-order-detail>
+
 </template>
 
 <script>
 import Chip from "primevue/chip";
 import Panel from "primevue/panel";
+import WorkOrderDetail from  '../WorkOrders/WorkOrderDetail.vue';
 
 import { dateFormatter } from "../../utils/dateFormatter";
 import { imageUrlGenerator } from "../../utils/imageUrlGenerator";
@@ -211,7 +215,8 @@ export default {
   components: {
     Chip,
     Panel,
-    Image
+    Image,
+    WorkOrderDetail
   },
   methods: {
     dateFormatter,
@@ -226,11 +231,19 @@ export default {
     handleTechnicianEdit: function () {
       this.$emit("openAssignationDialog", true);
     },
+    handleIsOpenWorkOrderDialog() {
+      this.selectedWorkOrder = null;
+    },
+    clickWorkOrder() {
+      console.log(this.selectedRequest);
+      this.selectedWorkOrder = this.selectedRequest.work_order;
+    }
   },
   props: ["selectedRequest", "clickIrrigator"],
   emits: ["openAssignationDialog"],
   data() {
     return {
+      selectedWorkOrder: null,
     };
   },
 };

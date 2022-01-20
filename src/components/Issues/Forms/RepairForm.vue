@@ -226,7 +226,7 @@ import Calendar from "primevue/calendar";
 import Message from "primevue/message";
 import FileUpload from "primevue/fileupload";
 import SelectButton from "primevue/selectbutton";
-import WorkOrderForm from "../../WorkOrderForm.vue";
+import WorkOrderForm from "../../WorkOrders/WorkOrderForm.vue";
 import {
   getAssetTypesQuery,
   getRepairTypesQuery,
