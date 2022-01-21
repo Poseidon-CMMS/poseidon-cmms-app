@@ -37,7 +37,7 @@
     <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
 
     
-  <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsy"></autopsy-form>
+  <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsy" @issueUpdated="handleIssueUpdated"></autopsy-form>
 
   <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
   <Sidebar v-model:visible="showClosedIssues" :baseZIndex="1000" position="right">

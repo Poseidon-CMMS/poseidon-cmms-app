@@ -826,6 +826,36 @@ const createAutopsyMutation = async function (
       mutation ($data: autopsyCreateInput!) {
         createautopsy: createautopsy(data: $data) {
           id
+          date
+          self_diagnostic_file {
+            filename
+            url
+          }
+          pressure_log {
+            filename
+            url
+          }
+          comments
+          autopsy_type {
+            id
+            name
+            asset_type {
+              id
+              name
+            }
+            component {
+              id
+              name
+            }
+            root {
+              id
+              name
+            }
+          }
+          user {
+            name
+            email
+          }
         }
       }
     `,

@@ -207,7 +207,7 @@ function initialData() {
 export default {
   name: "AutopsyForm",
   props: ["isOpen", "selectedIssue"],
-  emits: ["updateIsOpen"],
+  emits: ["updateIsOpen", "issueUpdated"],
   components: {
     Message,
     Textarea,
@@ -221,6 +221,8 @@ export default {
 
   methods: {
     async onSubmit() {
+      try{
+        
       this.loading = true;
       const user_id = sessionStorage.getItem("id");
       const autopsyResult = await createAutopsyMutation(
@@ -233,15 +235,25 @@ export default {
         this.selfDiagnosticFile,
         this.autopsyType.id,
       );
-
-      if (autopsyResult.data.createautopsy.id) {
+      const newAutopsy = autopsyResult.data.createautopsy;
+      if (newAutopsy.id) {
         this.showSuccess();
+        const newIssue = {
+          ...this.selectedIssue, 
+          autopsy: this.selectedIssue.autopsy? [...this.selectedIssue.autopsy, newAutopsy]: [newAutopsy],
+          status: "closed"
+        }
+        this.$emit("issueUpdated", newIssue);
         this.computedIsOpen = false;
         this.resetWindow();
       } else {
         this.showError();
       }
       this.loading = false;
+      } catch (e) {
+        this.loading = false;
+        this.error = e;
+      }
     },
     resetWindow: function () {
       Object.assign(this.$data, initialData());
@@ -250,7 +262,7 @@ export default {
       this.$toast.add({
         severity: "success",
         summary: "Autopsia creada correctamente",
-        detail: "creacion: " + this.creationDate,
+        detail: "creacion: " + this.date,
         life: 3000,
       });
     },
