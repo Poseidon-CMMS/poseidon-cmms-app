@@ -61,6 +61,7 @@
         v-if="selectedRequest"
         v-model:selectedRequest="selectedRequest"
         :clickRequest="clickRequest"
+        :clickIrrigator="clickIrrigator"
         @openAssignationDialog="handleIsOpenAssignation"
       />
     </div>
@@ -167,6 +168,10 @@ export default {
     },
     handleIsOpenUninstall(val) {
       this.showUninstallForm = val;
+    },
+    clickIrrigator() {
+      this.selectedIrrigator = this.selectedRequest.irrigator;
+      this.displayIrrigatorDialog = true;
     },
   },
   data() {

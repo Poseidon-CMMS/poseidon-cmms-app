@@ -474,7 +474,6 @@ export default {
     },
   },
   async beforeUpdate() {
-    console.log(' corrio beforeupdate del ir form')
     const user_id = this.selectedRequest?.assigned_technician?.id;
     if(user_id){
       this.workOrders = (await getWorkOrdersQuery(user_id)).data.workOrders; //todo: error handling

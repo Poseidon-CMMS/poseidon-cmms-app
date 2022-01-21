@@ -246,7 +246,6 @@ export default {
       this.selectedWorkOrder = null;
     },
     clickWorkOrder() {
-      console.log(this.selectedRequest);
       this.selectedWorkOrder = this.selectedRequest.work_order;
     }
   },

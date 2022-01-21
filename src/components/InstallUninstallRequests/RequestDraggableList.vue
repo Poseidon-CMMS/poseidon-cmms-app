@@ -193,7 +193,6 @@ export default {
       );
     },
     handleTechnicianEdit() {
-      console.log('aaaa');
       this.$emit("updateAssignationFormOpen", true);
     },
   },
