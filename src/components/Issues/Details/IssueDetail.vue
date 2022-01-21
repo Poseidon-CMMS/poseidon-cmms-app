@@ -239,6 +239,15 @@
                     <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedIssue?.diagnostic?.pressure_difference }}</div>
                   </div>
                 </div>
+                <div v-if="selectedIssue?.diagnostic?.altimetry_image" class="col-12 md:col-6 border-top-1 surface-border" >
+                  <div class="flex align-items-center py-3 px-2 w-full ">
+                      <p class="col-2 text-500 w-6 md:w-2 font-medium">Imagen de altimetría</p>
+
+                      <div class="flex align-items-center justify-content-evently mx-auto">
+                        <Image :src="imageUrlGenerator(selectedIssue?.diagnostic?.altimetry_image?.url)" alt="Imagen de altimetría" width="250" preview />
+                      </div>
+                  </div>
+                </div>
 
                 <div class="col-12 md:col-6" v-if='selectedIssue?.comments'>
                   <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
@@ -368,6 +377,8 @@ import AutopsyDetail from "../Details/AutopsyDetail.vue";
 import { getTechniciansQuery } from "../../../api/apiRequests";
 import RepairDetail from "../Details/RepairDetail.vue";
 import {dateFormatter} from "../../../utils/dateFormatter";
+import { imageUrlGenerator } from "../../../utils/imageUrlGenerator";
+import Image from "primevue/image";
 
 export default {
   name: "IssueDetail",
@@ -380,10 +391,12 @@ export default {
     InspectionDetail,
     AutopsyDetail,
     RepairDetail,
-    Badge
+    Badge,
+    Image,
   },
   methods: {
     dateFormatter,
+    imageUrlGenerator,
     hasDevice: function (value) {
       return (
         typeof value.gateway !== undefined ||

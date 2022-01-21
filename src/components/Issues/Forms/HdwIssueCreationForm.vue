@@ -192,6 +192,64 @@
           class="inputfield w-full"
         />
       </div>
+      <div class="field flex">
+        <div
+          class="
+            flex-1 flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <p class="w-12 text-left font-bold text-blue-500">
+            Imagen de altimetría
+          </p>
+        </div>
+        <div
+          class="
+            flex-none flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <FileUpload
+            name="log_upload"
+            :customUpload="true"
+            @uploader="imageUploadHandler"
+            accept="image/*"
+            mode="basic"
+            :auto="true"
+          />
+        </div>
+        <div
+          class="
+            flex-1 flex
+            align-items-center
+            justify-content-center
+            font-bold
+            text-white
+            m-2
+            px-5
+            py-3
+            border-round
+          "
+        >
+          <InlineMessage v-if="!!this.altimetry_image" severity="success"
+            >Cargado {{ this.altimetry_image.name }}</InlineMessage
+          >
+        </div>
+      </div>
       <div class="field">
         <label for="comments">Comentarios</label>
         <InputText
@@ -238,6 +296,8 @@ import {
   getIrrigatorsQuery,
   createHdwIssueMutation,
 } from "../../../api/apiRequests";
+import InlineMessage from "primevue/inlinemessage";
+import FileUpload from "primevue/fileupload";
 
 export default {
   name: "HdwIssueCreationForm",
@@ -248,6 +308,8 @@ export default {
     Calendar,
     Dropdown,
     Message,
+    FileUpload,
+    InlineMessage,
   },
   props: ["isOpen", "selectedIrrigatorId"],
   emits: ["updateIsOpen"],
@@ -278,6 +340,7 @@ export default {
       to_hour: null,
       from_hour: null,
       pressure_difference: null,
+      altimetry_image: null,
 
       //dropdown options
       irrigatorOptions: [],
@@ -311,7 +374,8 @@ export default {
           this.height_difference_in_meters,
           this.to_hour,
           this.from_hour,
-          this.pressure_difference
+          this.pressure_difference,
+          this.altimetry_image
         );
         if (!result?.data?.createHdwIssue?.id)
           throw new Error("Missing Hdw Issue ID. Possible server error.");
@@ -325,6 +389,9 @@ export default {
     onCancel() {
       this.computedIsOpen = false;
       this.$router.push("/issues");
+    },
+    imageUploadHandler(event) {
+      this.altimetry_image = event.files[0];
     },
   },
   computed: {

@@ -526,7 +526,8 @@ const createHdwIssueMutation = async function (
   height_difference_in_meters,
   to_hour,
   from_hour,
-  pressure_difference
+  pressure_difference,
+  altimetry_image
 ) {
   return await client.mutate({
     mutation: gql`
@@ -579,6 +580,11 @@ const createHdwIssueMutation = async function (
             from_hour: from_hour === null ? undefined : from_hour,
             pressure_difference:
               pressure_difference === null ? undefined : pressure_difference,
+            altimetry_image: altimetry_image
+            ? {
+                upload: altimetry_image,
+              }
+            : null,
           },
         },
         irrigator: {
@@ -587,6 +593,9 @@ const createHdwIssueMutation = async function (
           },
         },
       },
+    },
+    context: {
+      hasUpload: !!altimetry_image,
     },
   });
 };
@@ -1104,6 +1113,10 @@ const getHdwIssuesQuery = async function (status) {
             packet_203_count
             pressure_difference
             grafana_link
+            altimetry_image {
+              id
+              url
+            }
           }
           inspection {
             id
@@ -1358,6 +1371,10 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
             packet_203_count
             pressure_difference
             grafana_link
+            altimetry_image {
+              id
+              url
+            }
           }
           inspection {
             id
@@ -1549,6 +1566,10 @@ const rejectRepairedHdwIssueMutation = async function (hdwIssueId) {
             packet_203_count
             pressure_difference
             grafana_link
+            altimetry_image {
+              id
+              url
+            }
           }
           inspection {
             id
