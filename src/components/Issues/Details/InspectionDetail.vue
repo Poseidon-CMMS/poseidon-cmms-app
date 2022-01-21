@@ -76,6 +76,17 @@
               <div class="text-900 col-12">{{ inspection.pressure_sensor_signal }}</div>
             </div>
           </div>
+          <div v-if='inspection?.picture' class="col-6 pl-5">
+            <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+              <div class="col-10 text-500 font-medium hidden md:inline-flex">Log</div>
+              <div div class="col-2 text-500">
+                <i class="pi pi-file" style="fontSize: 2rem"></i>
+              </div>
+              <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                <Image :src="imageUrlGenerator(inspection?.picture?.url)" alt="" width="250" preview />
+              </div>
+            </div>
+          </div>
           <div v-if='inspection?.log' class="col-6 pl-5">
             <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
               <div class="col-10 text-500 font-medium hidden md:inline-flex">Log</div>
@@ -106,16 +117,20 @@
 import ScrollPanel from "primevue/scrollpanel";
 import {dateFormatter} from "../../../utils/dateFormatter";
 import {urlDownloader} from "../../../utils/urlDownloader";
+import {imageUrlGenerator} from "../../../utils/imageUrlGenerator";
+import Image from "primevue/image";
 
 export default {
   name: 'InspectionDetail',
   props: ['inspection', 'isOpen'],
   methods: {
     dateFormatter,
-    urlDownloader
+    urlDownloader,
+    imageUrlGenerator
   },
   components: {
     ScrollPanel,
+    Image
   },
   computed: {
       computedisOpen: {
