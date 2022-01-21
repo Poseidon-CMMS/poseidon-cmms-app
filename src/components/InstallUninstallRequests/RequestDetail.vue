@@ -169,6 +169,15 @@
               </div>
           </div>
         </div>
+        <div v-if="selectedRequest?.log"  class="col-12 md:col-6 hover:surface-300">
+          <div class="flex align-items-center mx-2 w-full">
+              <p class="w-2 text-left font-bold text-blue-500 mr-3">Log de instalación/desinstalación</p>    
+              <div class="flex align-items-center justify-content-evently mx-auto w-full">
+                <p class="text-lg w-8">{{ selectedRequest?.log.filename }}</p>
+              <Button icon="pi pi-download" class="p-button-rounded p-button-success" @click="urlDownloader(selectedRequest?.log.url)" />
+              </div>
+          </div>
+        </div>
         <div class="col-12 md:col-6 hover:surface-300">
           <div class="flex align-items-center mx-2 pr-2 w-full">
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
@@ -208,6 +217,7 @@ import WorkOrderDetail from  '../WorkOrders/WorkOrderDetail.vue';
 
 import { dateFormatter } from "../../utils/dateFormatter";
 import { imageUrlGenerator } from "../../utils/imageUrlGenerator";
+import { urlDownloader } from "../../utils/urlDownloader";
 import Image from "primevue/image";
 
 export default {
@@ -221,6 +231,7 @@ export default {
   methods: {
     dateFormatter,
     imageUrlGenerator,
+    urlDownloader,
     hasDevice: function (value) {
       return (
         typeof value.gateway !== undefined ||

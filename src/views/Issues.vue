@@ -26,13 +26,14 @@
         </div>
       </div>
       <div class="col-12">
-        <issue-detail  v-if="selectedIssue" v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated' @openAutopsyDialog='handleIsOpenAutopsy'/>
+        <issue-detail  v-if="selectedIssue" v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated' @openAutopsyDialog='handleIsOpenAutopsy' @openInspectionDialog='handleIsOpenInspection'/>
       </div>
     </div>
       
     <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
     <assignation-form :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
 
+    <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenInspection"></inspection-form>
     <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
 
     
@@ -56,6 +57,7 @@ import { getHdwIssuesQuery } from '../api/apiRequests';
 import RepairForm from "../components/Issues/Forms/RepairForm.vue";
 import AutopsyForm from '../components/Issues/Forms/AutopsyForm.vue';
 import Sidebar from 'primevue/sidebar';
+import InspectionForm from "../components/Issues/Forms/InspectionForm.vue";
 
 export default {
   name: 'Issues',
@@ -68,7 +70,8 @@ export default {
     RepairForm,
     AutopsyForm,
     Sidebar,
-    ClosedIssuesList
+    ClosedIssuesList,
+    InspectionForm,
   },
   methods: {
     hasDevice: function(value) {
@@ -128,6 +131,9 @@ export default {
     },
     handleIsOpenAutopsy(val) {
       this.showAutopsyForm = val;
+    },
+    handleIsOpenInspection(val) {
+      this.showInspectionForm = val;
     }
   },
   data() {
@@ -144,6 +150,7 @@ export default {
       showRepairForm: false,
       showAutopsyForm: false,
       showClosedIssues: false,
+      showInspectionForm: false,
     }
   },
   computed: {

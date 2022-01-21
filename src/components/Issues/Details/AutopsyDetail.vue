@@ -38,7 +38,10 @@
               <div div class="col-2 text-500">
                 <i class="pi pi-file" style="fontSize: 2rem"></i>
               </div>
-              <div class="text-900 col-12">{{ autopsy?.self_diagnostic_file.filename }}</div>
+              <div class="text-900 col-12">
+                {{ autopsy?.self_diagnostic_file.filename }}
+                <Button icon="pi pi-download" class="p-button-rounded p-button-success" @click="urlDownloader(this.autopsy.self_diagnostic_file.url)" />
+                </div>
             </div>
           </div>
           <div v-if='autopsy?.pressure_log' class="col-6 pl-5">
@@ -47,7 +50,10 @@
               <div div class="col-2 text-500">
                 <i class="pi pi-file" style="fontSize: 2rem"></i>
               </div>
-              <div class="text-900 col-12">{{ autopsy?.pressure_log.filename }}</div>
+              <div class="text-900 col-12">
+                {{ autopsy?.pressure_log.filename }}
+                <Button icon="pi pi-download" class="p-button-rounded p-button-success" @click="urlDownloader(this.autopsy.pressure_log.url)" />
+              </div>
             </div>
           </div>
           <div class="col-12 pl-5">
@@ -67,6 +73,7 @@
 <script>
 import ScrollPanel from 'primevue/scrollpanel';
 import {dateFormatter} from '../../../utils/dateFormatter';
+import {urlDownloader} from "../../../utils/urlDownloader";
 
 export default {
   name: 'AutopsyDetail',
@@ -75,7 +82,8 @@ export default {
     ScrollPanel,
   },
   methods: {
-    dateFormatter
+    dateFormatter,
+    urlDownloader
   },
   computed: {
       computedisOpen: {

@@ -70,7 +70,7 @@
               </div>
               <div class="text-900 col-12">
                 {{ repair?.log.filename }}
-                <Button icon="pi pi-download" class="p-button-rounded p-button-success" @click="handleLogDownload" /></div>
+                <Button icon="pi pi-download" class="p-button-rounded p-button-success" @click="urlDownloader(this.repair.log.url)" /></div>
             </div>
           </div>
           <div class="col-12 pl-5">
@@ -90,7 +90,7 @@
 <script>
 import ScrollPanel from 'primevue/scrollpanel';
 import {dateFormatter} from "../../../utils/dateFormatter";
-import {imageUrlGenerator} from "../../../utils/imageUrlGenerator";
+import {urlDownloader} from "../../../utils/urlDownloader";
 import Button from "primevue/button";
 
 export default {
@@ -98,10 +98,7 @@ export default {
   props: ['repair', 'isOpen'],
   methods: {
     dateFormatter,
-    imageUrlGenerator,
-    handleLogDownload() {
-      window.open(imageUrlGenerator(this.repair.log.url))
-    },
+    urlDownloader,
   },
   components: {
     ScrollPanel,

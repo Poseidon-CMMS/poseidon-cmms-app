@@ -884,6 +884,37 @@ const createInspectionMutation = async function (
       mutation ($data: inspectionCreateInput!) {
         createinspection: createinspection(data: $data) {
           id
+            date
+            user {
+              name
+              email
+            }
+            comments
+            satellite_power
+            gateway_battery_voltage
+            lora_power
+            gps_node_battery_voltage
+            pressure_sensor_signal
+            picture {
+              url
+            }
+            log {
+              filename
+              url
+            }
+            inspection_type {
+              id
+              name
+              type {
+                id
+                name
+              }
+              pot_sat
+              gateway_battery_voltage
+              gps_node_battery_voltage
+              lora_power
+              pressure_sensor_signal
+            }
         }
       }
     `,
@@ -1246,6 +1277,7 @@ const getInstallUninstallRequestsQuery = async function () {
           }
           log {
             url
+            filename
           }
           assigned_technician {
             id

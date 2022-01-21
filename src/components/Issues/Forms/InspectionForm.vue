@@ -278,7 +278,7 @@ function initialData() {
 export default {
   name: "InspectionForm",
   props: ["isOpen", "selectedIssue"],
-  emits: ["updateIsOpen"],
+  emits: ["updateIsOpen", "issueUpdated"],
   components: {
     Textarea,
     InputNumber,
@@ -310,9 +310,14 @@ export default {
         this.gps_node_battery_voltage,
         this.pressure_sensor_signal
       );
-
-      if (inspectionResult.data.createinspection.id) {
+      const newInspection = inspectionResult.data.createinspection;
+      if (newInspection.id) {
         this.showSuccess();
+        const newIssue = {
+          ...this.selectedIssue, 
+          inspection: this.selectedIssue.inspection? [...this.selectedIssue.inspection, newInspection]: [newInspection]
+        }
+        this.$emit("issueUpdated", newIssue);
         this.computedIsOpen = false;
         this.resetWindow();
       } else {

@@ -76,6 +76,18 @@
               <div class="text-900 col-12">{{ inspection.pressure_sensor_signal }}</div>
             </div>
           </div>
+          <div v-if='inspection?.log' class="col-6 pl-5">
+            <div class="grid align-items-center py-3 px-2 border-top-1 surface-border">
+              <div class="col-10 text-500 font-medium hidden md:inline-flex">Log</div>
+              <div div class="col-2 text-500">
+                <i class="pi pi-file" style="fontSize: 2rem"></i>
+              </div>
+              <div class="text-900 col-12">
+                {{ inspection?.log.filename }}
+                <Button icon="pi pi-download" class="p-button-rounded p-button-success" @click="urlDownloader(this.inspection.log.url)" />
+              </div>
+            </div>
+          </div>
           <div class="col-12 pl-5">
             <div v-if='inspection.comments' class="grid py-3 px-1 border-top-1 surface-border">
               <div class="col-10 text-500 font-medium">Comentarios</div>
@@ -93,12 +105,14 @@
 <script>
 import ScrollPanel from "primevue/scrollpanel";
 import {dateFormatter} from "../../../utils/dateFormatter";
+import {urlDownloader} from "../../../utils/urlDownloader";
 
 export default {
   name: 'InspectionDetail',
   props: ['inspection', 'isOpen'],
   methods: {
-    dateFormatter
+    dateFormatter,
+    urlDownloader
   },
   components: {
     ScrollPanel,

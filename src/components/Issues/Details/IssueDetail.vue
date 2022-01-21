@@ -255,7 +255,7 @@
                   Pericias <Badge class="ml-2" :value="selectedIssue?.inspection?.length || '0'" severity="success"/>
                 </div>
                 <div class="mt-1">
-                  <Button @click="handleOpenInspectionForm" icon="pi pi-plus-circle" class="p-button-raised"/>
+                  <Button @click="setInspectionFormOpen(true)" icon="pi pi-plus-circle" class="p-button-raised"/>
                 </div>
               </div>
             </template>
@@ -350,11 +350,8 @@
       </div>
   </Panel>
   </div>
-  <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenInspectionUpdated"></inspection-form>
   <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenInspectionDetailUpdated"></inspection-detail>
-
   <repair-detail :repair="selectedRepair" :isOpen="selectedRepair != null" @updateIsOpen="handleIsOpenRepairDetailUpdated"></repair-detail>
-
   <autopsy-detail :autopsy="selectedAutopsy" :isOpen="selectedAutopsy != null" @updateIsOpen="handleIsOpenAutopsyDetailUpdated"></autopsy-detail>
 </template>
 
@@ -367,7 +364,6 @@ import Panel from 'primevue/panel';
 import Badge from 'primevue/badge';
 
 import InspectionDetail from "../Details/InspectionDetail.vue";
-import InspectionForm from "../Forms/InspectionForm.vue";
 import AutopsyDetail from "../Details/AutopsyDetail.vue";
 import { getTechniciansQuery } from "../../../api/apiRequests";
 import RepairDetail from "../Details/RepairDetail.vue";
@@ -382,7 +378,6 @@ export default {
     AccordionTab,
     Panel,
     InspectionDetail,
-    InspectionForm,
     AutopsyDetail,
     RepairDetail,
     Badge
@@ -396,8 +391,8 @@ export default {
         typeof value.pressureSensor !== undefined
       );
     },
-    handleOpenInspectionForm: function () {
-      this.showInspectionForm = true;
+    setInspectionFormOpen: function (val) {
+      this.$emit("openInspectionDialog",val)
     },
     handleOpenRepairForm: function () {
       this.$emit("openRepairDialog", true);
@@ -431,7 +426,7 @@ export default {
     }
   },
   props: ["selectedIssue", "clickIrrigator"],
-  emits: ["openAssignationDialog", "openRepairDialog", "openAutopsyDialog"],
+  emits: ["openAssignationDialog", "openInspectionDialog", "openRepairDialog", "openAutopsyDialog"],
   data() {
     return {
       displayIrrigatorDialog: false,
@@ -439,7 +434,6 @@ export default {
       selectedInspection: null,
       selectedRepair: null,
       selectedAutopsy: null,
-      showInspectionForm: false,
       technicianOptions: [],
       technicians_loading: true,
     };
