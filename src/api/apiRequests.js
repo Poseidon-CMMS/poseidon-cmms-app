@@ -1725,7 +1725,7 @@ const rejectRepairedHdwIssueMutation = async function (hdwIssueId) {
   });
 };
 
-const updateRequestStatusMutation = async function (requestId, status) {
+const acceptDoneRequestMutation = async function (requestId, close_date) {
   return await client.mutate({
     mutation: gql`
       mutation (
@@ -1797,7 +1797,7 @@ const updateRequestStatusMutation = async function (requestId, status) {
         id: requestId,
       },
       data: {
-        status,
+        close_date: close_date.toISOString(),
       },
     },
   });
@@ -2158,10 +2158,10 @@ const doUninstallRequestMutation = async function (
       },
       data: {
         completion_date: completionDate.toISOString(),
-      },
-      work_order: {
-        connect: {
-          id: workOrderId,
+        work_order: {
+          connect: {
+            id: workOrderId,
+          },
         },
       },
     },
@@ -2205,6 +2205,6 @@ export {
   doUninstallRequestMutation,
   assignRequestMutation,
   clearAssignRequestMutation,
-  updateRequestStatusMutation,
+  acceptDoneRequestMutation,
   rejectDoneRequestMutation
 };
