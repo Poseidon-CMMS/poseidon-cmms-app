@@ -79,7 +79,7 @@
             p-button-sm
             p-button-rounded
             p-button-outlined
-            p-button-danger
+            p-button-warning
             p-mr-2
           "
           v-tooltip="'Crear Hdw Issue'"
@@ -106,7 +106,6 @@
           class="
             p-button-sm
             p-button-rounded
-            p-button-outlined
             p-button-danger
             p-mr-2
           "
