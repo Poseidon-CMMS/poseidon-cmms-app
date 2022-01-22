@@ -2,7 +2,7 @@
   <Dialog
     header="Nueva autopsia"
     v-model:visible="computedIsOpen"
-    :style="{ width: '50vw' }"
+    class="w-screen lg:w-6"
     :modal="true"
   >
     <div class="card">

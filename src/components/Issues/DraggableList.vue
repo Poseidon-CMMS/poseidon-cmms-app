@@ -13,7 +13,7 @@
             >
               <template #item="{ element }">
                 <div class="list-group-item">
-                  <Card class='hover:bg-blue-300 hover:text-white border-round' @click="clickElement(element)">
+                  <Card :class='`hover:bg-blue-300 hover:text-white border-round ${element.status==="assigned"?"bg-orange-100":element.status==="repaired"?"bg-green-100":""}`' @click="clickElement(element)">
                     <template #title>
                       {{ (element.irrigator?.field?.name ?? 'Campo desconocido') + ' | '
                       + element.irrigator?.name + " (" + element.irrigator?.integration_id+")" }}
@@ -24,12 +24,26 @@
                     <template #content>
                       {{ element.comments }}
                     </template>
-                    <template #footer v-if="element.assigned_technician">
-                      <Avatar :label="element.assigned_technician.name.charAt(0)" size="large" style="background-color:#2196F3; color: #ffffff" shape="circle"  />
-                      <span class="p-buttonset m-2"  v-if="element.status === 'repaired'">
-                        <Button icon="pi pi-check" class="p-button-success" @click="clickButtonOk(element)"/>
-                        <Button icon="pi pi-times" class="p-button-danger" @click="clickButtonWrong(element)"/>
-                      </span>
+                    <template #footer>
+                      <div class="flex flex-column">
+                        <span class="m-2">
+                        <Avatar v-if="element.assigned_technician" :label="element.assigned_technician.name.charAt(0)" size="large" style="background-color:#2196F3; color: #ffffff" shape="circle"  />
+                        <Button
+                          v-if="isAdmin && (element.status === 'assigned' || element.status === 'in-field')"
+                          class="ml-2 p-button-warning"
+                          icon="pi pi-user"
+                          @click="handleTechnicianEdit"
+                        />
+                        </span>
+                        <span class="m-2"  v-if="element.status === 'assigned'">
+                          <Button icon="pi pi-search" label="Pericia" class="p-button-info" @click="this.$emit('openInspectionDialog',true)"/>
+                          <Button icon="pi pi-check" label="Reparación" class="p-button-success ml-2" @click="this.$emit('openRepairDialog',true)"/>
+                        </span>
+                        <span class="p-buttonset m-2"  v-if="isAdmin && element.status === 'repaired'">
+                          <Button icon="pi pi-check" class="p-button-success" @click="clickButtonOk(element)"/>
+                          <Button icon="pi pi-times" class="p-button-danger" @click="clickButtonWrong(element)"/>
+                        </span>
+                      </div>
                     </template>
                   </Card>
                 </div>
@@ -63,7 +77,7 @@ export default {
     Button
     
   },
-  emits: ["issueUpdated"],
+  emits: ["issueUpdated", "updateAssignationFormOpen", "openRepairDialog", "openInspectionDialog"],
   props: ['title', 'list', 'log', 'selectedIssue', 'clickElement', 'loading'],
   methods: {
     confirmDialog(message, toastMessage, onAccept) {
@@ -113,6 +127,14 @@ export default {
     async onReturnToInFieldAccept() {
       const result = await rejectRepairedHdwIssueMutation(this.selectedIssue.id);
       this.$emit("issueUpdated", result.data.updatehdw_issue);
+    },
+    handleTechnicianEdit() {
+      this.$emit("updateAssignationFormOpen", true);
+    },
+  },
+  computed: {
+    isAdmin(){
+      return sessionStorage.getItem("type") ==='admin';
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="grid mt-3">
       <div class="col-12 flex flex-row justify-content-between flex-wrap">
-        <Button label="Nuevo" icon="pi pi-plus" class="p-button-success align-self-center mt-2" @click="setIsCreationModalOpen" />
+        <Button v-if="this.userType == 'admin'" label="Nuevo" icon="pi pi-plus" class="p-button-success align-self-center mt-2" @click="setIsCreationModalOpen" />
         <div class="hidden md:inline-flex align-items-center justify-content-center bg-green-400 font-bold text-white border-round w-4">
         <p class="text-2xl w-full m-0">
             Hardware Issues
@@ -12,13 +12,31 @@
       <div class="col-12">
         <div class="grid text-sm">
           <div v-if="this.userType == 'admin'" class="col-12 md:col-6 lg:col-3">
-            <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
+            <draggable-list 
+              title="In field"
+              :list='inFieldList'
+              :log='inFieldLog'
+              :clickElement='setSelectedIssue'
+              :loading='loading'
+              :selectedIssue="selectedIssue"
+              @updateAssignationFormOpen="handleIsOpenAssignation"
+            />
           </div>
           <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
-            <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
+            <draggable-list 
+              title="Asignados"
+              :list='assignedList'
+              :log='assignedLog'
+              :clickElement='setSelectedIssue'
+              :loading='loading'
+              :selectedIssue="selectedIssue"
+              @updateAssignationFormOpen="handleIsOpenAssignation"
+              @openRepairDialog='handleIsOpenRepairUpdated'
+              @openInspectionDialog='handleIsOpenInspection'
+            />
           </div>
           <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
-            <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
+            <draggable-list title="Reparados" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
           </div>
           <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
             <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
@@ -30,17 +48,17 @@
       </div>
     </div>
       
-    <HdwIssueCreationDialog :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
-    <assignation-form :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
+    <HdwIssueCreationDialog v-if="this.userType == 'admin'" :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
+    <assignation-form v-if="this.userType == 'admin'" :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
 
     <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenInspection"></inspection-form>
     <repair-form :isOpen="showRepairForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenRepairUpdated"></repair-form>
 
     
-  <autopsy-form :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsy" @issueUpdated="handleIssueUpdated"></autopsy-form>
+  <autopsy-form v-if="this.userType == 'admin'" :isOpen="showAutopsyForm" :selectedIssue="selectedIssue" @updateIsOpen="handleIsOpenAutopsy" @issueUpdated="handleIssueUpdated"></autopsy-form>
 
   <irrigator-details-dialog :isOpen="displayIrrigatorDialog" :irrigator="selectedIrrigator" @updateIsOpen="handleIsOpenChange"></irrigator-details-dialog>
-  <Sidebar v-model:visible="showClosedIssues" :baseZIndex="1000" position="right">
+  <Sidebar v-if="this.userType == 'admin'" v-model:visible="showClosedIssues" :baseZIndex="1000" position="right">
     <h2>Issues cerrados</h2>
     <closed-issues-list :fetchData="showClosedIssues" :clickElement="setSelectedIssue"></closed-issues-list>
   </Sidebar>

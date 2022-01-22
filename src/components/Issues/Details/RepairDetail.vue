@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model:visible="computedisOpen" header="Reparación" class="w-8">
+    <Dialog v-model:visible="computedisOpen" header="Reparación" class="w-screen lg:w-6">
       <ScrollPanel style="height: 300px">
         <div class="grid surface-200">
           <div v-if='repair.date' class="col-6 pl-5">

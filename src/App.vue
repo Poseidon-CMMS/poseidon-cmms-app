@@ -2,8 +2,13 @@
   <Menubar :model="items">
     <template #end>
       <div class="flex w-8">
-        <div class="flex-1 flex align-items-center justify-content-center mx-6 my-0">
-          <p class="text-xl font-semibold text-white text-right" style="width: 20vw">
+        <div class="flex-1 flex align-items-center justify-content-center mr-3 lg:mx-6 my-0">
+          <p class="text-md font-semibold text-white text-right flex align-items-center" id="username">
+            <i class="pi pi-user mr-2"/>{{this.userName}}
+          </p>
+        </div>
+        <div class="align-items-center justify-content-center mx-6 my-0 hidden lg:block">
+          <p class="text-xl font-semibold text-white text-right" style="width: 10vw">
             POSEIDON CMMS
           </p>
         </div>
@@ -21,7 +26,7 @@
   </Menubar>
   <ConfirmDialog></ConfirmDialog>
   <Toast></Toast>
-  <div class="mx-8">
+  <div class="mx-1 lg:mx-8">
     <router-view />
   </div>
 </template>
@@ -74,6 +79,9 @@ export default {
     isNotOnLoginPage() {
       return this.$route.name !== "Login";
     },
+    userName(){
+      return sessionStorage.getItem("name");
+    }
   },
   beforeMount() {
     if(sessionStorage.getItem('type') === 'technician') {
@@ -164,5 +172,9 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+#username {
+    white-space: nowrap;
 }
 </style>

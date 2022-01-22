@@ -361,7 +361,7 @@
   </div>
   <inspection-detail :inspection="selectedInspection" :isOpen="selectedInspection != null" @updateIsOpen="handleIsOpenInspectionDetailUpdated"></inspection-detail>
   <repair-detail :repair="selectedRepair" :isOpen="selectedRepair != null" @updateIsOpen="handleIsOpenRepairDetailUpdated"></repair-detail>
-  <autopsy-detail :autopsy="selectedAutopsy" :isOpen="selectedAutopsy != null" @updateIsOpen="handleIsOpenAutopsyDetailUpdated"></autopsy-detail>
+  <autopsy-detail v-if="this.userType == 'admin'" :autopsy="selectedAutopsy" :isOpen="selectedAutopsy != null" @updateIsOpen="handleIsOpenAutopsyDetailUpdated"></autopsy-detail>
 </template>
 
 <script>

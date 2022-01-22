@@ -2,7 +2,7 @@
 <Dialog
     header="Equipo de riego"
     v-model:visible="computedIsOpen"
-    :style="{ width: '50vw' }"
+    class="w-screen lg:w-6"
     :modal="true"
   >
     <p class="text-2xl font-semibold">{{ irrigator?.name }}</p>

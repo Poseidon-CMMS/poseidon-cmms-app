@@ -2,12 +2,12 @@
   <Dialog
     header="Nueva reparación"
     v-model:visible="computedIsOpen"
-    :style="{ width: '50vw' }"
+    class="w-screen lg:w-6"
     :modal="true"
   >
     <div class="card">
       <div class="field">
-        <div class="flex justify-content-around flex-wrap card-container">
+        <div class="flex justify-content-around flex-nowrap card-container">
           <div class="flex align-items-center w-11 justify-content-start">
             <label for="work_order">Orden de trabajo</label>
           </div>

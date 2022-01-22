@@ -70,7 +70,7 @@
                         @click="clickButtonAddInstallData(element)"
                       />
                       <Button
-                        v-if="element.status === 'assigned' || element.status === 'open'"
+                        v-if="this.isAdmin && (element.status === 'assigned' || element.status === 'open')"
                         class="mr-1 p-button-warning"
                         icon="pi pi-user"
                         @click="handleTechnicianEdit"
@@ -195,6 +195,11 @@ export default {
     handleTechnicianEdit() {
       this.$emit("updateAssignationFormOpen", true);
     },
+  },
+  computed: {
+    isAdmin() {
+      return sessionStorage.getItem("type") === 'admin';
+  }
   },
 };
 </script>

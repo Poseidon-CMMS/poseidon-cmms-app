@@ -183,7 +183,7 @@
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
               {{selectedRequest?.assigned_technician? selectedRequest?.assigned_technician?.name : 'Ningún técnico asignado'}}
-            <Button class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
+            <Button v-if="this.isAdmin" class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
             </p>
           </div>
         </div>
@@ -256,6 +256,11 @@ export default {
       selectedWorkOrder: null,
     };
   },
+  computed: {
+    isAdmin() {
+      return sessionStorage.getItem("type") ==='admin';
+    }
+  }
 };
 </script>
 
