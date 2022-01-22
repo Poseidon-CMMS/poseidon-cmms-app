@@ -23,7 +23,7 @@
           id="work_order"
           v-model="selectedWorkOrder"
           :options="workOrders"
-          :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)} | ${work_order?.comment}`"
+          :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)}`"
           class="inputfield w-full"
           placeholder="Orden de trabajo"
         />
@@ -295,8 +295,8 @@ export default {
         const repairResult = await createRepairMutation(
           //TODO: validar q todos los campso esten completos
           this.creationDate,
-          this.selectedIssue.id,
-          this.repairType.id,
+          this.selectedIssue?.id,
+          this.repairType?.id,
           this.assetType?.id,
           this.selectedGateway?.id,
           this.selectedGpsNode?.id,

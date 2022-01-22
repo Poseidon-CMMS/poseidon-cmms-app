@@ -23,8 +23,8 @@
           id="work_order"
           v-model="selectedWorkOrder"
           :options="workOrders"
-          :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)} | ${work_order?.comment}`"
-          class="inputfield w-full"
+          :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)}`"
+          class="inputfield lg:w-full"
           placeholder="Orden de trabajo"
         />
       </div>

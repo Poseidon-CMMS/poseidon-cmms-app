@@ -1,6 +1,7 @@
 <template>
   <div class="mt-6">
-  <Card style="width: 25rem; margin: auto auto">
+  <Card style="margin: auto auto"
+  class="lg:w-4">
     <template #title>
         Login
     </template>

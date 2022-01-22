@@ -30,7 +30,7 @@
                         selectedRequest?.status === "open"? "Abierta": 
                         selectedRequest?.status === "assigned"? "Asignada": 
                         selectedRequest?.status === "done"? "Hecha": 
-                        selectedRequest?.status === "completed"? "Completeada": 
+                        selectedRequest?.status === "completed"? "Completada": 
                         selectedRequest?.status
                       }}</p>
                 </div>

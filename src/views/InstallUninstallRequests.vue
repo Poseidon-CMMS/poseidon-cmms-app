@@ -20,7 +20,7 @@
             @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
-        <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
+        <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : '')">
           <request-list
             title="Asignadas"
             :list="assignedList"
@@ -33,7 +33,7 @@
             @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
-        <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
+        <div v-if="this.userType == 'admin'" class='col-12 md:col-6 lg:col-3'>
           <request-list
             title="Realizadas"
             :list="doneList"
@@ -44,7 +44,7 @@
             @requestUpdated="handleRequestUpdated"
           />
         </div>
-        <div :class="'col-12 md:col-6 ' + (this.userType === 'admin' ? 'lg:col-3' : 'lg:col-4')">
+        <div v-if="this.userType == 'admin'" class='col-12 md:col-6 lg:col-3'>
           <request-list
             title="Completadas"
             :list="completedList"
@@ -53,6 +53,19 @@
             :loading="loading"
             :selectedRequest="selectedRequest"
           />
+        </div>
+        <div v-if="this.userType !== 'admin'" :class="'col-12 md:col-6'">
+          <Accordion>
+            <AccordionTab header="Historial">
+              <request-list
+                :list="[...completedList, ...doneList]"
+                :log="completedLog"
+                :clickElement="setSelectedRequest"
+                :loading="loading"
+                :selectedRequest="selectedRequest"
+              />
+            </AccordionTab>
+          </Accordion>
         </div>
       </div>
     </div>
@@ -101,6 +114,8 @@ import AssignationForm from "../components/Issues/Forms/AssignationForm.vue";
 import { getInstallUninstallRequestsQuery } from "../api/apiRequests";
 import InstallRequestForm from "../components/InstallUninstallRequests/InstallRequestForm.vue";
 import UninstallRequestForm from "../components/InstallUninstallRequests/UninstallRequestForm.vue";
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
 
 export default {
   name: "InstallUninstallRequests",
@@ -110,7 +125,9 @@ export default {
     RequestDetail,
     AssignationForm,
     InstallRequestForm,
-    UninstallRequestForm
+    UninstallRequestForm,
+    Accordion,
+    AccordionTab,
   },
   methods: {
     handleIsOpenChange: function (value) {

@@ -2,7 +2,7 @@
   <Menubar :model="items">
     <template #end>
       <div class="flex w-8">
-        <div class="flex-1 flex align-items-center justify-content-center mr-3 lg:mx-6 my-0">
+        <div v-if="isNotOnLoginPage" class="flex-1 flex align-items-center justify-content-center mr-3 lg:mx-6 my-0">
           <p class="text-md font-semibold text-white text-right flex align-items-center" id="username">
             <i class="pi pi-user mr-2"/>{{this.userName}}
           </p>
