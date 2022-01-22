@@ -12,7 +12,7 @@
       <div class="col-12">
         <div class="grid text-sm">
           <div v-if="this.userType == 'admin'" class="col-12 md:col-6 lg:col-3">
-            <draggable-list 
+            <issues-list 
               title="In field"
               :list='inFieldList'
               :log='inFieldLog'
@@ -23,7 +23,7 @@
             />
           </div>
           <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
-            <draggable-list 
+            <issues-list 
               title="Asignados"
               :list='assignedList'
               :log='assignedLog'
@@ -36,10 +36,10 @@
             />
           </div>
           <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
-            <draggable-list title="Reparados" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
+            <issues-list title="Reparados" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
           </div>
           <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
-            <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
+            <issues-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import DraggableList from '../components/Issues/DraggableList';
+import IssuesList from '../components/Issues/IssuesList';
 import HdwIssueCreationDialog from '../components/Issues/Forms/HdwIssueCreationForm.vue';
 import IrrigatorDetailsDialog from '../components/Irrigators/IrrigatorDetailsDialog.vue';
 import ClosedIssuesList from '../components/Issues/ClosedIssuesList.vue';
@@ -80,7 +80,7 @@ import InspectionForm from "../components/Issues/Forms/InspectionForm.vue";
 export default {
   name: 'Issues',
   components: {
-    DraggableList,
+    IssuesList,
     HdwIssueCreationDialog,
     IrrigatorDetailsDialog,
     IssueDetail,

@@ -10,7 +10,7 @@
     <div class="col-12">
       <div class="grid text-sm">
         <div v-if="this.userType == 'admin'" class="col-12 md:col-6 lg:col-3">
-          <request-draggable-list
+          <request-list
             title="Abiertas"
             :list="openList"
             :log="openLog"
@@ -21,7 +21,7 @@
           />
         </div>
         <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
-          <request-draggable-list
+          <request-list
             title="Asignadas"
             :list="assignedList"
             :log="assignedLog"
@@ -34,7 +34,7 @@
           />
         </div>
         <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
-          <request-draggable-list
+          <request-list
             title="Realizadas"
             :list="doneList"
             :log="doneLog"
@@ -45,7 +45,7 @@
           />
         </div>
         <div :class="'col-12 md:col-6 ' + (this.userType === 'admin' ? 'lg:col-3' : 'lg:col-4')">
-          <request-draggable-list
+          <request-list
             title="Completadas"
             :list="completedList"
             :log="completedLog"
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import RequestDraggableList from "../components/InstallUninstallRequests/RequestDraggableList";
+import RequestList from "../components/InstallUninstallRequests/RequestsList.vue";
 import IrrigatorDetailsDialog from "../components/Irrigators/IrrigatorDetailsDialog.vue";
 import RequestDetail from "../components/InstallUninstallRequests/RequestDetail.vue";
 import AssignationForm from "../components/Issues/Forms/AssignationForm.vue";
@@ -105,7 +105,7 @@ import UninstallRequestForm from "../components/InstallUninstallRequests/Uninsta
 export default {
   name: "InstallUninstallRequests",
   components: {
-    RequestDraggableList,
+    RequestList,
     IrrigatorDetailsDialog,
     RequestDetail,
     AssignationForm,

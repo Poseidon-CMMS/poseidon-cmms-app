@@ -4,15 +4,10 @@
       <Panel :header="title">
         <ProgressSpinner v-if="this.loading" />
         <ScrollPanel v-else style="width: 100%; height: 600px">
-          <draggable
-            class="list-group"
-            :list="list"
-            group="people"
-            @change="log"
-            itemKey="name"
-          >
-            <template #item="{ element }">
-              <div class="list-group-item">
+          <div
+              class="list-group"
+            >
+              <div class="list-group-item" v-for="(element, index) in list" v-bind:key="index">
                 <Card
                   class="hover:bg-blue-300 hover:text-white border-round"
                   @click="clickElement(element)"
@@ -79,8 +74,7 @@
                   </template>
                 </Card>
               </div>
-            </template>
-          </draggable>
+          </div>
         </ScrollPanel>
       </Panel>
     </div>
@@ -88,7 +82,6 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
 import ProgressSpinner from "primevue/progressspinner";
 import ScrollPanel from "primevue/scrollpanel";
 import Panel from "primevue/panel";
@@ -100,9 +93,8 @@ import { dateFormatter } from "../../utils/dateFormatter";
 import { acceptDoneRequestMutation, rejectDoneRequestMutation } from "../../api/apiRequests";
 
 export default {
-  name: "RequestDraggableList",
+  name: "RequestsList",
   components: {
-    draggable,
     ProgressSpinner,
     Card,
     ScrollPanel,

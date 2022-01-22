@@ -3,16 +3,11 @@
         <div class="col-12">
         <Panel :header="title">
           <ProgressSpinner v-if="this.loading" />
-          <ScrollPanel v-else style="width: 100%; height: 400px">          
-            <draggable
+          <ScrollPanel v-else style="width: 100%; height: 400px">      
+            <div
               class="list-group"
-              :list="list"
-              group="people"
-              @change="log"
-              itemKey="name"
             >
-              <template #item="{ element }">
-                <div class="list-group-item">
+                <div class="list-group-item" v-for="(element, index) in list" v-bind:key="index">    
                   <Card :class='`hover:bg-blue-300 hover:text-white border-round ${element.status==="assigned"?"bg-orange-100":element.status==="repaired"?"bg-green-100":""}`' @click="clickElement(element)">
                     <template #title>
                       {{ (element.irrigator?.field?.name ?? 'Campo desconocido') + ' | '
@@ -47,8 +42,7 @@
                     </template>
                   </Card>
                 </div>
-              </template>
-            </draggable>
+            </div>
           </ScrollPanel>   
           </Panel>
         </div>
@@ -56,7 +50,6 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
 import ProgressSpinner from "primevue/progressspinner";
 import ScrollPanel from "primevue/scrollpanel";
 import Panel from 'primevue/panel';
@@ -66,9 +59,8 @@ import Card from "primevue/card";
 import { updateHdwIssueStatusMutation, rejectRepairedHdwIssueMutation } from '../../api/apiRequests';
 
 export default {
-  name: 'DraggableList',
+  name: 'IssuesList',
   components: {
-    draggable,
     ProgressSpinner,
     Card,
     ScrollPanel,
