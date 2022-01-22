@@ -14,8 +14,14 @@ import Tooltip from 'primevue/tooltip';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
 
+const optionsPrimeVue =  {
+    locale: {
+        accept: 'Aceptar',
+        reject: 'Rechazar',
+        choose: 'Elegir',
+    }};
 
-const app = createApp(App).use(router).use(PrimeVue).use(ToastService).use(ConfirmationService);
+const app = createApp(App).use(router).use(PrimeVue, optionsPrimeVue).use(ToastService).use(ConfirmationService);
 
 app.component('Dialog', Dialog);
 app.component('Dropdown', Dropdown);
