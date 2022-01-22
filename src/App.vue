@@ -75,6 +75,12 @@ export default {
       return this.$route.name !== "Login";
     },
   },
+  beforeMount() {
+    if(sessionStorage.getItem('type') === 'technician') {
+      this.items.shift();
+      this.items.shift();
+    }
+  },
 };
 </script>
 

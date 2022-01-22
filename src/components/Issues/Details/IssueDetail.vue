@@ -86,7 +86,7 @@
             <p class="w-8 text-left font-bold text-blue-500 mr-3">Asignación</p>
             <p class="w-6 text-center">
               {{selectedIssue?.assigned_technician? selectedIssue?.assigned_technician?.name : 'Ningún técnico asignado'}}
-            <Button class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
+            <Button v-if="this.userType == 'admin'" class="mr-1 p-button-warning" icon="pi pi-user" @click="handleTechnicianEdit" />
             </p>
           </div>
         </div>
@@ -322,7 +322,7 @@
                 </div>
               </ul>
           </AccordionTab>
-          <AccordionTab  v-if="this.userType == 'admin'">
+          <AccordionTab v-if="this.userType == 'admin'">
             <template #header>
               <div class="flex align-items-start" style="width: 100%">
                 <div class="flex align-items-center h-full w-11 my-2 align-start">
@@ -438,8 +438,8 @@ export default {
       this.$emit("openAssignationDialog", true);
     }
   },
-  props: ["selectedIssue", "clickIrrigator"],
-  emits: ["openAssignationDialog", "openInspectionDialog", "openRepairDialog", "openAutopsyDialog", "userType"],
+  props: ["selectedIssue", "clickIrrigator", "userType"],
+  emits: ["openAssignationDialog", "openInspectionDialog", "openRepairDialog", "openAutopsyDialog"],
   data() {
     return {
       displayIrrigatorDialog: false,

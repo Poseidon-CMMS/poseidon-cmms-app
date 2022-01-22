@@ -7,7 +7,7 @@
             Hardware Issues
           </p>
         </div>
-        <Button label="Ver Issues Cerrados" icon="pi pi-eye" class="p-button-warning align-self-center mt-2" @click="showClosedIssues = true" />
+        <Button v-if="this.userType == 'admin'" label="Ver Issues Cerrados" icon="pi pi-eye" class="p-button-warning align-self-center mt-2" @click="showClosedIssues = true" />
       </div>
       <div class="col-12">
         <div class="grid text-sm">
