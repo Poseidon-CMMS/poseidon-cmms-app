@@ -322,7 +322,7 @@
                 </div>
               </ul>
           </AccordionTab>
-          <AccordionTab>
+          <AccordionTab  v-if="this.userType == 'admin'">
             <template #header>
               <div class="flex align-items-start" style="width: 100%">
                 <div class="flex align-items-center h-full w-11 my-2 align-start">
@@ -439,7 +439,7 @@ export default {
     }
   },
   props: ["selectedIssue", "clickIrrigator"],
-  emits: ["openAssignationDialog", "openInspectionDialog", "openRepairDialog", "openAutopsyDialog"],
+  emits: ["openAssignationDialog", "openInspectionDialog", "openRepairDialog", "openAutopsyDialog", "userType"],
   data() {
     return {
       displayIrrigatorDialog: false,

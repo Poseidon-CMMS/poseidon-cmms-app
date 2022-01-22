@@ -9,7 +9,7 @@
     </div>
     <div class="col-12">
       <div class="grid text-sm">
-        <div class="col-12 md:col-6 lg:col-3">
+        <div v-if="this.userType == 'admin'" class="col-12 md:col-6 lg:col-3">
           <request-draggable-list
             title="Abiertas"
             :list="openList"
@@ -20,7 +20,7 @@
             @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
+        <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
           <request-draggable-list
             title="Asignadas"
             :list="assignedList"
@@ -33,7 +33,7 @@
             @updateAssignationFormOpen="handleIsOpenAssignation"
           />
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
+        <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
           <request-draggable-list
             title="Realizadas"
             :list="doneList"
@@ -44,7 +44,7 @@
             @requestUpdated="handleRequestUpdated"
           />
         </div>
-        <div class="col-12 md:col-6 lg:col-3">
+        <div :class="'col-12 md:col-6 ' + (this.userType === 'admin' ? 'lg:col-3' : 'lg:col-4')">
           <request-draggable-list
             title="Completadas"
             :list="completedList"
@@ -187,6 +187,7 @@ export default {
       selectedCreateRequestIrrigatorId: null,
       showRequestForm: false,
       showUninstallForm: false,
+      userType: "technician"
     };
   },
   computed: {
@@ -210,6 +211,10 @@ export default {
         return this.requests.filter((i) => i.status === "completed");
       },
     },
+  },
+  beforeMount() {
+    const type = sessionStorage.getItem('type');
+    this.userType = type;
   },
   async mounted() {
     //traer install uninstall requests

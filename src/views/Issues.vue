@@ -11,22 +11,22 @@
       </div>
       <div class="col-12">
         <div class="grid text-sm">
-          <div class="col-12 md:col-6 lg:col-3">
+          <div v-if="this.userType == 'admin'" class="col-12 md:col-6 lg:col-3">
             <draggable-list title="In field" :list='inFieldList' :log='inFieldLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
-          <div class="col-12 md:col-6 lg:col-3">
+          <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
             <draggable-list title="Assigned" :list='assignedList' :log='assignedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
-          <div class="col-12 md:col-6 lg:col-3">
+          <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
             <draggable-list title="Repaired" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
           </div>
-          <div class="col-12 md:col-6 lg:col-3">
+          <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
             <draggable-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
         </div>
       </div>
       <div class="col-12">
-        <issue-detail  v-if="selectedIssue" v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated' @openAutopsyDialog='handleIsOpenAutopsy' @openInspectionDialog='handleIsOpenInspection'/>
+        <issue-detail  v-if="selectedIssue" :userType="userType" v-model:selectedIssue="selectedIssue" :clickIrrigator="clickIrrigator" @openAssignationDialog="handleIsOpenAssignation" @openRepairDialog='handleIsOpenRepairUpdated' @openAutopsyDialog='handleIsOpenAutopsy' @openInspectionDialog='handleIsOpenInspection'/>
       </div>
     </div>
       
@@ -151,6 +151,7 @@ export default {
       showAutopsyForm: false,
       showClosedIssues: false,
       showInspectionForm: false,
+      userType: 'technician',
     }
   },
   computed: {
@@ -176,6 +177,8 @@ export default {
     },
   },
   async beforeMount() {
+    const type = sessionStorage.getItem('type');
+    this.userType = type;
     //traer hdw issues todo: manejo de errores
     const result = await getHdwIssuesQuery();
     this.issues = result.data.hdwIssues;
