@@ -56,7 +56,7 @@ const optionsPrimeVue =  {
         strong: 'Fuerte',
         passwordPrompt: 'Ingrese una contraseña',
         emptyFilterMessage: 'No hay resultados',
-        emptyMessage: 'No hay opciones disponibles'
+        emptyMessage: 'No hay opciones disponibles',
     }};
 
 const app = createApp(App).use(router).use(PrimeVue, optionsPrimeVue).use(ToastService).use(ConfirmationService);

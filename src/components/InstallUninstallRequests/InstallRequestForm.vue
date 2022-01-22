@@ -1,4 +1,5 @@
 <template>
+  <form id="request-form" @submit.prevent="onSubmit(!v$.$invalid)" class="p-fluid">
   <Dialog
     header="Instalación"
     v-model:visible="computedIsOpen"
@@ -9,7 +10,7 @@
       <div class="field">
         <div class="flex justify-content-around flex-nowrap card-container">
           <div class="flex align-items-center w-11 justify-content-start">
-            <label for="work_order">Orden de trabajo</label>
+            <label for="selectedWorkOrder">Orden de trabajo</label>
           </div>
           <div class="flex">
             <Button
@@ -20,13 +21,14 @@
           </div>
         </div>
         <Dropdown
-          id="work_order"
+          id="selectedWorkOrder"
           v-model="selectedWorkOrder"
           :options="workOrders"
           :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)}`"
           class="inputfield lg:w-full"
           placeholder="Orden de trabajo"
         />
+        <small v-if="(v$.selectedWorkOrder.$invalid && submitted) || v$.selectedWorkOrder.$pending.$response" class="p-error">{{v$.selectedWorkOrder.required.$message.replace('Value', 'Orden de trabajo')}}</small>
       </div>
       <div class="field">
         <label for="completionDate">Fecha de instalación en el equipo: </label>
@@ -39,45 +41,49 @@
           :showSeconds="true"
           class="inputfield ml-2"
         />
+        <div><small v-if="(v$.completionDate.$invalid && submitted) || v$.completionDate.$pending.$response" class="p-error">{{v$.completionDate.required.$message.replace('Value', 'Fecha de instalacion')}}</small></div>
       </div>
       <div
         class="field"
       >
-        <label for="asset_type">Nuevo gateway instalado</label>
+        <label for="selectedGateway">Nuevo gateway instalado</label>
         <Dropdown
-          id="solution"
+          id="selectedGateway"
           v-model="selectedGateway"
           :options="gateways"
           optionLabel="integration_id"
           class="inputfield w-full"
           placeholder="Gateway"
         />
+        <small v-if="(v$.selectedGateway.$invalid && submitted) || v$.selectedGateway.$pending.$response" class="p-error">{{v$.selectedGateway.required.$message.replace('Value', 'Gateway')}}</small>
       </div>
       <div
         class="field"
       >
-        <label for="asset_type">Nuevo nodo instalado</label>
+        <label for="selectedGpsNode">Nuevo nodo instalado</label>
         <Dropdown
-          id="solution"
+          id="selectedGpsNode"
           v-model="selectedGpsNode"
           :options="gpsNodes"
           optionLabel="integration_id"
           class="inputfield w-full"
           placeholder="Nodo"
         />
+        <small v-if="(v$.selectedGpsNode.$invalid && submitted) || v$.selectedGpsNode.$pending.$response" class="p-error">{{v$.selectedGpsNode.required.$message.replace('Value', 'Nodo GPS')}}</small>
       </div>
       <div
         class="field"
       >
-        <label for="asset_type">Nuevo sensor de presión instalado</label>
+        <label for="selectedPressureSensor">Nuevo sensor de presión instalado</label>
         <Dropdown
-          id="solution"
+          id="selectedPressureSensor"
           v-model="selectedPressureSensor"
           :options="pressureSensors"
           optionLabel="integration_id"
           class="inputfield w-full"
           placeholder="Sensor de presión"
         />
+        <small v-if="(v$.selectedPressureSensor.$invalid && submitted) || v$.selectedPressureSensor.$pending.$response" class="p-error">{{v$.selectedPressureSensor.required.$message.replace('Value', 'Sensor de presión')}}</small>
       </div>
       <!-- gtw img -->
       <div class="field flex">
@@ -316,7 +322,8 @@
           class="p-button-success"
           icon="pi pi-check"
           label="Guardar"
-          @click="onSubmit"
+          form="request-form"
+          type="submit"
           :loading="loading"
         />
         <Button
@@ -329,6 +336,7 @@
       </div>
     </template>
   </Dialog>
+  </form>
   <work-order-form
     :isOpen="isWorkOrderFormOpen"
     :technician="selectedRequest?.assigned_technician"
@@ -351,6 +359,8 @@ import {
   doInstallRequestMutation
 } from "../../api/apiRequests";
 import { dateFormatter } from "../../utils/dateFormatter.js";
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 function initialData(avoidDeletingDropdowns = false) {
   let initialData = {
@@ -366,6 +376,7 @@ function initialData(avoidDeletingDropdowns = false) {
     selectedGpsNode: null,
     selectedGateway: null,
     isWorkOrderFormOpen: false,
+    submitted: false
   };
   if (!avoidDeletingDropdowns)
     initialData = {
@@ -389,13 +400,35 @@ export default {
     WorkOrderForm,
     Calendar,
   },
+  setup: () => ({ v$: useVuelidate() }),
   data() {
     return initialData();
   },
-
+  validations() {
+      return {
+          completionDate: {
+              required
+          },
+          selectedWorkOrder: {
+              required
+          },
+          selectedGateway: {
+              required
+          },
+          selectedGpsNode: {
+              required
+          },
+          selectedPressureSensor: {
+              required
+          },
+      }
+    },
   methods: {
     dateFormatter,
-    async onSubmit() {
+    async onSubmit(isFormValid) {
+      this.submitted = true;
+      console.log('ISFORMVALID ES ', isFormValid);
+      if(!isFormValid) return;
       try {
         this.loading = true;
         const requestResult = await doInstallRequestMutation(
@@ -410,7 +443,6 @@ export default {
           this.gps_node_image,
           this.pressure_sensor_image,
         );
-
 
         if (requestResult.data.updateinstall_uninstall_request.id) {
           this.showSuccess();
