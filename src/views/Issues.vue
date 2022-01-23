@@ -46,7 +46,7 @@
           <Accordion>
             <AccordionTab header="Historial">
               <issues-list
-                :list="[...repairedList, ...outOfFieldList]"
+                :list="[...repairedList, ...outOfFieldList, ...closedList]"
                 :log="completedLog"
                 :clickElement="setSelectedIssue"
                 :loading="loading"
