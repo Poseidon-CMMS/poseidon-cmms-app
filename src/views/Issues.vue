@@ -35,12 +35,26 @@
               @openInspectionDialog='handleIsOpenInspection'
             />
           </div>
-          <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
+          <div v-if="this.userType === 'admin'"  class="col-12 md:col-6 lg:col-3">
             <issues-list title="Reparados" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
           </div>
-          <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
+          <div v-if="this.userType === 'admin'"  class="col-12 md:col-6 lg:col-3">
             <issues-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
           </div>
+
+          <div v-if="this.userType !== 'admin'" :class="'col-12 md:col-6'">
+          <Accordion>
+            <AccordionTab header="Historial">
+              <issues-list
+                :list="[...repairedList, ...outOfFieldList]"
+                :log="completedLog"
+                :clickElement="setSelectedIssue"
+                :loading="loading"
+                :selectedRequest="selectedIssue"
+              />
+            </AccordionTab>
+          </Accordion>
+        </div>
         </div>
       </div>
       <div class="col-12">
@@ -76,6 +90,8 @@ import RepairForm from "../components/Issues/Forms/RepairForm.vue";
 import AutopsyForm from '../components/Issues/Forms/AutopsyForm.vue';
 import Sidebar from 'primevue/sidebar';
 import InspectionForm from "../components/Issues/Forms/InspectionForm.vue";
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
 
 export default {
   name: 'Issues',
@@ -90,6 +106,8 @@ export default {
     Sidebar,
     ClosedIssuesList,
     InspectionForm,
+    Accordion,
+    AccordionTab,
   },
   methods: {
     hasDevice: function(value) {
