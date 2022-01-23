@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      items: [
+      adminRoutes: [
         {
           label: "Dashboard",
           icon: "pi pi-fw pi-th-large",
@@ -62,6 +62,8 @@ export default {
           icon: "pi pi-fw pi-mobile",
           command: () => this.$router.push("/"),
         },
+      ],
+      commonRoutes: [
         {
           label: "Issues",
           icon: "pi pi-fw pi-exclamation-triangle",
@@ -72,7 +74,7 @@ export default {
           icon: "pi pi-fw pi-briefcase",
           command: () => this.$router.push("/requests"),
         },
-      ],
+      ]
     };
   },
   computed: {
@@ -81,12 +83,15 @@ export default {
     },
     userName(){
       return sessionStorage.getItem("name");
-    }
-  },
-  beforeMount() {
-    if(sessionStorage.getItem('type') === 'technician') {
-      this.items.shift();
-      this.items.shift();
+    },
+    items() {
+      const userType =sessionStorage.getItem("type");
+      if(!userType) return [];
+      if(userType ==='admin')
+        return [...this.commonRoutes, ...this.adminRoutes];
+      else if (userType ==='technician')
+        return this.commonRoutes
+      else return [];
     }
   },
 };
