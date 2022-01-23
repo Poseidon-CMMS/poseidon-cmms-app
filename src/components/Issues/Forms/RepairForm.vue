@@ -6,10 +6,11 @@
     :modal="true"
   >
     <div class="card">
+      <form id="repair-form" @submit.prevent="onSubmit(!v$.$invalid)" class="p-fluid">
       <div class="field">
         <div class="flex justify-content-around flex-nowrap card-container">
           <div class="flex align-items-center w-11 justify-content-start">
-            <label for="work_order">Orden de trabajo</label>
+            <label for="selectedWorkOrder">Orden de trabajo</label>
           </div>
           <div class="flex">
             <Button
@@ -27,23 +28,26 @@
           class="inputfield w-full"
           placeholder="Orden de trabajo"
         />
+        <div><small v-if="(v$.selectedWorkOrder.$invalid && submitted) || v$.selectedWorkOrder.$pending.$response" class="p-error">{{v$.selectedWorkOrder.required.$message.replace('Value', 'Orden de trabajo')}}</small></div>
       </div>
       <div class="field">
-        <label for="creationDate">Fecha de reparación en campo: </label>
+        <label for="fieldRepairDate">Fecha de reparación en campo: </label>
         <Calendar
-          id="creationDate"
+          id="fieldRepairDate"
           :show-icon="true"
-          v-model="creationDate"
+          v-model="fieldRepairDate"
           dateFormat="yy-mm-dd"
           :showTime="true"
           :showSeconds="true"
           class="inputfield ml-2"
         />
+        <div><small v-if="(v$.fieldRepairDate.$invalid && submitted) || v$.fieldRepairDate.$pending.$response" class="p-error">{{v$.fieldRepairDate.required.$message.replace('Value', 'Fecha de reparación en campo')}}</small></div>
+
       </div>
       <div class="field">
-        <label for="repair_type">Tipo de reparación</label>
+        <label for="repairType">Tipo de reparación</label>
         <Dropdown
-          id="repair_type"
+          id="repairType"
           v-model="repairType"
           :options="repairTypes"
           optionLabel="name"
@@ -51,6 +55,8 @@
           class="inputfield w-full"
           placeholder="Tipo de reparación"
         />
+        <div><small v-if="(v$.repairType.$invalid && submitted) || v$.repairType.$pending.$response" class="p-error">{{v$.repairType.required.$message.replace('Value', 'Tipo de reparación')}}</small></div>
+
       </div>
       <div class="field" v-if="repairType?.value == 'device_change'">
         <label for="asset_type">Dispositivo con fallas</label>
@@ -188,6 +194,7 @@
           </InlineMessage>
         </div>
       </div>
+      </form>
     </div>
     <template #footer>
       <Message v-if="!!error" severity="error" @close="onErrorClose">
@@ -197,8 +204,9 @@
         <Button
           class="p-button-success"
           icon="pi pi-check"
-          label="Guardar"
-          @click="onSubmit"
+          label="Guardar"          
+          form="repair-form"
+          type="submit"
           :loading="loading"
         />
         <Button
@@ -238,6 +246,8 @@ import {
   getTechniciansPressureSensorsQuery,
 } from "../../../api/apiRequests";
 import { dateFormatter } from "../../../utils/dateFormatter.js";
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 function initialData(avoidDeletingDropdowns = false) {
   let initialData = {
@@ -245,7 +255,7 @@ function initialData(avoidDeletingDropdowns = false) {
     loading: false,
     error: null,
     comments: "",
-    creationDate: null,
+    fieldRepairDate: null,
     repairType: null,
     assetType: null,
     log_file: null,
@@ -255,6 +265,7 @@ function initialData(avoidDeletingDropdowns = false) {
     selectedGateway: null,
     selectedSolutionType: null,
     isWorkOrderFormOpen: false,
+    submitted: false,
   };
   if (!avoidDeletingDropdowns)
     initialData = {
@@ -283,18 +294,34 @@ export default {
     WorkOrderForm,
     Calendar,
   },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+        repairType: {
+            required
+        },
+        fieldRepairDate: {
+            required
+        },
+        selectedWorkOrder: {
+            required
+        },
+    }
+  },
   data() {
     return initialData();
   },
 
   methods: {
     dateFormatter,
-    async onSubmit() {
+    async onSubmit(isFormValid) {
+      this.submitted = true;
+      if(!isFormValid) return;
       try {
         this.loading = true;
         const repairResult = await createRepairMutation(
           //TODO: validar q todos los campso esten completos
-          this.creationDate,
+          this.fieldRepairDate,
           this.selectedIssue?.id,
           this.repairType?.id,
           this.assetType?.id,
@@ -335,7 +362,7 @@ export default {
       this.$toast.add({
         severity: "success",
         summary: "Reparación creada correctamente",
-        detail: "creacion: " + this.creationDate,
+        detail: "creacion: " + this.fieldRepairDate,
         life: 3000,
       });
     },

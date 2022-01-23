@@ -6,10 +6,11 @@
     :modal="true"
   >
     <div class="card">
+      <form id="uninstall-request-form" @submit.prevent="onSubmit(!v$.$invalid)" class="p-fluid">
       <div class="field">
         <div class="flex justify-content-around flex-nowrap card-container">
           <div class="flex align-items-center w-11 justify-content-start">
-            <label for="work_order">Orden de trabajo</label>
+            <label for="selectedWorkOrder">Orden de trabajo</label>
           </div>
           <div class="flex">
             <Button
@@ -20,13 +21,14 @@
           </div>
         </div>
         <Dropdown
-          id="work_order"
+          id="selectedWorkOrder"
           v-model="selectedWorkOrder"
           :options="workOrders"
           :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)}`"
-          class="inputfield w-full"
+          class="inputfield"
           placeholder="Orden de trabajo"
         />
+        <small v-if="(v$.selectedWorkOrder.$invalid && submitted) || v$.selectedWorkOrder.$pending.$response" class="p-error">{{v$.selectedWorkOrder.required.$message.replace('Value', 'Orden de trabajo')}}</small>
       </div>
       <div class="field">
         <label for="completionDate">Fecha de desinstalación en el equipo: </label>
@@ -39,7 +41,10 @@
           :showSeconds="true"
           class="inputfield ml-2"
         />
+        <div><small v-if="(v$.completionDate.$invalid && submitted) || v$.completionDate.$pending.$response" class="p-error">{{v$.completionDate.required.$message.replace('Value', 'Fecha de desinstalacion')}}</small></div>
+
       </div>
+      </form>
     </div>
     <template #footer>
       <Message v-if="!!error" severity="error" @close="onErrorClose">
@@ -50,7 +55,8 @@
           class="p-button-success"
           icon="pi pi-check"
           label="Guardar"
-          @click="onSubmit"
+          form="uninstall-request-form"
+          type="submit"
           :loading="loading"
         />
         <Button
@@ -80,6 +86,8 @@ import {
   doUninstallRequestMutation
 } from "../../api/apiRequests";
 import { dateFormatter } from "../../utils/dateFormatter.js";
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 function initialData(avoidDeletingDropdowns = false) {
   let initialData = {
@@ -88,6 +96,7 @@ function initialData(avoidDeletingDropdowns = false) {
     completionDate: null,
     selectedWorkOrder: null,
     isWorkOrderFormOpen: false,
+    submitted: false,
   };
   if (!avoidDeletingDropdowns)
     initialData = {
@@ -106,13 +115,26 @@ name: "UninstallRequestForm",
     WorkOrderForm,
     Calendar,
   },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+        completionDate: {
+            required
+        },
+        selectedWorkOrder: {
+            required
+        },
+    }
+  },
   data() {
     return initialData();
   },
 
   methods: {
     dateFormatter,
-    async onSubmit() {
+    async onSubmit(isFormValid) {
+      this.submitted = true;
+      if(!isFormValid) return;
       try {
         this.loading = true;
         const requestResult = await doUninstallRequestMutation(

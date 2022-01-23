@@ -6,19 +6,21 @@
     :modal="true"
   >
     <div class="card">
+      <form id="inspection-form" @submit.prevent="onSubmit(!v$.$invalid)" class="p-fluid">
       <div class="field">
-        <label for="creationDate">Fecha: </label>
+        <label for="date">Fecha: </label>
         <Calendar
           :show-icon="true"
-          v-model="creationDate"
+          v-model="date"
           :showTime="true"
           :showSeconds="true"
           dateFormat="yy-mm-dd"
           class="inputfield ml-2"
         />
+        <div><small v-if="(v$.date.$invalid && submitted) || v$.date.$pending.$response" class="p-error">{{v$.date.required.$message.replace('Value', 'Fecha de pericia')}}</small></div>
       </div>
       <div class="field">
-        <label for="diagnosticDate">Dispositivo con fallas</label>
+        <label for="assetType">Dispositivo con fallas</label>
         <Dropdown
           v-model="assetType"
           :options="assetTypes"
@@ -26,9 +28,10 @@
           class="inputfield w-full"
           placeholder="Dispositivo con fallas"
         />
+        <div><small v-if="(v$.assetType.$invalid && submitted) || v$.assetType.$pending.$response" class="p-error">{{v$.assetType.required.$message.replace('Value', 'Dispositivo con fallas')}}</small></div>
       </div>
       <div class="field">
-        <label for="gtw">Tipo de pericia</label>
+        <label for="inspectionType">Tipo de pericia</label>
         <Dropdown
           v-model="inspectionType"
           :options="inspectionTypes"
@@ -37,6 +40,8 @@
           class="inputfield w-full"
           placeholder="Tipo de pericia"
         />
+        <div><small v-if="(v$.inspectionType.$invalid && submitted) || v$.inspectionType.$pending.$response" class="p-error">{{v$.inspectionType.required.$message.replace('Value', 'Tipo de pericia')}}</small></div>
+
       </div>
       <div class="field" v-if="inspectionType?.pot_sat">
         <label for="pot_sat">Potencia satelital</label>
@@ -217,6 +222,7 @@
           >
         </div>
       </div>
+      </form>
     </div>
     <template #footer>
       <Message v-if="!!error" severity="error" @close="onErrorClose">{{
@@ -227,7 +233,8 @@
           class="p-button-success"
           icon="pi pi-check"
           label="Guardar"
-          @click="onSubmit"
+          form="inspection-form"
+          type="submit"
           :loading="loading"
         />
         <Button
@@ -254,6 +261,8 @@ import {
   getInspectionTypesQuery,
   createInspectionMutation,
 } from "../../../api/apiRequests";
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 function initialData() {
   return {
@@ -261,7 +270,7 @@ function initialData() {
     loading: false,
     error: null,
     comments: "",
-    creationDate: null,
+    date: null,
     inspectionTypes: [],
     inspectionType: null,
     assetType: null,
@@ -272,6 +281,7 @@ function initialData() {
     gps_node_battery_voltage: null,
     lora_power: null,
     pressure_sensor_signal: null,
+    submitted: false,
   };
 }
 
@@ -287,17 +297,33 @@ export default {
     Message,
     Calendar,
   },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+        date: {
+            required
+        },
+        assetType: {
+            required
+        },
+        inspectionType: {
+            required
+        },
+    }
+  },
   data() {
     return initialData();
   },
 
   methods: {
-    async onSubmit() {
+    async onSubmit(isFormValid) {
+      this.submitted = true;
+      if(!isFormValid) return;
       this.loading = true;
       const technician_id = this.selectedIssue.assigned_technician.id;
       const inspectionResult = await createInspectionMutation(
         //TODO: validar q todos los campso esten completos
-        this.creationDate,
+        this.date,
         technician_id,
         this.selectedIssue.id,
         this.inspectionType.id,
@@ -332,7 +358,7 @@ export default {
       this.$toast.add({
         severity: "success",
         summary: "Pericia creada correctamente",
-        detail: "creacion: " + this.creationDate,
+        detail: "creacion: " + this.date,
         life: 3000,
       });
     },

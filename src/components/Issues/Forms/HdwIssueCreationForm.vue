@@ -6,6 +6,7 @@
     :modal="true"
   >
     <div class="card">
+      <form id="hardware-issue-creation-form" @submit.prevent="onSubmit(!v$.$invalid)" class="p-fluid">
       <div class="field">
         <label for="diagnosticDate">Fecha de comienzo de la falla: </label>
         <Calendar
@@ -16,11 +17,13 @@
           :showTime="true"
           :showSeconds="true"
         />
+        <div><small v-if="(v$.diagnosticDate.$invalid && submitted) || v$.diagnosticDate.$pending.$response" class="p-error">{{v$.diagnosticDate.required.$message.replace('Value', 'Fecha de diagnóstico')}}</small></div>
+
       </div>
       <div class="field">
-        <label for="gtw">Equipo de riego</label>
+        <label for="selectedIrrigator">Equipo de riego</label>
         <Dropdown
-          id="irrigator"
+          id="selectedIrrigator"
           :filter="true"
           class="inputfield w-full"
           v-model="selectedIrrigator"
@@ -29,11 +32,13 @@
           optionValue="code"
           placeholder="Select an Irrigator"
         />
+                <div><small v-if="(v$.selectedIrrigator.$invalid && submitted) || v$.selectedIrrigator.$pending.$response" class="p-error">{{v$.selectedIrrigator.required.$message.replace('Value', 'Equipo de riego')}}</small></div>
+
       </div>
       <div class="field">
-        <label for="diagnostic">Tipo de Diagnóstico</label>
+        <label for="selectedDiagnosticType">Tipo de Diagnóstico</label>
         <Dropdown
-          id="diagnostic"
+          id="selectedDiagnosticType"
           :filter="true"
           class="inputfield w-full"
           v-model="selectedDiagnosticType"
@@ -41,6 +46,8 @@
           optionLabel="name"
           placeholder="Seleccione un tipo de diagnóstico"
         />
+        <div><small v-if="(v$.selectedDiagnosticType.$invalid && submitted) || v$.selectedDiagnosticType.$pending.$response" class="p-error">{{v$.selectedDiagnosticType.required.$message.replace('Value', 'Fecha de desinstalacion')}}</small></div>
+
       </div>
 
       <div class="field" v-if="selectedDiagnosticType?.gateway_satellite_power">
@@ -259,6 +266,7 @@
           class="inputfield w-full"
         />
       </div>
+      </form>
     </div>
     <template #footer>
       <Message v-if="!!error" severity="error" @close="onErrorClose">{{
@@ -269,7 +277,8 @@
           class="p-button-success"
           icon="pi pi-check"
           label="Guardar"
-          @click="onSubmit"
+          form="hardware-issue-creation-form"
+          type="submit"
           :loading="loading"
         />
         <Button
@@ -298,6 +307,8 @@ import {
 } from "../../../api/apiRequests";
 import InlineMessage from "primevue/inlinemessage";
 import FileUpload from "primevue/fileupload";
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 export default {
   name: "HdwIssueCreationForm",
@@ -313,12 +324,26 @@ export default {
   },
   props: ["isOpen", "selectedIrrigatorId"],
   emits: ["updateIsOpen"],
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+        diagnosticDate: {
+            required
+        },
+        selectedIrrigator: {
+            required
+        },
+        selectedDiagnosticType: {
+            required
+        },
+    }
+  },
   data() {
     return {
       loading: false,
       error: null,
       //dates
-      diagnosticDate: new Date(),
+      diagnosticDate: null,
 
       //selectables
       selectedIrrigator: this.selectedIrrigatorId || null,
@@ -349,10 +374,13 @@ export default {
         { name: "Nulas", value: "null" },
         { name: "No nulas", value: "non-null" },
       ],
+      submitted: false,
     };
   },
   methods: {
-    async onSubmit() {
+    async onSubmit(isFormValid) {
+      this.submitted = true;
+      if(!isFormValid) return;
       try {
         this.loading = true;
         const result = await createHdwIssueMutation(

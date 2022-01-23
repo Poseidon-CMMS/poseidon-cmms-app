@@ -1,5 +1,7 @@
 <template>
   <div class="mt-6">
+    
+      <form id="login-form" @submit.prevent="onSubmit(!v$.$invalid)" class="">
   <Card style="margin: auto auto"
   class="lg:w-4">
     <template #title>
@@ -7,11 +9,14 @@
     </template>
     <template #content>
     <div class="grid p-fluid mt-2">
+      
       <div class="col-12">
         <div class="p-field">    
         <span class="p-float-label">
           <InputText id="email" type="text" v-model="email" @keypress="keyPressed"/>
           <label for="email">Email</label>
+          <div><small v-if="(v$.email.$invalid && submitted) || v$.email.$pending.$response" class="p-error">{{v$.email.required.$message.replace('Value', 'Email')}}</small></div>
+
         </span>
       </div>
       </div>
@@ -20,6 +25,8 @@
           <span class="p-float-label">
             <password id="password" toggleMask :feedback="false" v-model="password" @keypress="keyPressed"/>
             <label for="password">Password</label>
+            <div><small v-if="(v$.password.$invalid && submitted) || v$.password.$pending.$response" class="p-error">{{v$.password.required.$message.replace('Value', 'Contraseña')}}</small></div>
+
           </span>
         </div>
       </div>  
@@ -29,9 +36,13 @@
     </div>
     </template>
     <template #footer>
-      <Button icon="pi pi-check" label="Login" @click="onSubmit" :loading="loading"/>
+      <Button icon="pi pi-check" label="Login" 
+          form="login-form"
+          type="submit" :loading="loading"/>
     </template>
 </Card>
+
+      </form>
     </div>
 </template>
 
@@ -41,6 +52,8 @@ import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import Card from 'primevue/card';
 import {loginQuery} from '../../api/apiRequests';
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 
 export default {
@@ -54,16 +67,30 @@ export default {
   props: {
     msg: String
   },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+        email: {
+            required
+        },
+        password: {
+            required
+        },
+    }
+  },
   data() {
       return {
           email:'',
           password:'',
           loading: false,
-          error: ''
+          error: '',
+          submitted: false,
       }
   },
   methods: {
-    async onSubmit(){
+    async onSubmit(isFormValid) {
+      this.submitted = true;
+      if(!isFormValid) return;
       this.loading = true;
       try{
         const result = await loginQuery(this.email, this.password)

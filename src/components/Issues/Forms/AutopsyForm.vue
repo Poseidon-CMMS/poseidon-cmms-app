@@ -6,6 +6,7 @@
     :modal="true"
   >
     <div class="card">
+      <form id="autopsy-form" @submit.prevent="onSubmit(!v$.$invalid)" class="p-fluid">
       <div class="field">
         <label for="date">Fecha de autopsia: </label>
         <Calendar
@@ -17,6 +18,8 @@
           :showTime="true"
           :showSeconds="true"
         />
+        <div><small v-if="(v$.date.$invalid && submitted) || v$.date.$pending.$response" class="p-error">{{v$.date.required.$message.replace('Value', 'Fecha de autopsia')}}</small></div>
+
       </div>
       <div class="field">
         <label for="comments">Comentarios</label>
@@ -29,11 +32,14 @@
           rows="2"
           cols="70"
         />
+        <div><small v-if="(v$.comments.$invalid && submitted) || v$.comments.$pending.$response" class="p-error">{{v$.comments.required.$message.replace('Value', 'Comentarios')}}</small></div>
+
       </div>
 
       <div class="field">
-        <label for="gtw">Tipo de autopsia</label>
+        <label for="autopsyType">Tipo de autopsia</label>
         <Dropdown
+          id="autopsyType"
           v-model="autopsyType"
           :options="autopsyTypes"
           optionLabel="name"
@@ -41,6 +47,8 @@
           class="inputfield w-full"
           placeholder="Tipo de autopsia"
         />
+        <div><small v-if="(v$.autopsyType.$invalid && submitted) || v$.autopsyType.$pending.$response" class="p-error">{{v$.autopsyType.required.$message.replace('Value', 'Tipo de autopsia')}}</small></div>
+
       </div>
 
       <div class="field flex">
@@ -155,7 +163,7 @@
           >
         </div>
       </div>
-
+      </form>
     </div>
     <template #footer>
       <Message v-if="!!error" severity="error" @close="onErrorClose">
@@ -166,7 +174,8 @@
           class="p-button-success"
           icon="pi pi-check"
           label="Guardar"
-          @click="onSubmit"
+          form="autopsy-form"
+          type="submit"
           :loading="loading"
         />
         <Button
@@ -190,6 +199,8 @@ import FileUpload from 'primevue/fileupload';
 import InlineMessage from 'primevue/inlinemessage';
 
 import { createAutopsyMutation, getAutopsyTypesQuery } from '../../../api/apiRequests';
+import { required } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
 
 function initialData() {
   return {
@@ -201,6 +212,7 @@ function initialData() {
     selfDiagnosticFile: null,
     autopsyType: null,
     autopsyTypes: [],
+    submitted: false
   };
 }
 
@@ -215,12 +227,29 @@ export default {
     FileUpload,
     InlineMessage,
   },
+  setup: () => ({ v$: useVuelidate() }),
+  validations() {
+    return {
+        date: {
+            required
+        },
+        comments: {
+            required
+        },
+        autopsyType: {
+            required
+        },
+
+    }
+  },
   data() {
     return initialData();
   },
 
   methods: {
-    async onSubmit() {
+    async onSubmit(isFormValid) {
+      this.submitted = true;
+      if(!isFormValid) return;
       try{
         
       this.loading = true;

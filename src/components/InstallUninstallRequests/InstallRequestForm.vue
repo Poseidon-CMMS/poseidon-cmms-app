@@ -427,7 +427,6 @@ export default {
     dateFormatter,
     async onSubmit(isFormValid) {
       this.submitted = true;
-      console.log('ISFORMVALID ES ', isFormValid);
       if(!isFormValid) return;
       try {
         this.loading = true;
