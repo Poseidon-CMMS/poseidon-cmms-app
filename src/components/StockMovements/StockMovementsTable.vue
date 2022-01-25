@@ -55,7 +55,6 @@ import Column from "primevue/column";
 import Message from "primevue/message";
 
 import { FilterMatchMode } from "primevue/api";
-import { getStockMovementsQuery } from '../../api/apiRequests';
 import {dateFormatter} from "../../utils/dateFormatter";
 
 export default {
@@ -65,32 +64,18 @@ export default {
     Column,
     Message,
   },
+  props: ["stockMovements", "loading"],
   data() {
     return {
       error: '',
-      loading: true,
       filters: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
-      stockMovements: [],
       selectedStockMovement: null,
-
     };
   },
   methods: {
     dateFormatter,
-  },
-  async mounted(){
-    try{
-    const result = await getStockMovementsQuery();
-    this.stockMovements = result.data.stockMovements;
-    this.loading = false;
-    }
-    catch(e){
-      this.error = e;
-      this.stockMovements = [];
-      this.loading = false;
-    }
   }
 };
 </script>
