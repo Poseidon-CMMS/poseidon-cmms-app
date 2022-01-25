@@ -62,6 +62,11 @@ export default {
           icon: "pi pi-fw pi-mobile",
           command: () => this.$router.push("/"),
         },
+        {
+          label: "Stock",
+          icon: "pi pi-fw pi-directions-alt",
+          command: () => this.$router.push("/stock"),
+        },
       ],
       commonRoutes: [
         {

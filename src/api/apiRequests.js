@@ -2168,6 +2168,43 @@ const doUninstallRequestMutation = async function (
   });
 };
 
+const getStockMovementsQuery = async function () {
+  return await client.query({
+    query: gql`
+      query getStockMovementsQuery {
+        stockMovements {
+          id
+          date
+          location_from {
+            name
+            lat
+            long
+          }
+          location_to {
+            name
+            lat
+            long
+          }
+          gateway {
+            integration_id
+          }
+          gps_node {
+            integration_id
+          }
+          pressure_sensor {
+            integration_id
+          }
+          author {
+            name
+            email
+          }
+        }
+      }
+
+    `,
+  });
+};
+
 export {
   loginQuery,
   getIrrigatorsQuery,
@@ -2206,5 +2243,7 @@ export {
   assignRequestMutation,
   clearAssignRequestMutation,
   acceptDoneRequestMutation,
-  rejectDoneRequestMutation
+  rejectDoneRequestMutation,
+  //stock
+  getStockMovementsQuery,
 };

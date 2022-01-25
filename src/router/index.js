@@ -33,7 +33,13 @@ const routes = [
     path:'/requests',
     name: 'InstallUninstallRequests',
     component: () => import('../views/InstallUninstallRequests')
-  }
+  },
+  
+  {
+    path:'/stock',
+    name: 'Stock Movements',
+    component: () => import('../views/StockMovements')
+  },
 ]
 
 const router = createRouter({
