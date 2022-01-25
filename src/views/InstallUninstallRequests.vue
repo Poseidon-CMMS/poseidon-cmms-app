@@ -230,7 +230,7 @@ export default {
     },
   },
   beforeMount() {
-    const type = sessionStorage.getItem('type');
+    const type = this.$store.state?.user?.type;
     this.userType = type;
   },
   async mounted() {

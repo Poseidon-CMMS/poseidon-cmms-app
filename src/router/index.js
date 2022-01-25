@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Irrigators from '../views/Irrigators.vue'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
+import { store } from '../vuex/store'
 
 const routes = [
   {
@@ -48,7 +49,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!sessionStorage.getItem('name');
+  const isAuthenticated = !!store.state?.user?.name;
   if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' });
   else next()
 })

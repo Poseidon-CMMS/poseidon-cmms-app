@@ -187,7 +187,7 @@ export default {
       try {
         this.loading = true;
         const creationDate = new Date();
-        const user_id = sessionStorage.getItem("id");
+        const user_id = this.$store.state?.user?.id;
         const stockMovementCreated = await createStockMovementMutation(
           creationDate,
           this.selectedLocationFrom?.id,

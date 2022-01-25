@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
+import { store } from './vuex/store';
+
 import PrimeVue from 'primevue/config';
 //Prime components
 import Dialog from 'primevue/dialog';
@@ -59,7 +61,7 @@ const optionsPrimeVue =  {
         emptyMessage: 'No hay opciones disponibles',
     }};
 
-const app = createApp(App).use(router).use(PrimeVue, optionsPrimeVue).use(ToastService).use(ConfirmationService);
+const app = createApp(App).use(router).use(PrimeVue, optionsPrimeVue).use(ToastService).use(ConfirmationService).use(store);
 
 app.component('Dialog', Dialog);
 app.component('Dropdown', Dropdown);

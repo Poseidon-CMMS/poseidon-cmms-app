@@ -8,7 +8,6 @@ import {
 } from "@apollo/client/core";
 import { HttpLink } from "@apollo/client/link/http";
 import { createUploadLink } from "apollo-upload-client";
-import { logout } from "../utils/logout";
 
 const httpOptions = {
   uri: process.env.VUE_APP_BACKEND_URL,
@@ -70,7 +69,8 @@ const detectSessionTimeout = new ApolloLink((operation, forward) => {
     // Called after server responds
     if (data?.errors?.find((e) => e.message.includes("Access denied"))) {
       console.log("Session expired");
-      logout();
+      location.reload();
+      this.$store.commit('setUser',null);
     }
     return data;
   });

@@ -213,7 +213,7 @@ export default {
     },
   },
   async beforeMount() {
-    const type = sessionStorage.getItem('type');
+    const type = this.$store.state?.user?.type;
     this.userType = type;
     //traer hdw issues todo: manejo de errores
     const result = await getHdwIssuesQuery();

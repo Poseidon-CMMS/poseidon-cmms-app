@@ -4,7 +4,7 @@
       <div class="flex w-8">
         <div v-if="isNotOnLoginPage" class="flex-1 flex align-items-center justify-content-center mr-3 lg:mx-6 my-0">
           <p class="text-md font-semibold text-white text-right flex align-items-center" id="username">
-            <i class="pi pi-user mr-2"/>{{this.userName}}
+            <i class="pi pi-user mr-2"/>{{this.$store.state?.user?.name || ''}}
           </p>
         </div>
         <div class="align-items-center justify-content-center mx-6 my-0 hidden lg:block">
@@ -33,7 +33,6 @@
 
 <script>
 import Menubar from "primevue/menubar";
-import { logout } from "./utils/logout";
 import ConfirmDialog from "primevue/confirmdialog";
 import Toast from "primevue/toast";
 
@@ -46,7 +45,8 @@ export default {
   },
   methods: {
     onLogout() {
-      logout();
+      this.$router.push("/login");
+      this.$store.commit('setUser',null);
     },
   },
   data() {
@@ -86,11 +86,8 @@ export default {
     isNotOnLoginPage() {
       return this.$route.name !== "Login";
     },
-    userName(){
-      return sessionStorage.getItem("name");
-    },
     items() {
-      const userType =sessionStorage.getItem("type");
+      const userType = this.$store.state?.user?.type;
       if(!userType) return [];
       if(userType ==='admin')
         return [...this.commonRoutes, ...this.adminRoutes];

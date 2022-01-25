@@ -253,7 +253,8 @@ export default {
       try{
         
       this.loading = true;
-      const user_id = sessionStorage.getItem("id");
+      
+      const user_id = this.$store.state?.user?.id;
       const autopsyResult = await createAutopsyMutation(
         //TODO: validar q todos los campso esten completos
         this.date,

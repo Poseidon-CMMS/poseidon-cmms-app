@@ -93,11 +93,8 @@ export default {
       if(!isFormValid) return;
       this.loading = true;
       try{
-        const result = await loginQuery(this.email, this.password)
-        sessionStorage.setItem('name',  result.data.authenticate.item.name);
-        sessionStorage.setItem('type',  result.data.authenticate.item.type);
-        sessionStorage.setItem('id',  result.data.authenticate.item.id);
-
+        const result = await loginQuery(this.email, this.password);
+        this.$store.commit('setUser', {...result.data.authenticate.item});
         this.loading = false;
         this.$router.push('/');
       }

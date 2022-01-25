@@ -126,7 +126,7 @@ export default {
   },
   computed: {
     isAdmin(){
-      return sessionStorage.getItem("type") ==='admin';
+      return this.$store.state?.user?.type === 'admin';
     }
   }
 }
