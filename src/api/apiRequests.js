@@ -211,52 +211,6 @@ const getTechniciansQuery = async function (id) {
   });
 };
 
-const getGatewaysQuery = async function (id) {
-  return await client.query({
-    query: gql`
-      query getGateway($id: ID) {
-        gateways(where: { id: { equals: $id } }) {
-          id
-          fabrication_date
-          integration_id
-          irrigator {
-            id
-            integration_id
-          }
-          housing_type {
-            id
-            name
-          }
-          satellite_modem {
-            id
-            integration_id
-          }
-          satellite_antenna {
-            id
-            integration_id
-          }
-
-          pcb_gateway {
-            id
-            integration_id
-          }
-          lora_antenna_type {
-            id
-            name
-          }
-          storage_location {
-            id
-            name
-          }
-        }
-      }
-    `,
-    variables: {
-      id,
-    },
-  });
-};
-
 const getDiagnosticTypesQuery = async function () {
   return await client.query({
     query: gql`
@@ -398,6 +352,99 @@ const assignRequestMutation = async function (requestId, technicianId) {
     },
   });
 };
+
+// creationDate,
+// this.selectedLocationFrom?.id,
+// this.selectedLocationTo?.id,
+// this.selectedGateway?.id,
+// this.selectedGpsNode?.id,
+// this.selectedPressureSensor?.id,
+// user_id
+const createStockMovementMutation = async function (
+  date,
+  location_from_id,
+  location_to_id,
+  gateway_id,
+  gps_node_id,
+  pressure_sensor_id,
+  author_id
+) {
+  return await client.mutate({
+    mutation: gql`
+    mutation ($data: stock_movementCreateInput!) {
+        createStockMovement: createstock_movement(data: $data) {
+          id
+          date
+          location_from {
+            name
+            lat
+            long
+          }
+          location_to {
+            name
+            lat
+            long
+          }
+          gateway {
+            integration_id
+          }
+          gps_node {
+            integration_id
+          }
+          pressure_sensor {
+            integration_id
+          }
+          author {
+            name
+            email
+          }
+        }
+      }
+
+    `,
+    variables: {
+      data: {
+        date: date.toISOString(),
+        location_from: {
+          connect: {
+            id: location_from_id,
+          },
+        },
+        location_to: {
+          connect: {
+            id: location_to_id,
+          },
+        },
+        gateway: gateway_id
+        ? {
+            connect: {
+              id: gateway_id,
+            },
+          }
+        : null,
+        gps_node: gps_node_id
+        ? {
+            connect: {
+              id: gps_node_id,
+            },
+          }
+        : null,
+        pressure_sensor: pressure_sensor_id
+        ? {
+            connect: {
+              id: pressure_sensor_id,
+            },
+          }
+        : null,
+        author: {
+          connect: {
+            id: author_id
+          }
+        }
+      },
+    },
+  })
+}
 
 const clearAssignHdwIssueMutation = async function (hdwIssueId) {
   return await client.mutate({
@@ -1038,7 +1085,7 @@ const getSolutionTypesQuery = async function () {
   });
 };
 
-const getTechniciansGatewaysQuery = async function () {
+const getGatewaysQuery = async function () {
   return await client.query({
     query: gql`
       query getGateways {
@@ -1051,7 +1098,7 @@ const getTechniciansGatewaysQuery = async function () {
   });
 };
 
-const getTechniciansPressureSensorsQuery = async function () {
+const getPressureSensorsQuery = async function () {
   return await client.query({
     query: gql`
       query getPressureSensor {
@@ -1064,7 +1111,7 @@ const getTechniciansPressureSensorsQuery = async function () {
   });
 };
 
-const getTechniciansGpsNodesQuery = async function () {
+const getGpsNodesQuery = async function () {
   return await client.query({
     query: gql`
       query getGpsNodes {
@@ -2205,11 +2252,29 @@ const getStockMovementsQuery = async function () {
   });
 };
 
+const getStorageLocationsQuery = async function () {
+  return await client.query({
+    query: gql`
+      query getStorageLocations {
+        storageLocations {
+          id
+          name
+          lat
+          long
+          user {
+            name
+            email
+          }
+        }
+      }
+    `,
+  });
+};
+
 export {
   loginQuery,
   getIrrigatorsQuery,
   getTechniciansQuery,
-  getGatewaysQuery,
   getAssetTypesQuery,
   //hdw issue
   getHdwIssuesQuery,
@@ -2232,9 +2297,9 @@ export {
   //work order
   createWorkOrderMutation,
   getWorkOrdersQuery,
-  getTechniciansGatewaysQuery,
-  getTechniciansPressureSensorsQuery,
-  getTechniciansGpsNodesQuery,
+  getGatewaysQuery,
+  getPressureSensorsQuery,
+  getGpsNodesQuery,
   //install uninstall request
   getInstallUninstallRequestsQuery,
   createInstallUninstallRequestMutation,
@@ -2246,4 +2311,6 @@ export {
   rejectDoneRequestMutation,
   //stock
   getStockMovementsQuery,
+  createStockMovementMutation,
+  getStorageLocationsQuery,
 };

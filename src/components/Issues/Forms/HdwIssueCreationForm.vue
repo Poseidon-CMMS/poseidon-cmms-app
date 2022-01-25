@@ -32,7 +32,7 @@
           optionValue="code"
           placeholder="Select an Irrigator"
         />
-                <div><small v-if="(v$.selectedIrrigator.$invalid && submitted) || v$.selectedIrrigator.$pending.$response" class="p-error">{{v$.selectedIrrigator.required.$message.replace('Value', 'Equipo de riego')}}</small></div>
+          <div><small v-if="(v$.selectedIrrigator.$invalid && submitted) || v$.selectedIrrigator.$pending.$response" class="p-error">{{v$.selectedIrrigator.required.$message.replace('Value', 'Equipo de riego')}}</small></div>
 
       </div>
       <div class="field">

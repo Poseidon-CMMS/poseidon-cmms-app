@@ -241,9 +241,9 @@ import {
   createRepairMutation,
   getSolutionTypesQuery,
   getWorkOrdersQuery,
-  getTechniciansGatewaysQuery,
-  getTechniciansGpsNodesQuery,
-  getTechniciansPressureSensorsQuery,
+  getGatewaysQuery,
+  getGpsNodesQuery,
+  getPressureSensorsQuery,
 } from "../../../api/apiRequests";
 import { dateFormatter } from "../../../utils/dateFormatter.js";
 import { required } from "@vuelidate/validators";
@@ -404,11 +404,11 @@ export default {
     this.solutionTypes = (await getSolutionTypesQuery()).data.solutionTypes; //todo: error handling
     const user_id = this.selectedIssue?.assigned_technician?.id;
     this.workOrders = (await getWorkOrdersQuery(user_id)).data.workOrders; //todo: error handling
-    this.gateways = (await getTechniciansGatewaysQuery()).data.gateways; //todo: error handling y traer solo las del tecnico
+    this.gateways = (await getGatewaysQuery()).data.gateways; //todo: error handling y traer solo las del tecnico
     this.pressureSensors = (
-      await getTechniciansPressureSensorsQuery()
+      await getPressureSensorsQuery()
     ).data.pressureSensors; //todo: error handling y traer solo las del tecnico
-    this.gpsNodes = (await getTechniciansGpsNodesQuery()).data.gpsNodes; //todo: error handling y traer solo las del tecnico
+    this.gpsNodes = (await getGpsNodesQuery()).data.gpsNodes; //todo: error handling y traer solo las del tecnico
 
     this.loading = false;
   },
