@@ -41,7 +41,7 @@
     <column field="gateway.satelliteModem.integration_id" header="Modem" :sortable="true"></column>
     <column field="isMapped" header="Mapeado" :sortable="true"></column>
     <column field="field.zone.name" header="Zone" :sortable="true"></column>
-    <column field="field.province.name" header="Provincia" :sortable="true"></column>
+    <column field="field.city.province.name" header="Provincia" :sortable="true"></column>
     <column field="field.city.name" header="Ciudad" :sortable="true"></column>
     <column field="field.name" header="Campo" :sortable="true"></column>
     <column field="transmission_status" header="Estado de transmisión" :sortable="true">

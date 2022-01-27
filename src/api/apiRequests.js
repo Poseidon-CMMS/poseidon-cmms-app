@@ -167,11 +167,11 @@ const getIrrigatorsQuery = async function (id) {
               name
             }
             name
-            province {
-              name
-            }
             city {
               name
+              province {
+                name
+              }
             }
             zone {
               name
