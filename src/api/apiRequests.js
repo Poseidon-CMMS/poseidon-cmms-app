@@ -1132,6 +1132,7 @@ const getHdwIssuesQuery = async function (status) {
           id
           creation_date
           close_date
+          automatic_diagnostic
           time_to_repair_hours
           time_to_diagnostic_hours
           time_from_removal_to_autopsy_hours
@@ -1390,6 +1391,7 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
           id
           creation_date
           close_date
+          automatic_diagnostic
           time_to_repair_hours
           time_to_diagnostic_hours
           time_from_removal_to_autopsy_hours
@@ -1585,6 +1587,7 @@ const rejectRepairedHdwIssueMutation = async function (hdwIssueId) {
           id
           creation_date
           close_date
+          automatic_diagnostic
           time_to_repair_hours
           time_to_diagnostic_hours
           time_from_removal_to_autopsy_hours

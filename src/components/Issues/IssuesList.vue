@@ -14,7 +14,7 @@
                       + element.irrigator?.name + " (" + element.irrigator?.integration_id+")" }}
                     </template>
                     <template #subtitle>
-                      {{ element.diagnostic.diagnostic_type.name }}
+                      {{ element.diagnostic?.diagnostic_type?.name || '' + `Diagnostico automático: ${automaticDiagnosticFormatter(element.automatic_diagnostic)}`}}
                     </template>
                     <template #content>
                       {{ element.comments }}
@@ -57,6 +57,7 @@ import Avatar from 'primevue/avatar';
 import Button from 'primevue/button';
 import Card from "primevue/card";
 import { updateHdwIssueStatusMutation, rejectRepairedHdwIssueMutation } from '../../api/apiRequests';
+import {automaticDiagnosticFormatter} from '../../utils/automaticDiagnosticFormatter';
 
 export default {
   name: 'IssuesList',
@@ -72,6 +73,7 @@ export default {
   emits: ["issueUpdated", "updateAssignationFormOpen", "openRepairDialog", "openInspectionDialog"],
   props: ['title', 'list', 'log', 'selectedIssue', 'clickElement', 'loading'],
   methods: {
+    automaticDiagnosticFormatter,
     confirmDialog(message, toastMessage, onAccept) {
           this.$confirm.require({
                 message: message,
