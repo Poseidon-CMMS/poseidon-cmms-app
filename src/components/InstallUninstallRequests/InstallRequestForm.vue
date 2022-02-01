@@ -492,6 +492,7 @@ export default {
     },
     handleNewWorkOrder(newWorkOrder) {
       this.workOrders = [...this.workOrders, newWorkOrder];
+      this.selectedWorkOrder = newWorkOrder;
     },
   },
   computed: {
