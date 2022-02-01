@@ -22,23 +22,23 @@
         </li>
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">GTW ID</div>
-          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.gateway?.integrationId }}</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.gateway?.integration_id }}</div>
         </li>
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">NODO ID</div>
-          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.gpsNode?.integrationId }}</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.gps_node?.integration_id }}</div>
         </li>
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">Modem ID</div>
-          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.gateway?.satelliteModem?.integration_id }}</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.gateway?.satellite_modem?.integration_id }}</div>
         </li>
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">Pressure Sensor ID</div>
-          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.pressureSensor?.integration_id }}</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.pressure_sensor?.integration_id }}</div>
         </li>
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">Mapeo</div>
-          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.isMapped }}</div>
+          <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ irrigator?.enabled }}</div>
         </li>
         <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
           <div class="text-500 w-6 md:w-2 font-medium">Campo</div>
