@@ -6,7 +6,7 @@
     :modal="true"
   >
     <div class="card">
-      <form id="uninstall-request-form" @submit.prevent="onSubmit(!v$.$invalid)" class="p-fluid">
+      <form id="uninstall-request-form" @submit.prevent="onSubmit(!v$.$invalid)">
       <div class="field">
         <div class="flex justify-content-around flex-nowrap card-container">
           <div class="flex align-items-center w-11 justify-content-start">
@@ -25,7 +25,7 @@
           v-model="selectedWorkOrder"
           :options="workOrders"
           :optionLabel="(work_order) => `${dateFormatter(work_order?.work_date, false)}`"
-          class="inputfield"
+          class="inputfield w-full"
           placeholder="Orden de trabajo"
         />
         <small v-if="(v$.selectedWorkOrder.$invalid && submitted) || v$.selectedWorkOrder.$pending.$response" class="p-error">{{v$.selectedWorkOrder.required.$message.replace('Value', 'Orden de trabajo')}}</small>
