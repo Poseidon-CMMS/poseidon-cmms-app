@@ -38,15 +38,15 @@
     <column field="gateway.integration_id" header="GTW" :sortable="true"></column>
     <column field="gps_node.integration_id" header="Nodo" :sortable="true"></column>
     <column field="pressure_sensor.integration_id" header="Sensor de presión" :sortable="true"></column>
-    <column field="gateway.satelliteModem.integration_id" header="Modem" :sortable="true"></column>
-    <column field="isMapped" header="Mapeado" :sortable="true"></column>
+    <column field="gateway.satellite_modem.integration_id" header="Modem" :sortable="true"></column>
+    <column field="enabled" header="Mapeado" :sortable="true"></column>
     <column field="field.zone.name" header="Zone" :sortable="true"></column>
     <column field="field.city.province.name" header="Provincia" :sortable="true"></column>
     <column field="field.city.name" header="Ciudad" :sortable="true"></column>
     <column field="field.name" header="Campo" :sortable="true"></column>
     <column field="transmission_status" header="Estado de transmisión" :sortable="true">
       <template #body="{data}">
-        <span :class="'status-badge status-' + data.transmissionStatus">{{data.transmissionStatus}}</span>
+        <span :class="'status-badge status-' + data.transmissionStatus">{{data.transmission_status}}</span>
       </template>
     </column>
     <column field="lastTransmissionDate" header="Última Tx" :sortable="true"></column>
