@@ -8,7 +8,7 @@
               class="list-group"
             >
                 <div class="list-group-item" v-for="(element, index) in list" v-bind:key="index">    
-                  <Card :class='`hover:bg-blue-300 hover:text-white border-round ${element.status==="assigned"?"bg-orange-100":element.status==="repaired"?"bg-green-100":""}`' @click="clickElement(element)">
+                  <Card :class='`hover:bg-blue-300 hover:text-white border-round mb-2 ${element.status==="assigned"?"bg-orange-100":element.status==="repaired"?"bg-green-100":""}`' @click="clickElement(element)">
                     <template #title>
                       {{ (element.irrigator?.field?.name ?? 'Campo desconocido') + ' | '
                       + element.irrigator?.name + " (" + element.irrigator?.integration_id+")" }}
@@ -135,5 +135,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

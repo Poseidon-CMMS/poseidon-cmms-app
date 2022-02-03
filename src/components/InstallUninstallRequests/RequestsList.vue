@@ -9,7 +9,7 @@
             >
               <div class="list-group-item" v-for="(element, index) in list" v-bind:key="index">
                 <Card
-                  class="hover:bg-blue-300 hover:text-white border-round"
+                  class="hover:bg-blue-300 hover:text-white border-round mb-2"
                   @click="clickElement(element)"
                 >
                   <template #title>

@@ -321,6 +321,7 @@ export default {
         this.loading = true;
         const repairResult = await createRepairMutation(
           //TODO: validar q todos los campso esten completos
+          new Date(),
           this.fieldRepairDate,
           this.selectedIssue?.id,
           this.repairType?.id,
@@ -386,6 +387,7 @@ export default {
     },
     handleNewWorkOrder(newWorkOrder) {
       this.workOrders = [...this.workOrders, newWorkOrder];
+      this.selectedWorkOrder = newWorkOrder;
     },
   },
   computed: {

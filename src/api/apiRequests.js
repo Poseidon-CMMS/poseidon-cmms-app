@@ -700,7 +700,8 @@ const createWorkOrderMutation = async function (
 };
 
 const createRepairMutation = async function (
-  date,
+  creation_date,
+  real_repair_date,
   hdw_issue_id,
   repair_type_id,
   replaced_asset_type_id,
@@ -714,7 +715,8 @@ const createRepairMutation = async function (
 ) {
   const _variables = {
     data: {
-      date,
+      creation_date,
+      real_repair_date,
       hdw_issue: {
         connect: {
           id: hdw_issue_id,
@@ -778,7 +780,8 @@ const createRepairMutation = async function (
       mutation ($data: repairCreateInput!) {
         createrepair: createrepair(data: $data) {
           id
-          date
+          creation_date
+          real_repair_date
           work_order {
             install_uninstall_requestCount
             repairCount
@@ -1232,7 +1235,8 @@ const getHdwIssuesQuery = async function (status) {
           }
           repair {
             id
-            date
+            creation_date
+            real_repair_date
             work_order {
               technician {
                 name
@@ -1491,7 +1495,8 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
           }
           repair {
             id
-            date
+            creation_date
+            real_repair_date
             work_order {
               technician {
                 name
@@ -1687,7 +1692,8 @@ const rejectRepairedHdwIssueMutation = async function (hdwIssueId) {
           }
           repair {
             id
-            date
+            creation_date
+            real_repair_date
             work_order {
               technician {
                 name
