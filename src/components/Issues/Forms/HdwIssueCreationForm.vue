@@ -346,7 +346,7 @@ export default {
       diagnosticDate: null,
 
       //selectables
-      selectedIrrigator: this.selectedIrrigatorId || null,
+      selectedIrrigator: null,
       selectedDiagnosticType: null,
 
       //text
@@ -435,8 +435,6 @@ export default {
   async beforeMount() {
     //todo: error han dling
     this.loading = true;
-    this.selectedIrrigator = this.selectedIrrigatorId || null;
-
     //populate dropdowns
     const result = await getIrrigatorsQuery();
     const irrigators = result.data.irrigators;
@@ -444,6 +442,8 @@ export default {
       name: irr.integration_id,
       code: irr.id,
     }));
+
+    this.selectedIrrigator = this.selectedIrrigatorId || null;
 
     const dtypesraw = await getDiagnosticTypesQuery();
     const diagnosticTypes = dtypesraw.data.diagnosticTypes;
