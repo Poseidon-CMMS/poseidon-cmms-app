@@ -305,7 +305,7 @@
                   <div class="grid mx-5">
                     <div class="col-12 md:col-2 mt-3">
                       <i class="pi pi-calendar" style="fontSize: 1.2rem"></i> 
-                      {{ dateFormatter(item.date) }}
+                      {{ dateFormatter(item.real_repair_date) }}
                     </div>
                     <div class="col-12 md:col-4 mt-3">
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> 

@@ -122,8 +122,6 @@ export default {
     },
     handleIssueUpdated: function(updatedIssue) {
       
-        // eslint-disable-next-line
-        debugger;
       
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
       this.issues = [...allOtherIssues, updatedIssue];
