@@ -1,58 +1,75 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Irrigators from '../views/Irrigators.vue'
-import Login from '../views/Login.vue'
-import Dashboard from '../views/Dashboard.vue'
-import { store } from '../vuex/store'
+import { createRouter, createWebHistory } from "vue-router";
+import Irrigators from "../views/Irrigators.vue";
+import Login from "../views/Login.vue";
+import Dashboard from "../views/Dashboard.vue";
+import { store } from "../vuex/store";
 
 const routes = [
   {
-    path: '/',
-    name: 'Irrigators',
-    component: Irrigators
+    path: "/",
+    name: "Irrigators",
+    component: Irrigators,
+    meta: { adminOnly: true },
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login
+    path: "/login",
+    name: "Login",
+    component: Login,
+    meta: { adminOnly: false },
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: { adminOnly: true },
   },
   {
-    path: '/issues',
-    name: 'Issues',
-    component: () => import('../views/Issues.vue')
+    path: "/issues",
+    name: "Issues",
+    component: () => import("../views/Issues.vue"),
+    meta: { adminOnly: false },
   },
   {
-    path: '/issues/create/:irrigatorId',
-    name: 'Issues Creation',
-    component: () => import('../views/Issues.vue')
+    path: "/issues/create/:irrigatorId",
+    name: "Issues Creation",
+    component: () => import("../views/Issues.vue"),
+    meta: { adminOnly: true },
   },
   {
-    path:'/requests',
-    name: 'InstallUninstallRequests',
-    component: () => import('../views/InstallUninstallRequests')
+    path: "/requests",
+    name: "InstallUninstallRequests",
+    component: () => import("../views/InstallUninstallRequests"),
+    meta: { adminOnly: false },
   },
-  
+
   {
-    path:'/stock',
-    name: 'Stock Movements',
-    component: () => import('../views/StockMovements')
+    path: "/stock",
+    name: "Stock Movements",
+    component: () => import("../views/StockMovements"),
+    meta: { adminOnly: true },
   },
-]
+  {
+    path: "/forbidden",
+    name: "Acceso denegado",
+    component: () => import("../views/Forbidden"),
+    meta: { adminOnly: false },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!store.state?.user?.name;
-  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' });
-  else next()
-})
+  const isAdmin = store.state?.user?.type === "admin";
+  console.log(to);
+  if (to.name !== "Login" && !isAuthenticated) {
+    next({ name: "Login" });
+  } else if (to.meta.adminOnly && !isAdmin) {
+    next({ path: "/forbidden" });
+  } else next();
+});
 
-
-export default router
+export default router;
