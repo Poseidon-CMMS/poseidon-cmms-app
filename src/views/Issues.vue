@@ -39,7 +39,7 @@
             <issues-list title="Reparados" :list='repairedList' :log='repairedLog' :clickElement='setSelectedIssue' :loading='loading' :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated"/>
           </div>
           <div v-if="this.userType === 'admin'"  class="col-12 md:col-6 lg:col-3">
-            <issues-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue"/>
+            <issues-list title="Out of field" :list='outOfFieldList' :log='outOfFieldLog' :clickElement='setSelectedIssue'  :loading='loading' :selectedIssue="selectedIssue" @openAutopsyDialog='handleIsOpenAutopsy'/>
           </div>
 
           <div v-if="this.userType !== 'admin'" :class="'col-12 md:col-6'">

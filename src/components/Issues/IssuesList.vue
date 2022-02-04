@@ -38,6 +38,10 @@
                           <Button icon="pi pi-check" class="p-button-success" @click="clickButtonOk(element)"/>
                           <Button icon="pi pi-times" class="p-button-danger" @click="clickButtonWrong(element)"/>
                         </span>
+                        
+                        <span class="p-buttonset m-2"  v-if="isAdmin && element.status === 'out-of-field'">
+                          <Button icon="pi pi-cog" class="p-button-success" @click="this.$emit('openAutopsyDialog',true)"/>
+                        </span>
                       </div>
                     </template>
                   </Card>
@@ -70,7 +74,7 @@ export default {
     Button
     
   },
-  emits: ["issueUpdated", "updateAssignationFormOpen", "openRepairDialog", "openInspectionDialog"],
+  emits: ["issueUpdated", "updateAssignationFormOpen", "openRepairDialog", "openInspectionDialog", "openAutopsyDialog"],
   props: ['title', 'list', 'log', 'selectedIssue', 'clickElement', 'loading'],
   methods: {
     automaticDiagnosticFormatter,

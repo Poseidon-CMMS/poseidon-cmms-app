@@ -202,8 +202,8 @@ import { createAutopsyMutation, getAutopsyTypesQuery } from '../../../api/apiReq
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 
-function initialData() {
-  return {
+function initialData(firstTime) {
+  const data = {
     loading: false,
     error: null,
     date: null,
@@ -211,9 +211,13 @@ function initialData() {
     pressureLog: null,
     selfDiagnosticFile: null,
     autopsyType: null,
-    autopsyTypes: [],
     submitted: false
   };
+
+  if(firstTime)
+    data.autopsyTypes = []
+
+  return data
 }
 
 export default {
@@ -243,7 +247,7 @@ export default {
     }
   },
   data() {
-    return initialData();
+    return initialData(true);
   },
 
   methods: {
