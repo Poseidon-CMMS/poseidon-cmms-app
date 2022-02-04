@@ -46,7 +46,7 @@
           <Accordion>
             <AccordionTab header="Historial">
               <issues-list
-                :list="[...repairedList, ...outOfFieldList, ...closedList]"
+                :list="technicianHistoryList"
                 :log="completedLog"
                 :clickElement="setSelectedIssue"
                 :loading="loading"
@@ -121,13 +121,15 @@ export default {
       this.showAssignedDialog = value;
     },
     handleIssueUpdated: function(updatedIssue) {
+      
+        // eslint-disable-next-line
+        debugger;
+      
       const allOtherIssues = this.issues.filter(issue => issue.id !== updatedIssue.id);
       this.issues = [...allOtherIssues, updatedIssue];
       if(this.selectedIssue.id === updatedIssue.id){
         this.selectedIssue = updatedIssue;
       }
-
-      // this.selectedIssue = this.issues.find(issue => issue.id === this.selectedIssue.id);
     },
     clickIrrigator: function() {
       this.selectedIrrigator = this.selectedIssue.irrigator;
@@ -209,6 +211,11 @@ export default {
     outOfFieldList: {
       get(){
         return this.issues.filter(i => i.status ==='out-of-field');
+      }
+    },
+    technicianHistoryList: {
+      get(){
+        return this.issues.filter(i => i.status ==='repaired' || i.status ==='out-of-field' || i.status ==='closed');
       }
     },
   },

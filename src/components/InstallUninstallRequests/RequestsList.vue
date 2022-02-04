@@ -44,7 +44,7 @@
                     />
                     <span
                       class="p-buttonset m-2"
-                      v-if="element.status === 'done'"
+                      v-if="this.isAdmin && element.status === 'done'"
                     >
                       <Button
                         icon="pi pi-check"
