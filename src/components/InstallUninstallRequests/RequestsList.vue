@@ -4,76 +4,89 @@
       <Panel :header="title">
         <ProgressSpinner v-if="this.loading" />
         <ScrollPanel v-else style="width: 100%; height: 600px">
-          <div
-              class="list-group"
+          <div class="list-group">
+            <div
+              class="list-group-item"
+              v-for="(element, index) in list"
+              v-bind:key="index"
             >
-              <div class="list-group-item" v-for="(element, index) in list" v-bind:key="index">
-                <Card
-                  class="hover:bg-blue-300 hover:text-white border-round mb-2"
-                  @click="clickElement(element)"
-                >
-                  <template #title>
-                    {{
-                      (element.irrigator?.field?.name ?? "Campo desconocido") +
-                      " | " +
-                      element.irrigator?.name +
-                      " (" +
-                      element.irrigator?.integration_id +
-                      ")"
-                    }}
-                  </template>
-                  <template #subtitle>
-                    {{ dateFormatter(element.creation_date, false) }}
-                  </template>
-                  <template #content>
-                    {{
-                      element.request_type === "install"
-                        ? "Instalación"
-                        : element.request_type === "uninstall"
-                        ? "Desinstalación"
-                        : element.request_type || "Desconocido"
-                    }}
-                  </template>
-                  <template #footer>
-                    <Avatar
-                       v-if="element?.assigned_technician"
-                      :label="element.assigned_technician.name.charAt(0)"
-                      size="large"
-                      style="background-color: #2196f3; color: #ffffff"
-                      shape="circle"
+              <Card
+                class="hover:bg-blue-300 hover:text-white border-round mb-2"
+                @click="clickElement(element)"
+              >
+                <template #title>
+                  {{
+                    (element.irrigator?.field?.name ?? "Campo desconocido") +
+                    " | " +
+                    element.irrigator?.name +
+                    " (" +
+                    element.irrigator?.integration_id +
+                    ")"
+                  }}
+                </template>
+                <template #subtitle>
+                  {{ dateFormatter(element.creation_date, false) }}
+                </template>
+                <template #content>
+                  {{
+                    element.request_type === "install"
+                      ? "Instalación"
+                      : element.request_type === "uninstall"
+                      ? "Desinstalación"
+                      : element.request_type || "Desconocido"
+                  }}
+                </template>
+                <template #footer>
+                  <span class="m-2">
+                    <Button
+                      class="ml-2 p-button-info"
+                      icon="pi pi-map"
+                      @click="handleOpenMap(element)"
                     />
-                    <span
-                      class="p-buttonset m-2"
-                      v-if="this.isAdmin && element.status === 'done'"
-                    >
-                      <Button
-                        icon="pi pi-check"
-                        class="p-button-success"
-                        @click="clickButtonOk(element)"
-                      />
-                      <Button
-                        icon="pi pi-times"
-                        class="p-button-danger"
-                        @click="clickButtonWrong(element)"
-                      />
-                    </span>
-                    <span class="p-buttonset m-2">
-                      <Button
-                        v-if="element.status === 'assigned'"
-                        icon="pi pi-cloud-upload"
-                        class="p-button-success"
-                        @click="clickButtonAddInstallData(element)"
-                      />
-                      <Button
-                        v-if="this.isAdmin && (element.status === 'assigned' || element.status === 'open')"
-                        class="mr-1 p-button-warning"
-                        icon="pi pi-user"
-                        @click="handleTechnicianEdit"
-                      />
-                    </span>
-                  </template>
-                </Card>
-              </div>
+                  </span>
+                  <Avatar
+                    v-if="element?.assigned_technician"
+                    :label="element.assigned_technician.name.charAt(0)"
+                    size="large"
+                    style="background-color: #2196f3; color: #ffffff"
+                    shape="circle"
+                  />
+                  <span
+                    class="p-buttonset m-2"
+                    v-if="this.isAdmin && element.status === 'done'"
+                  >
+                    <Button
+                      icon="pi pi-check"
+                      class="p-button-success"
+                      @click="clickButtonOk(element)"
+                    />
+                    <Button
+                      icon="pi pi-times"
+                      class="p-button-danger"
+                      @click="clickButtonWrong(element)"
+                    />
+                  </span>
+                  <span class="p-buttonset m-2">
+                    <Button
+                      v-if="element.status === 'assigned'"
+                      icon="pi pi-cloud-upload"
+                      class="p-button-success"
+                      @click="clickButtonAddInstallData(element)"
+                    />
+                    <Button
+                      v-if="
+                        this.isAdmin &&
+                        (element.status === 'assigned' ||
+                          element.status === 'open')
+                      "
+                      class="mr-1 p-button-warning"
+                      icon="pi pi-user"
+                      @click="handleTechnicianEdit"
+                    />
+                  </span>
+                </template>
+              </Card>
+            </div>
           </div>
         </ScrollPanel>
       </Panel>
@@ -90,7 +103,10 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 // import { updateHdwIssueStatusMutation } from '../../api/apiRequests';
 import { dateFormatter } from "../../utils/dateFormatter";
-import { acceptDoneRequestMutation, rejectDoneRequestMutation } from "../../api/apiRequests";
+import {
+  acceptDoneRequestMutation,
+  rejectDoneRequestMutation,
+} from "../../api/apiRequests";
 
 export default {
   name: "RequestsList",
@@ -187,11 +203,16 @@ export default {
     handleTechnicianEdit() {
       this.$emit("updateAssignationFormOpen", true);
     },
+    handleOpenMap(issue) {
+      const { lat, long } = issue.irrigator;
+      const link = `http://www.google.com/maps/place/${lat},${long}`;
+      window.open(link, "_blank");
+    },
   },
   computed: {
     isAdmin() {
-      return this.$store.state?.user?.type === 'admin';
-  }
+      return this.$store.state?.user?.type === "admin";
+    },
   },
 };
 </script>

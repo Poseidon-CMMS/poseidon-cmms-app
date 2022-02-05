@@ -55,9 +55,17 @@
       header="Actions"
       :sortable="false"
       :exportable="false"
-      style="min-width: 10rem"
+      style="min-width: 13rem"
     >
       <template #body="slotProps">
+        <Button
+          class="p-button-sm
+            p-button-rounded
+            p-button-info
+            mr-1"
+          icon="pi pi-map"
+          @click="handleOpenMap(slotProps.data)"
+        />
         <Button
           v-if="slotProps.data.status==='installed'"
           icon="pi pi-chart-line"
@@ -65,8 +73,8 @@
             p-button-sm
             p-button-rounded
             p-button-outlined
-            p-button-success
-            p-mr-2
+            p-button-info
+            p-mr-1
           "
           v-tooltip="'Abrir Grafana'"
           style="margin-right: 0.5em"
@@ -80,7 +88,7 @@
             p-button-rounded
             p-button-outlined
             p-button-warning
-            p-mr-2
+            p-mr-1
           "
           v-tooltip="'Crear Hdw Issue'"
           style="margin-right: 0.5em"
@@ -94,7 +102,7 @@
             p-button-rounded
             p-button-outlined
             p-button-success
-            p-mr-2
+            p-mr-1
           "
           v-tooltip="'Crear solicitud de instalación'"
           style="margin-right: 0.5em"
@@ -107,7 +115,7 @@
             p-button-sm
             p-button-rounded
             p-button-danger
-            p-mr-2
+            p-mr-1
           "
           v-tooltip="'Crear solicitud de desintalación'"
           @click="createUninstallRequest(slotProps.data)"
@@ -214,6 +222,11 @@ export default {
         else {
           this.$toast.add({severity:'error', summary:'Fallo al crear la solicitud', detail: `Ocurrió un error al crear una solicitud para el equipo ${createdRequest.irrigator.integration_id}`, life: 3000});
         }
+    },
+    handleOpenMap(irrigator){
+      const {lat, long} = irrigator;
+      const link = `http://www.google.com/maps/place/${lat},${long}`;
+      window.open(link, '_blank');
     }
   },
   async mounted(){

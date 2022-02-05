@@ -1151,6 +1151,8 @@ const getHdwIssuesQuery = async function (status) {
             field {
               name
             }
+            lat
+            long
           }
           diagnostic {
             id
@@ -1328,6 +1330,8 @@ const getInstallUninstallRequestsQuery = async function () {
           irrigator {
             integration_id
             name
+            lat
+            long
             field {
               name
             }
