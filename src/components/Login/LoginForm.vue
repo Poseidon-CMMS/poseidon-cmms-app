@@ -24,7 +24,7 @@
         <div class="p-field p-m-4 p-p-6">    
           <span class="p-float-label">
             <password id="password" toggleMask :feedback="false" v-model="password" @keypress="keyPressed"/>
-            <label for="password">Password</label>
+            <label for="password">Contraseña</label>
             <div><small v-if="(v$.password.$invalid && submitted) || v$.password.$pending.$response" class="p-error">{{v$.password.required.$message.replace('Value', 'Contraseña')}}</small></div>
 
           </span>

@@ -1,7 +1,7 @@
 <template>
   <div class="grid mt-3">
     <div class="col-12">
-      <div class="flex align-items-center justify-content-center bg-green-400 font-bold text-white border-round">
+      <div class="flex align-items-center justify-content-center bg-blue-400 font-bold text-white border-round">
         <p class="text-2xl w-full p-2 m-0">
           Solicitudes de instalación y desinstalación
         </p>

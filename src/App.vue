@@ -9,7 +9,7 @@
         </div>
         <div class="align-items-center justify-content-center mx-6 my-0 hidden lg:block">
           <p class="text-xl font-semibold text-white text-right" style="width: 10vw">
-            POSEIDON CMMS
+            POSEIDÓN CMMS
           </p>
         </div>
         <div class="flex-1 flex align-items-center justify-content-center">
@@ -26,7 +26,7 @@
   </Menubar>
   <ConfirmDialog></ConfirmDialog>
   <Toast></Toast>
-  <div class="mx-1 lg:mx-8">
+  <div class="mx-1 lg:mx-4">
     <router-view />
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
           command: () => this.$router.push("/dashboard"),
         },
         {
-          label: "Irrigators",
+          label: "Equipos",
           icon: "pi pi-fw pi-mobile",
           command: () => this.$router.push("/"),
         },
