@@ -1095,7 +1095,7 @@ const getGatewaysQuery = async function () {
   return await client.query({
     query: gql`
       query getGateways {
-        gateways {
+        gateways (where: { irrigator:  null })  {
           id
           integration_id
         }
@@ -1108,7 +1108,7 @@ const getPressureSensorsQuery = async function () {
   return await client.query({
     query: gql`
       query getPressureSensor {
-        pressureSensors {
+        pressureSensors (where: { irrigator:  null }) {
           id
           integration_id
         }
@@ -1120,8 +1120,8 @@ const getPressureSensorsQuery = async function () {
 const getGpsNodesQuery = async function () {
   return await client.query({
     query: gql`
-      query getGpsNodes {
-        gpsNodes {
+      query getGpsNodes  {
+        gpsNodes (where: { irrigator:  null }) {
           id
           integration_id
         }

@@ -53,6 +53,7 @@
           :options="gateways"
           optionLabel="integration_id"
           class="inputfield w-full"
+          
           placeholder="Gateway"
         />
         <small v-if="(v$.selectedGateway.$invalid && submitted) || v$.selectedGateway.$pending.$response" class="p-error">{{v$.selectedGateway.required.$message.replace('Value', 'Gateway')}}</small>
