@@ -200,6 +200,11 @@ const getTechniciansQuery = async function (id) {
           id
           name
           email
+          zone {
+            id
+            code
+            name
+          }
         }
       }
     `,

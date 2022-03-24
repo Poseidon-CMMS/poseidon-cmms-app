@@ -61,13 +61,13 @@
 </template>
 
 <script>
-import { 
+import {
   getTechniciansQuery,
   assignHdwIssueMutation,
   clearAssignHdwIssueMutation,
   assignRequestMutation,
-  clearAssignRequestMutation
-  } from "../../../api/apiRequests";
+  clearAssignRequestMutation,
+} from "../../../api/apiRequests";
 import Dropdown from "primevue/dropdown";
 import Message from "primevue/message";
 
@@ -86,27 +86,32 @@ export default {
   methods: {
     async onSubmitAssignation() {
       if (!this.selectedTechnician) {
-        this.error = "Debe seleccionar algún técnico, o seleccione la opción eliminar asignación";
+        this.error =
+          "Debe seleccionar algún técnico, o seleccione la opción eliminar asignación";
         setTimeout(() => {
           this.error = null;
         }, 5000);
         return;
       }
-      if (this.selectedRequest) { //modo asignar request
+      if (this.selectedRequest) {
+        //modo asignar request
         await this.assignRequest();
-      }  else { //modo asignar hw issue
+      } else {
+        //modo asignar hw issue
         await this.assignHdwIssue();
       }
       this.computedIsOpen = false;
     },
-    async assignHdwIssue(){
+    async assignHdwIssue() {
       this.loading = true; //todo control de errores
       await assignHdwIssueMutation(
         this.selectedIssue.id,
         this.selectedTechnician
       );
       this.loading = false;
-      const technicianObject = this.technicianOptions.find(t => t.id ===this.selectedTechnician);
+      const technicianObject = this.technicianOptions.find(
+        (t) => t.id === this.selectedTechnician
+      );
       const newIssue = {
         ...this.selectedIssue,
         status: "assigned",
@@ -121,20 +126,22 @@ export default {
         this.selectedTechnician
       );
       this.loading = false;
-      const newRequest = assignedRequestData.data.updateinstall_uninstall_request;
+      const newRequest =
+        assignedRequestData.data.updateinstall_uninstall_request;
       this.$emit("requestUpdated", newRequest);
     },
     onCancelAssignation() {
       this.computedIsOpen = false;
     },
     async onDeleteAssignation() {
-      if (this.selectedRequest) { //modo asignar request
+      if (this.selectedRequest) {
+        //modo asignar request
         await this.unassignRequest();
-      }  else { //modo asignar hw issue
+      } else {
+        //modo asignar hw issue
         await this.unassignHdwIssue();
       }
       this.computedIsOpen = false;
-      
     },
     async unassignHdwIssue() {
       this.loading = true;
@@ -142,7 +149,7 @@ export default {
       this.loading = false;
       const newIssue = {
         ...this.selectedIssue,
-        status: 'in-field'
+        status: "in-field",
       };
       delete newIssue.assigned_technician;
       this.$emit("issueUpdated", newIssue);
@@ -150,13 +157,15 @@ export default {
     },
     async unassignRequest() {
       this.loading = true;
-      const unassignedRequestData = await clearAssignRequestMutation(this.selectedRequest.id);
+      const unassignedRequestData = await clearAssignRequestMutation(
+        this.selectedRequest.id
+      );
       this.loading = false;
-      const newRequest =  unassignedRequestData.data.updateinstall_uninstall_request;
+      const newRequest =
+        unassignedRequestData.data.updateinstall_uninstall_request;
       this.$emit("requestUpdated", newRequest);
       this.computedIsOpen = false;
     },
-
   },
   computed: {
     computedIsOpen: {
@@ -175,15 +184,20 @@ export default {
     const result = await getTechniciansQuery();
     const technicians = result.data.users;
     this.technicianOptions = technicians.map((tec) => ({
-      name: tec.name,
+      name: `${tec.name} ${
+        tec.zone.length > 0 ? `(${tec.zone.map((z) => z.code).join("-")})` : ""
+      }`,
       id: tec.id,
     }));
 
     this.loading = false;
   },
   async beforeUpdate() {
-    this.selectedTechnician = this.selectedIssue?.assigned_technician?.id || this.selectedRequest?.assigned_technician?.id || null;
-  }
+    this.selectedTechnician =
+      this.selectedIssue?.assigned_technician?.id ||
+      this.selectedRequest?.assigned_technician?.id ||
+      null;
+  },
 };
 </script>
 
