@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Irrigators from "../views/Irrigators.vue";
 import Login from "../views/Login.vue";
+import Logout from "../views/Logout.vue";
 import Dashboard from "../views/Dashboard.vue";
 import { store } from "../vuex/store";
 
@@ -15,6 +16,12 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+    meta: { adminOnly: false },
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    component: Logout,
     meta: { adminOnly: false },
   },
   {

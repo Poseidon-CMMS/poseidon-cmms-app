@@ -68,9 +68,7 @@ const detectSessionTimeout = new ApolloLink((operation, forward) => {
   return forward(operation).map((data) => {
     // Called after server responds
     if (data?.errors?.find((e) => e.message.includes("Access denied"))) {
-      console.log("Session expired");
-      location.reload();
-      this.$store.commit('setUser',null);
+      location.assign('/logout');
     }
     return data;
   });

@@ -45,8 +45,7 @@ export default {
   },
   methods: {
     onLogout() {
-      this.$router.push("/login");
-      this.$store.commit('setUser',null);
+      this.$router.push("/logout");
     },
   },
   data() {
