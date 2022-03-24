@@ -209,23 +209,27 @@ export default {
       this.loading = false;
     },
     async createRequest(irrigator, type) {
-        const result = await createInstallUninstallRequestMutation(new Date(), irrigator.id, type);
+        try{
+          const result = await createInstallUninstallRequestMutation(new Date(), irrigator.id, type);
+          const createdRequest = result.data.createinstall_uninstall_request;
 
-        const createdRequest = result.data.createinstall_uninstall_request;
-
-        if (createdRequest.id) {
-          this.$toast.add(
-            {
-              severity:'success',
-              summary:'Solicitud creada',
-              detail: `Se creó una solicitud de ${type === 'install' ? 'instalación' : 'desinstalación' } para el equipo ${createdRequest.irrigator.integration_id}`,
-              life: 3000
-            });
-          this.$router.push('/requests');
+          if (createdRequest.id) {
+            this.$toast.add(
+              {
+                severity:'success',
+                summary:'Solicitud creada',
+                detail: `Se creó una solicitud de ${type === 'install' ? 'instalación' : 'desinstalación' } para el equipo ${createdRequest.irrigator.integration_id}`,
+                life: 3000
+              });
+            this.$router.push('/requests');
+          }
+          else {
+            this.$toast.add({severity:'error', summary:'Fallo al crear la solicitud', detail: `Ocurrió un error al crear una solicitud para el equipo ${createdRequest.irrigator.integration_id}`, life: 3000});
+          }
+        } catch (e) {
+          this.$toast.add({severity: 'error', summary: 'Fallo al crear la solicitud', detail: e.message.split(': ')[1], life: 7000});
         }
-        else {
-          this.$toast.add({severity:'error', summary:'Fallo al crear la solicitud', detail: `Ocurrió un error al crear una solicitud para el equipo ${createdRequest.irrigator.integration_id}`, life: 3000});
-        }
+        
     },
     handleOpenMap(irrigator){
       const {lat, long} = irrigator;
