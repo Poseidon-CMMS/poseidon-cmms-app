@@ -2,12 +2,12 @@
   <Menubar :model="items">
     <template #end>
       <div class="flex w-8">
-        <div v-if="isNotOnLoginPage" class="flex-1 flex align-items-center justify-content-center mr-3 lg:mx-6 my-0">
+        <div v-if="isNotOnLoginPage" class="flex-1 flex align-items-center justify-content-center mr-3 xl:mx-6 my-0">
           <p class="text-md font-semibold text-white text-right flex align-items-center" id="username">
             <i class="pi pi-user mr-2"/>{{this.$store.state?.user?.name || ''}}
           </p>
         </div>
-        <div class="align-items-center justify-content-center mx-6 my-0 hidden lg:block">
+        <div class="align-items-center justify-content-center mx-6 my-0 hidden xl:block">
           <p class="text-xl font-semibold text-white text-right" style="width: 10vw">
             POSEIDÓN CMMS
           </p>
