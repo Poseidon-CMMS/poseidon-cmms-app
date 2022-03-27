@@ -5,6 +5,7 @@
         <p class="text-2xl w-full p-2 m-0">
           Solicitudes de instalación y desinstalación
         </p>
+        <Button v-if="this.userType == 'admin'" label="Ver Solicitudes Rechazadas" icon="pi pi-eye" class="p-button-warning align-self-center m-2" @click="showRejectedRequests = true" />
       </div>
     </div>
     <div class="col-12">
@@ -104,6 +105,18 @@
     @requestUpdated="handleRequestUpdated"
     @updateIsOpen="handleIsOpenUninstall"
   />
+  <Sidebar v-if="this.userType == 'admin'" v-model:visible="showRejectedRequests" :baseZIndex="1000" position="right">
+    <h2>Solicitudes rechazadas</h2>
+    <request-list
+      title="Rechazadas"
+      :list="rejectedList"
+      :log="rejectedLog"
+      :clickElement="setSelectedRequest"
+      :loading="loading"
+      :selectedRequest="selectedRequest"
+      @requestUpdated="handleRequestUpdated"
+    />
+  </Sidebar>
 </template>
 
 <script>
@@ -116,6 +129,7 @@ import InstallRequestForm from "../components/InstallUninstallRequests/InstallRe
 import UninstallRequestForm from "../components/InstallUninstallRequests/UninstallRequestForm.vue";
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
+import Sidebar from 'primevue/sidebar';
 
 export default {
   name: "InstallUninstallRequests",
@@ -128,6 +142,7 @@ export default {
     UninstallRequestForm,
     Accordion,
     AccordionTab,
+    Sidebar
   },
   methods: {
     handleIsOpenChange: function (value) {
@@ -204,7 +219,8 @@ export default {
       selectedCreateRequestIrrigatorId: null,
       showRequestForm: false,
       showUninstallForm: false,
-      userType: "technician"
+      userType: "technician",
+      showRejectedRequests: false,
     };
   },
   computed: {
@@ -226,6 +242,11 @@ export default {
     completedList: {
       get() {
         return this.requests.filter((i) => i.status === "completed");
+      },
+    },
+    rejectedList: {
+      get() {
+        return this.requests.filter((i) => i.status === "rejected");
       },
     },
   },
