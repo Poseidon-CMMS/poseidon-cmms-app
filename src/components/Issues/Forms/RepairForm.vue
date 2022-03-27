@@ -59,18 +59,19 @@
 
       </div>
       <div class="field" v-if="repairType?.value == 'device_change'">
-        <label for="asset_type">Dispositivo con fallas</label>
+        <label for="asset_type">Dispositivo(s) con fallas</label>
         <SelectButton
           id="asset_type"
           v-model="assetType"
           :options="assetTypes"
           optionLabel="name"
+          multiple
         />
       </div>
       <div
         class="field"
         v-if="
-          repairType?.value === 'device_change' && assetType?.name == 'Gateway'
+          repairType?.value === 'device_change' && assetType.find(a => a?.name == 'Gateway')
         "
       >
         <label for="asset_type">Nuevo gateway instalado</label>
@@ -86,7 +87,7 @@
       <div
         class="field"
         v-if="
-          repairType?.value === 'device_change' && assetType?.name == 'Nodo GPS'
+          repairType?.value === 'device_change' && assetType.find(a => a?.name == 'Nodo GPS')
         "
       >
         <label for="asset_type">Nuevo nodo instalado</label>
@@ -103,7 +104,7 @@
         class="field"
         v-if="
           repairType?.value === 'device_change' &&
-          assetType?.name == 'Sensor de Presión'
+          assetType.find(a => a?.name == 'Sensor de Presión')
         "
       >
         <label for="asset_type">Nuevo sensor de presión instalado</label>
@@ -257,7 +258,7 @@ function initialData(avoidDeletingDropdowns = false) {
     comments: "",
     fieldRepairDate: null,
     repairType: null,
-    assetType: null,
+    assetType: [],
     log_file: null,
     selectedWorkOrder: null,
     selectedPressureSensor: null,
@@ -325,7 +326,6 @@ export default {
           this.fieldRepairDate,
           this.selectedIssue?.id,
           this.repairType?.id,
-          this.assetType?.id,
           this.selectedGateway?.id,
           this.selectedGpsNode?.id,
           this.selectedPressureSensor?.id,

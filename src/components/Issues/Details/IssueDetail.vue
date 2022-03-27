@@ -309,7 +309,7 @@
                     </div>
                     <div class="col-12 md:col-4 mt-3">
                       <i class="pi pi-comment" style="fontSize: 1.2rem"></i> 
-                      {{ (item.repair_type.value === 'device_change')?`Nuevo ${item?.replaced_asset_type?.name}`:item?.solution_type?.name }}
+                      {{ (item.repair_type.value === 'device_change')?`Nuevo ${item?.new_gateway?'Gateway,':''}${item?.new_gps_node?' Nodo GPS,':''}${item?.new_pressure_sensor?' Sensor de presión,':''}`.slice(0,-1):item?.solution_type?.name }}
                     </div>
                     <div class="col-12 md:col-3 mt-3">
                       <i class="pi pi-user" style="fontSize: 1.2rem"></i> {{ item?.work_order?.technician?.email }}

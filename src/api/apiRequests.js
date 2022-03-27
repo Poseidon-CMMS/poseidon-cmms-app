@@ -709,7 +709,6 @@ const createRepairMutation = async function (
   real_repair_date,
   hdw_issue_id,
   repair_type_id,
-  replaced_asset_type_id,
   new_gateway_id,
   new_gps_node_id,
   new_pressure_sensor_id,
@@ -732,13 +731,6 @@ const createRepairMutation = async function (
           id: repair_type_id,
         },
       },
-      replaced_asset_type: replaced_asset_type_id
-        ? {
-            connect: {
-              id: replaced_asset_type_id,
-            },
-          }
-        : null,
       work_order: {
         connect: {
           id: work_order_id,
@@ -801,10 +793,6 @@ const createRepairMutation = async function (
             value
           }
           solution_type {
-            id
-            name
-          }
-          replaced_asset_type {
             id
             name
           }
@@ -1260,10 +1248,6 @@ const getHdwIssuesQuery = async function (status) {
               id
               name
             }
-            replaced_asset_type {
-              id
-              name
-            }
             new_gateway {
               id
               integration_id
@@ -1524,10 +1508,6 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
               id
               name
             }
-            replaced_asset_type {
-              id
-              name
-            }
             new_gateway {
               id
               integration_id
@@ -1719,10 +1699,6 @@ const rejectRepairedHdwIssueMutation = async function (hdwIssueId) {
               value
             }
             solution_type {
-              id
-              name
-            }
-            replaced_asset_type {
               id
               name
             }
