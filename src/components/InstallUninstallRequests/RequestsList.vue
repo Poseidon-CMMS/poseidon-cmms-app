@@ -105,6 +105,7 @@ import Card from "primevue/card";
 import { dateFormatter } from "../../utils/dateFormatter";
 import {
   acceptDoneRequestMutation,
+  createInstallUninstallRequestMutation,
   rejectDoneRequestMutation,
 } from "../../api/apiRequests";
 
@@ -185,10 +186,17 @@ export default {
     },
     async onRequestDeclined() {
       const resultData = await rejectDoneRequestMutation(
-        this.selectedRequest.id
+        this.selectedRequest
       );
-      const newRequest = resultData.data.updateinstall_uninstall_request;
-      this.$emit("requestUpdated", newRequest);
+      const rejectedRequest = resultData.data.updateinstall_uninstall_request;
+      this.$emit("requestUpdated", rejectedRequest);
+      const newResultData = await createInstallUninstallRequestMutation(
+        new Date(),
+        this.selectedRequest.irrigator.id,
+        this.selectedRequest.request_type
+      );
+      const newRequestForTheSameIrrigator = newResultData.data.createinstall_uninstall_request;
+      this.$emit("requestUpdated", newRequestForTheSameIrrigator);
     },
     async clickButtonWrong(request) {
       this.selectedRequest = request;

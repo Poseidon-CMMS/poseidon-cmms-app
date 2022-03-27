@@ -287,6 +287,7 @@ const assignRequestMutation = async function (requestId, technicianId) {
           completion_date
           close_date
           irrigator {
+            id
             integration_id
             name
             field {
@@ -490,6 +491,7 @@ const clearAssignRequestMutation = async function (requestId) {
           completion_date
           close_date
           irrigator {
+            id
             integration_id
             name
             field {
@@ -1149,6 +1151,7 @@ const getHdwIssuesQuery = async function (status) {
             name
           }
           irrigator {
+            id
             integration_id
             name
             field {
@@ -1331,6 +1334,7 @@ const getInstallUninstallRequestsQuery = async function () {
           completion_date
           close_date
           irrigator {
+            id
             integration_id
             name
             lat
@@ -1413,6 +1417,7 @@ const updateHdwIssueStatusMutation = async function (hdwIssueId, status) {
             name
           }
           irrigator {
+            id
             integration_id
             name
             field {
@@ -1610,6 +1615,7 @@ const rejectRepairedHdwIssueMutation = async function (hdwIssueId) {
             name
           }
           irrigator {
+            id
             integration_id
             name
             field {
@@ -1801,6 +1807,7 @@ const acceptDoneRequestMutation = async function (requestId, close_date) {
           completion_date
           close_date
           irrigator {
+            id
             integration_id
             name
             field {
@@ -1861,12 +1868,13 @@ const acceptDoneRequestMutation = async function (requestId, close_date) {
       },
       data: {
         close_date: close_date.toISOString(),
+        status: "completed"
       },
     },
   });
 };
 
-const rejectDoneRequestMutation =async function (requestId) {
+const rejectDoneRequestMutation =async function (request) {
   return await client.mutate({
     mutation: gql`
       mutation (
@@ -1879,6 +1887,7 @@ const rejectDoneRequestMutation =async function (requestId) {
           completion_date
           close_date
           irrigator {
+            id
             integration_id
             name
             field {
@@ -1935,31 +1944,11 @@ const rejectDoneRequestMutation =async function (requestId) {
     `,
     variables: {
       where: {
-        id: requestId,
+        id: request.id,
       },
       data: {
-        status: "open",
-        assigned_technician: {
-          disconnect: true,
-        },
-        completion_date: null,
-        close_date: null,
-        gateway: {
-          disconnect: true,
-        },
-        gps_node: {
-          disconnect: true,
-        },
-        pressure_sensor: {
-          disconnect: true,
-        },
-        work_order : {
-          disconnect: true,
-        },
-        gtw_image : null,
-        node_gps_image : null,
-        pressure_sensor_image: null,
-        log : null
+        status: "rejected",
+        close_date: new Date().toISOString(),
       },
     },
   });
@@ -2030,6 +2019,7 @@ const doInstallRequestMutation = async function (
           completion_date
           close_date
           irrigator {
+            id
             integration_id
             name
             field {
@@ -2161,6 +2151,7 @@ const doUninstallRequestMutation = async function (
           completion_date
           close_date
           irrigator {
+            id
             integration_id
             name
             field {
