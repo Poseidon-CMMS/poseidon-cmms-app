@@ -304,6 +304,7 @@ import {
   getDiagnosticTypesQuery,
   getIrrigatorsQuery,
   createHdwIssueMutation,
+  addDiagnosticToHdwIssueMutation,
 } from "../../../api/apiRequests";
 import InlineMessage from "primevue/inlinemessage";
 import FileUpload from "primevue/fileupload";
@@ -322,7 +323,7 @@ export default {
     FileUpload,
     InlineMessage,
   },
-  props: ["isOpen", "selectedIrrigatorId"],
+  props: ["isOpen", "selectedIrrigatorId", "hdwIssueToEdit"],
   emits: ["updateIsOpen"],
   setup: () => ({ v$: useVuelidate() }),
   validations() {
@@ -343,29 +344,29 @@ export default {
       loading: false,
       error: null,
       //dates
-      diagnosticDate: null,
+      diagnosticDate: this?.hdwIssueToEdit?.diagnosticDate || null,
 
       //selectables
-      selectedIrrigator: null,
-      selectedDiagnosticType: null,
+      selectedIrrigator: this?.hdwIssueToEdit?.irrigator?.id || null,
+      selectedDiagnosticType: this?.hdwIssueToEdit?.diagnosticType || null,
 
       //text
-      grafanaLink: "",
-      comments: null,
-      angles: null,
-      gateway_satellite_power: null,
-      packet_202_count: null,
-      packet_203_count: null,
-      battery_2to3: null,
-      positions: null,
-      lost_packets: null,
-      node_to_gateway_distance_in_meters: null,
-      gateway_first_data_transmission_date: null,
-      height_difference_in_meters: null,
-      to_hour: null,
-      from_hour: null,
-      pressure_difference: null,
-      altimetry_image: null,
+      grafanaLink: this?.hdwIssueToEdit?.grafanaLink || "",
+      comments: this?.hdwIssueToedit?.comments || null,
+      angles: this?.hdwIssueToEdit?.angles  || null,
+      gateway_satellite_power: this?.hdwIssueToEdit?.gateway_satellite_power  || null,
+      packet_202_count: this?.hdwIssueToEdit?.packet_202_count  || null,
+      packet_203_count: this?.hdwIssueToEdit?.packet_203_count  || null,
+      battery_2to3: this?.hdwIssueToEdit?.battery_2to3  || null,
+      positions: this?.hdwIssueToEdit?.positions  || null,
+      lost_packets: this?.hdwIssueToEdit?.lost_packets  || null,
+      node_to_gateway_distance_in_meters: this?.hdwIssueToEdit?.node_to_gateway_distance_in_meters  || null,
+      gateway_first_data_transmission_date: this?.hdwIssueToEdit?.gateway_first_data_transmission_date  || null,
+      height_difference_in_meters: this?.hdwIssueToEdit?.height_difference_in_meters  || null,
+      to_hour: this?.hdwIssueToEdit?.to_hour  || null,
+      from_hour: this?.hdwIssueToEdit?.from_hour  || null,
+      pressure_difference: this?.hdwIssueToEdit?.pressure_difference  || null,
+      altimetry_image: this?.hdwIssueToEdit?.altimetry_image || null,
 
       //dropdown options
       irrigatorOptions: [],
@@ -383,30 +384,58 @@ export default {
       if(!isFormValid) return;
       try {
         this.loading = true;
-        const result = await createHdwIssueMutation(
-          new Date(),
-          this.diagnosticDate,
-          this.selectedIrrigator,
-          this.selectedDiagnosticType.id,
-          this.grafanaLink,
-          this.comments,
-          this.angles,
-          this.gateway_satellite_power,
-          this.packet_202_count,
-          this.packet_203_count,
-          this.battery_2to3,
-          this.positions?.value,
-          this.lost_packets,
-          this.node_to_gateway_distance_in_meters,
-          this.gateway_first_data_transmission_date,
-          this.height_difference_in_meters,
-          this.to_hour,
-          this.from_hour,
-          this.pressure_difference,
-          this.altimetry_image
-        );
-        if (!result?.data?.createHdwIssue?.id)
-          throw new Error("Missing Hdw Issue ID. Possible server error.");
+        let result;
+        if(!this.hdwIssueToEdit) {
+            result = await createHdwIssueMutation(
+              new Date(),
+              this.diagnosticDate,
+              this.selectedIrrigator,
+              this.selectedDiagnosticType.id,
+              this.grafanaLink,
+              this.comments,
+              this.angles,
+              this.gateway_satellite_power,
+              this.packet_202_count,
+              this.packet_203_count,
+              this.battery_2to3,
+              this.positions?.value,
+              this.lost_packets,
+              this.node_to_gateway_distance_in_meters,
+              this.gateway_first_data_transmission_date,
+              this.height_difference_in_meters,
+              this.to_hour,
+              this.from_hour,
+              this.pressure_difference,
+              this.altimetry_image
+            );
+        
+          if (!result?.data?.createHdwIssue?.id)
+            throw new Error("Missing Hdw Issue ID. Possible server error.");
+        }
+        else {
+          result = await addDiagnosticToHdwIssueMutation(
+              this.hdwIssueToEdit.id,
+              this.diagnosticDate,
+              this.selectedDiagnosticType.id,
+              this.grafanaLink,
+              this.comments,
+              this.angles,
+              this.gateway_satellite_power,
+              this.packet_202_count,
+              this.packet_203_count,
+              this.battery_2to3,
+              this.positions?.value,
+              this.lost_packets,
+              this.node_to_gateway_distance_in_meters,
+              this.gateway_first_data_transmission_date,
+              this.height_difference_in_meters,
+              this.to_hour,
+              this.from_hour,
+              this.pressure_difference,
+              this.altimetry_image
+          )
+        }
+          
         this.computedIsOpen = false;
         this.$router.go();
       } catch (e) {
@@ -443,7 +472,9 @@ export default {
       code: irr.id,
     }));
 
-    this.selectedIrrigator = this.selectedIrrigatorId || null;
+    this.selectedIrrigator = this?.hdwIssueToEdit?.irrigator?.id 
+    if(this.selectedIrrigatorId)
+      this.selectedIrrigator = this.selectedIrrigatorId;
 
     const dtypesraw = await getDiagnosticTypesQuery();
     const diagnosticTypes = dtypesraw.data.diagnosticTypes;
@@ -455,6 +486,10 @@ export default {
 
     this.loading = false;
   },
+  async beforeUpdate(){
+    
+    this.selectedIrrigator = this?.hdwIssueToEdit?.irrigator?.id 
+  }
 };
 </script>
 

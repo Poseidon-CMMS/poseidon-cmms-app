@@ -652,6 +652,268 @@ const createHdwIssueMutation = async function (
   });
 };
 
+const addDiagnosticToHdwIssueMutation = async function (
+  hdwIssueId,
+  diagnosticDate,
+  diagnosticTypeId,
+  grafanaLink,
+  comments,
+  angles,
+  gateway_satellite_power,
+  packet_202_count,
+  packet_203_count,
+  battery_2to3,
+  positions,
+  lost_packets,
+  node_to_gateway_distance_in_meters,
+  gateway_first_data_transmission_date,
+  height_difference_in_meters,
+  to_hour,
+  from_hour,
+  pressure_difference,
+  altimetry_image
+) {
+  return await client.mutate({
+    mutation: gql`
+      mutation (
+        $where: hdw_issueWhereUniqueInput!
+        $data: hdw_issueUpdateInput!
+      ) {
+        updatehdw_issue: updatehdw_issue(where: $where, data: $data) {
+          id
+          creation_date
+          close_date
+          automatic_diagnostic
+          time_to_repair_hours
+          time_to_diagnostic_hours
+          time_from_removal_to_autopsy_hours
+          comments
+          status
+          assigned_technician {
+            id
+            name
+          }
+          irrigator {
+            id
+            integration_id
+            name
+            field {
+              name
+            }
+          }
+          diagnostic {
+            id
+            date
+            user {
+              id
+              name
+              email
+            }
+            diagnostic_type {
+              name
+              type {
+                name
+              }
+              gateway_satellite_power
+              angles
+              packet_202_count
+              battery_2to3
+              positions
+              lost_packets
+              node_to_gateway_distance_in_meters
+              gateway_first_data_transmission_date
+              height_difference_in_meters
+              from_hour
+              to_hour
+              packet_203_count
+              pressure_difference
+            }
+            comments
+            gateway_satellite_power
+            angles
+            packet_202_count
+            battery_2to3
+            positions
+            lost_packets
+            node_to_gateway_distance_in_meters
+            gateway_first_data_transmission_date
+            height_difference_in_meters
+            from_hour
+            to_hour
+            packet_203_count
+            pressure_difference
+            grafana_link
+            altimetry_image {
+              id
+              url
+            }
+          }
+          inspection {
+            id
+            date
+            user {
+              name
+              email
+            }
+            comments
+            satellite_power
+            gateway_battery_voltage
+            lora_power
+            gps_node_battery_voltage
+            pressure_sensor_signal
+            picture {
+              url
+            }
+            log {
+              filename
+              url
+            }
+            inspection_type {
+              id
+              name
+              type {
+                id
+                name
+              }
+              pot_sat
+              gateway_battery_voltage
+              gps_node_battery_voltage
+              lora_power
+              pressure_sensor_signal
+            }
+          }
+          repair {
+            id
+            creation_date
+            real_repair_date
+            work_order {
+              technician {
+                name
+                email
+              }
+            }
+            repair_type {
+              id
+              name
+              value
+            }
+            solution_type {
+              id
+              name
+            }
+            new_gateway {
+              id
+              integration_id
+            }
+            new_gps_node {
+              id
+              integration_id
+            }
+            new_pressure_sensor {
+              id
+              integration_id
+            }
+            comments
+            log {
+              url
+              filename
+            }
+          }
+          autopsy {
+            id
+            date
+            self_diagnostic_file {
+              filename
+              url
+            }
+            pressure_log {
+              filename
+              url
+            }
+            comments
+            autopsy_type {
+              id
+              name
+              asset_type {
+                id
+                name
+              }
+              component {
+                id
+                name
+              }
+              root {
+                id
+                name
+              }
+            }
+            user {
+              name
+              email
+            }
+          }
+        }
+      }
+    `,
+    variables: {
+      where: {
+        id: hdwIssueId
+      },
+      data: {
+        diagnostic: {
+          create: {
+            date: diagnosticDate.toISOString(),
+            diagnostic_type: {
+              connect: {
+                id: diagnosticTypeId,
+              },
+            },
+            grafana_link: grafanaLink,
+            comments: comments,
+            // optionals
+            angles: angles === null ? undefined : angles,
+            gateway_satellite_power:
+              gateway_satellite_power === null
+                ? undefined
+                : gateway_satellite_power,
+            packet_202_count:
+              packet_202_count === null ? undefined : packet_202_count,
+            packet_203_count:
+              packet_203_count === null ? undefined : packet_203_count,
+            battery_2to3: battery_2to3 === null ? undefined : battery_2to3,
+            positions: positions === null ? undefined : positions,
+            lost_packets: lost_packets === null ? undefined : lost_packets,
+            node_to_gateway_distance_in_meters:
+              node_to_gateway_distance_in_meters === null
+                ? undefined
+                : node_to_gateway_distance_in_meters,
+            gateway_first_data_transmission_date:
+              gateway_first_data_transmission_date === null
+                ? undefined
+                : gateway_first_data_transmission_date,
+            height_difference_in_meters:
+              height_difference_in_meters === null
+                ? undefined
+                : height_difference_in_meters,
+            to_hour: to_hour === null ? undefined : to_hour,
+            from_hour: from_hour === null ? undefined : from_hour,
+            pressure_difference:
+              pressure_difference === null ? undefined : pressure_difference,
+            altimetry_image: altimetry_image
+            ? {
+                upload: altimetry_image,
+              }
+            : null,
+          },
+        }
+      },
+    },
+    context: {
+      hasUpload: !!altimetry_image,
+    },
+  });
+};
+
 const getWorkOrdersQuery = async function (id) {
   return await client.query({
     query: gql`
@@ -2267,6 +2529,7 @@ export {
   clearAssignHdwIssueMutation,
   updateHdwIssueStatusMutation,
   rejectRepairedHdwIssueMutation,
+  addDiagnosticToHdwIssueMutation,
   //inspection
   createInspectionMutation,
   getInspectionTypesQuery,

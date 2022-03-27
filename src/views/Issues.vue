@@ -20,6 +20,7 @@
               :loading='loading'
               :selectedIssue="selectedIssue"
               @updateAssignationFormOpen="handleIsOpenAssignation"
+              @updateHdwIssueToEdit="handleUpdateHdwIssueToEdit"
             />
           </div>
           <div :class="'col-12 md:col-6 ' + (this.userType == 'admin' ? 'lg:col-3' : 'lg:col-4')">
@@ -62,7 +63,7 @@
       </div>
     </div>
       
-    <HdwIssueCreationDialog v-if="this.userType == 'admin'" :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" @updateIsOpen="setIsCreationModalOpen" />
+    <HdwIssueCreationDialog v-if="this.userType == 'admin'" :isOpen="!!isCreationModalOpen" :selectedIrrigatorId="selectedCreateIssueIrrigatorId" :hdwIssueToEdit="hdwIssueToEdit" @updateIsOpen="setIsCreationModalOpen" />
     <assignation-form v-if="this.userType == 'admin'" :isOpen="showAssignedDialog" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpenAssignation="handleIsOpenAssignation"></assignation-form>
 
     <inspection-form :isOpen="showInspectionForm" :selectedIssue="selectedIssue" @issueUpdated="handleIssueUpdated" @updateIsOpen="handleIsOpenInspection"></inspection-form>
@@ -120,6 +121,10 @@ export default {
     handleIsOpenAssignation: function(value) {
       this.showAssignedDialog = value;
     },
+    handleUpdateHdwIssueToEdit: function(value) {
+      this.hdwIssueToEdit = value;
+      this.isCreationModalOpen = true;
+    },
     handleIssueUpdated: function(updatedIssue) {
       
       
@@ -159,6 +164,7 @@ export default {
       }
     },
     setIsCreationModalOpen(val) {
+      this.hdwIssueToEdit = null;
       this.isCreationModalOpen = val;
       if(!val) this.selectedCreateIssueIrrigatorId = null; //reset select on modal close
     },
@@ -188,6 +194,7 @@ export default {
       showClosedIssues: false,
       showInspectionForm: false,
       userType: 'technician',
+      hdwIssueToEdit: null,
     }
   },
   computed: {

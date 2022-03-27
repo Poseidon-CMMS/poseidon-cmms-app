@@ -55,6 +55,16 @@
                       <Button
                         v-if="
                           isAdmin &&
+                          !element.diagnostic
+                        "
+                        class="ml-2 p-button-info"
+                        icon="pi pi-cog"
+                        @click="handleAddDiagnostic(element)"
+                        v-tooltip="'Agregar diagnóstico'"
+                      />
+                      <Button
+                        v-if="
+                          isAdmin &&
                           (element.status === 'assigned' ||
                             element.status === 'in-field')
                         "
@@ -240,6 +250,9 @@ export default {
     },
     handleTechnicianEdit() {
       this.$emit("updateAssignationFormOpen", true);
+    },
+    handleAddDiagnostic(element) {
+      this.$emit("updateHdwIssueToEdit", element);
     },
     handleOpenMap(issue) {
       const { lat, long } = issue.irrigator;
