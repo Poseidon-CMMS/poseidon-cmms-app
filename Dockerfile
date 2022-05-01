@@ -1,5 +1,7 @@
 FROM node:lts-alpine
 
+ARG VUE_APP_BACKEND_URL=${VUE_APP_BACKEND_URL}
+
 RUN npm install -g http-server
 
 WORKDIR /app
