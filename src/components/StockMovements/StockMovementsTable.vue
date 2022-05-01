@@ -29,8 +29,14 @@
           {{dateFormatter(data?.date)}}
       </template>
     </column>
-    <column field="location_from.name" header="Desde" :sortable="true"></column>
-    <column field="location_to.name" header="Hacia" :sortable="true"></column>
+    <column field="location_from.name" header="Desde" :sortable="true">
+        <template #body="{data}">
+            {{data?.location_from?.name || 'Equipo de riego'}}
+        </template></column>
+    <column field="location_to.name" header="Hacia" :sortable="true">
+        <template #body="{data}">
+            {{data?.location_to?.name || 'Equipo de riego'}}
+        </template></column>
     <column field="author" header="Autor" :sortable="true">
         <template #body="{data}">
             {{data?.author?`${data?.author?.name}&lt;${data?.author?.email}>` :'Automático'}}
@@ -43,7 +49,7 @@
     </column>
     <column field="asset_id" header="Asset ID" :sortable="true">
       <template #body="{data}">
-          {{data?.gateway?.integration_id || data?.gps_node?.integration_id || data?.gateway?.pressure_sensor || "Desconocido"}}
+          {{data?.gateway?.integration_id || data?.gps_node?.integration_id || data?.pressure_sensor?.integration_id || "Desconocido"}}
       </template>
     </column>
   </data-table>

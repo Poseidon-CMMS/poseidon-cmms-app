@@ -50,7 +50,7 @@
     <column field="field.name" header="Campo" :sortable="true"></column>
     <column field="transmission_status" header="Estado de transmisión" :sortable="true">
       <template #body="{data}">
-        <span v-if="data.status=='installed'" :class="'status-badge status-' + (data.hdw_issueCount?'error':'transmitting')">{{data.hdw_issueCount?'Error':'Transmitting'}}</span>
+        <span v-if="data.status=='installed'" :class="'status-badge status-' + (data.hdw_issueCount?'error':'transmitting')">{{data.hdw_issueCount?'Error':'Transmitiendo'}}</span>
       </template>
     </column>
     <!-- <column field="lastTransmissionDate" header="Última Tx" :sortable="true"></column> -->
