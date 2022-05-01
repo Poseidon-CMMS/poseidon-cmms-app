@@ -1,7 +1,5 @@
 FROM node:lts-alpine
 
-ARG VUE_APP_BACKEND_URL=${VUE_APP_BACKEND_URL}
-
 RUN npm install -g http-server
 
 WORKDIR /app
@@ -12,9 +10,12 @@ RUN npm install
 
 COPY . .
 
-ENV VUE_APP_BACKEND_URL=${VUE_APP_BACKEND_URL}
-
 RUN npm run build
 
 EXPOSE 8080
-CMD [ "http-server", "dist" ]
+# Copy entrypoint script as /entrypoint.sh
+COPY ./entrypoint.sh /entrypoint.sh
+
+# Grant Linux permissions and run entrypoint script
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

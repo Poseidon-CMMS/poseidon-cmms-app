@@ -1,0 +1,1 @@
+export const backendURL = 'VUE_APP_SERVER_URL'

@@ -8,9 +8,10 @@ import {
 } from "@apollo/client/core";
 import { HttpLink } from "@apollo/client/link/http";
 import { createUploadLink } from "apollo-upload-client";
+import { backendURL } from "./backendUrl";
 
 const httpOptions = {
-  uri: `${process.env.VUE_APP_BACKEND_URL}/api/graphql`,
+  uri: `${backendURL}/api/graphql`,
   credentials: "include",
 };
 

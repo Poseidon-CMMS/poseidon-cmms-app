@@ -23,7 +23,7 @@ Este repositorio incluye el frontend de Poseidón CMMS destinado al uso cotidian
 
 ### Variables de entorno
 
-- VUE_APP_BACKEND_URL: La URL del servidor KeystoneJS del cual se obtendrán todos los datos para el funcionamiento de la WebApp. Por ejemplo, `http://localhost:4000` en un entorno de desarrollo local o la URL del servicio de hosting correspondiente en caso de tratarse de un entorno remoto.
+- VUE_APP_SERVER_URL: La URL del servidor KeystoneJS del cual se obtendrán todos los datos para el funcionamiento de la WebApp. Por ejemplo, `http://localhost:4000` en un entorno de desarrollo local o la URL del servicio de hosting correspondiente en caso de tratarse de un entorno remoto.
 - PORT: El puerto donde se mostrará el frontend. Por ejemplo: `8080`.
 
 ### Pasos a seguir para ejecutar localmente
@@ -38,4 +38,4 @@ Este repositorio incluye el frontend de Poseidón CMMS destinado al uso cotidian
 ### Pasos a seguir para ejecutar en un servicio de hosting de containers
 
 1. Crear un servicio Web utilizando este repo según las instrucciones del proveedor.
-2. Establecer las variables de entorno con sus valores correspondientes. Asegurarse de establecer la variable `VUE_APP_BACKEND_URL` con la URL obtenida al ejecutar el backend KeystoneJS en su servicio de hosting.
+2. Establecer las variables de entorno con sus valores correspondientes. Asegurarse de establecer la variable `VUE_APP_SERVER_URL` con la URL obtenida al ejecutar el backend KeystoneJS en su servicio de hosting.
