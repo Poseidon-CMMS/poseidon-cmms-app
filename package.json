@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "(docker stop poseidon-cmms-app || true) && docker build . -t poseidon-cmms-app && docker run --env-file ./.env -p 8080:8080 --name poseidon-cmms-app poseidon-cmms-app",
+    "start": "((docker stop poseidon-cmms-app && docker rm poseidon-cmms-app) || true) && docker build . -t poseidon-cmms-app && docker run --env-file ./.env -p 8080:8080 --name poseidon-cmms-app poseidon-cmms-app",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
