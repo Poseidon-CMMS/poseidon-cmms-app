@@ -69,7 +69,7 @@ const detectSessionTimeout = new ApolloLink((operation, forward) => {
   return forward(operation).map((data) => {
     // Called after server responds
     if (data?.errors?.find((e) => e.message.includes("Access denied"))) {
-      location.assign('/logout');
+      location.assign('/#/logout');
     }
     return data;
   });
