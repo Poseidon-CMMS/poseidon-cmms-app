@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "((docker stop poseidon-cmms-app && docker rm poseidon-cmms-app) || true) && docker build . -t poseidon-cmms-app && docker run --env-file ./.env -p 8080:8080 --name poseidon-cmms-app poseidon-cmms-app",
+    "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
