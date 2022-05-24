@@ -1,1 +1,1 @@
-export const backendURL = process.env.VUE_APP_SERVER_URL || 'VUE_APP_SERVER_URL'
+export const backendURL = process.env.VUE_APP_SERVER_URL || 'SERVER_URL_SED_WILDCARD'
