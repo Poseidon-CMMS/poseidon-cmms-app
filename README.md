@@ -23,17 +23,23 @@ Este repositorio incluye el frontend de Poseidón CMMS destinado al uso cotidian
 
 ### Variables de entorno
 
-- VUE_APP_SERVER_URL: La URL del servidor KeystoneJS del cual se obtendrán todos los datos para el funcionamiento de la WebApp. Por ejemplo, `http://localhost:4000` en un entorno de desarrollo local o la URL del servicio de hosting correspondiente en caso de tratarse de un entorno remoto.
-- PORT: El puerto donde se mostrará el frontend. Por ejemplo: `8080`.
+- VUE_APP_SERVER_URL: La URL del servidor KeystoneJS del cual se obtendrán todos los datos para el funcionamiento de la WebApp. Por ejemplo, `http://localhost:3000` en un entorno de desarrollo local o la URL del servicio de hosting correspondiente en caso de tratarse de un entorno remoto.
+- PORT: El puerto donde se mostrará este frontend. Por ejemplo: `8080`.
 
 ### Pasos a seguir para ejecutar localmente
 
+#### Requisitos
+
+- NodeJS
+
+#### Pasos
+
 1. Realizar los pasos para la creación de un entorno local del backend en el [repo correspondiente](https://github.com/Poseidon-CMMS/Poseidon-CMMS/).
-2. Clonar el repositorio.
+2. Clonar este repositorio.
 3. Crear un archivo `.env` en la raíz y setear las variables de entorno mencionadas anteriormente.
-4. Generar la imagen Docker con el comando `docker build . -t poseidon-cmms-app`.
-5. Inicializar un container con la imagen utilizando el comando `docker run --env-file ./.env -p 8080:8080 poseidon-cmms-app`. Nota: si se elige cambiar la variable de entorno PORT, ajustar este comando con el nuevo puerto elegido.
-6. Para acceder a la WebApp, acceder desde un navegador a `localhost:8080`.
+4. Ejecutar el comando `npm install`.
+5. Ejecutar el comando `npm run serve`.
+7. Para acceder a la WebApp, acceder desde un navegador a `localhost:8080`. Si se cambió la variable de entorno PORT, el puerto será el elegido anteriormente.
 
 ### Pasos a seguir para ejecutar en un servicio de hosting de containers
 
